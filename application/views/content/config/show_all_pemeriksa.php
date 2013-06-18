@@ -31,9 +31,9 @@
                });
                
                $('#btnPilih').click(function(){
-                  opener.document.getElementById('pilihan').innerHTML="";
+                  
                   var nomor = $('#counter').html();
-                  var title = "<p>Pemeriksa ke "+nomor+"</p>";
+                  var title = "<p><b>Pemeriksa ke "+nomor+"</b></p>";
                   var isi = title;
                   isi += "<div class=\"content-div\">";
                   isi += "<div class=\"content-div-image\">";
@@ -46,8 +46,12 @@
                   isi += "<tr><td>Organization</td><td> : "+orgname+"</td></tr>";
                   isi += "</table></div></div>"
                   
+                  var input = "<input type=\"hidden\" name=\"fitur_id[]\" value=\"3\" />";
+                  input += "<input type=\"hidden\" name=\"emp_num[]\" value=\""+empnum+"\" />";
                   
-                  
+                  $("#pilihan",window.opener.document).html("");
+                  $("#tambah",window.opener.document).append(isi);
+                  $("#inputan",window.opener.document).append(input);
                   
                   window.close();
                   return false;
@@ -73,6 +77,7 @@
             <br/>
             <p id="counter" style="display: none;"><?php echo $id; ?></p>
             <p><b>List Atasan : </b></p>
+            
             <table style='width:600px; margin-top: 10px; margin-left: 80px; border: 1px dotted black; text-align: center;'>
                 <thead style='background-color: #1f2024; color:white;'>
                 <th>Employee Details</th>

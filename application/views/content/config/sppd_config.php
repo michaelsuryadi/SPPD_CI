@@ -18,6 +18,7 @@
                 }
             });
             i++;
+            return false;
         });
     });
 </script>
@@ -25,7 +26,7 @@
 
 <div id='content'>
     <h2 style="margin: 0px; padding: 20px; text-align: left;">SPPD Configuration</h2>
-
+    <form id="frm-data" method="post" action="<?php echo base_url(); ?>index.php/sppd_config/save_flow_sppd">
     <fieldset>
         <legend>List Urutan Pemeriksa</legend>
         <div id="main_table">
@@ -39,12 +40,17 @@
                 <div id="pilihan">
                     
                 </div>
+                
+                <div id="inputan">
+                    
+                </div>
             </div>
 
         </div>
         <button id="tambah-btn">Tambah Pemeriksa</button>
     </fieldset>
     <div style="text-align: center; margin-top: 10px;">
-        <button id="simpan">Simpan</button>
+        <input type="submit" value="Simpan"/>
     </div>
+    </form>
 </div>

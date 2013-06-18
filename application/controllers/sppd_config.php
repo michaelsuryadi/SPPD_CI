@@ -13,6 +13,10 @@ class Sppd_config extends CI_Controller {
         
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
+        
+        $this->load->model('admin_config');
+        $data['flow'] = $this->admin_config->get_list_flow_sppd();
+        
         $this->load->view('includes/home_template', $data);
     }
     
@@ -36,5 +40,14 @@ class Sppd_config extends CI_Controller {
         }
         
         $this->load->view('content/config/show_all_pemeriksa', $data);
+    }
+    
+    function save_flow_sppd(){
+        $this->load->model('admin_config');
+        $q = $this->admin_config->save_sppd_flow();
+        
+        if($q){
+            $this->index();
+        }
     }
 }
