@@ -1,8 +1,11 @@
 <script type="text/javascript">
     $("document").ready(function() {
-        var i = $("#counter2").html();
+        var i = 1;
+        if ($("#counter2").html() != null){
+            i=$("#counter2").html();
+        }
+        
         $("#tambah-btn").click(function() {
-
             $("#first_div").remove();
             var app = "<p id='pem-" + i + "'>Pemeriksa ke- " + i + "&nbsp; &nbsp; <select id='pilih-" + i + "'><option value='0'>--Pilih--</option><option value='1'>Defined</option><option value='2'>Not Defined</option></select></td><td id='pem-" + i + "'><br/><br/></p>";
             $("#pilihan").append(app);
@@ -15,6 +18,11 @@
                     var tambah = '<a href=\"javascript:window.open(\'<?php echo base_url(); ?>index.php/sppd_config/show_exam/id/' + id[1] + '\',\'Pilih Pemeriksa\',\'height=500,width=800\')\">Pilih Pemeriksa</a>';
                     var data = $("#pem-" + id[1]).html();
                     $("#pem-" + id[1]).append(tambah);
+                }
+                else {
+                    var inputan = "<input type=\"hidden\" name=\"fitur_id[]\" value=\"4\" />";
+                    inputan += "<input type=\"hidden\" name=\"emp_num[] \" value=\"24\" />";
+                    $("#inputan").append(inputan);
                 }
             });
             i++;
@@ -54,6 +62,13 @@
                         <img style="margin-left: 10px; margin-top: 10px;" height="80" width="80" src="<?php echo base_url(); ?>css/unknown-prof-pic.png"/>
                     </div>
                     <div class="content-div-data">
+                        <div class="content-div-data-left">
+                            
+                            <?php
+                            if($row->emp_num !=24){
+                                ?>
+                            
+                            
                         <table>
                             <tr>
                                 <td>NIK</td>
@@ -73,6 +88,34 @@
                             </tr>
                             
                         </table>
+                        <?php
+                            }
+                            else {
+                                ?>
+                            <table>
+                            <tr>
+                                <td>Pemeriksa</td>
+                                <td> : Not Defined (Customizable)</td>
+                            </tr>
+                            
+                        </table>
+                            <?php
+                            }
+                            ?>    
+                        </div>
+                        <div class="content-div-data-right">
+                            <table>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="<?php echo base_url();?>index.php/sppd_config/hapus_pemeriksa/id/<?php echo $row->emp_num; ?>" >Hapus </a></td>
+                                </tr>
+                                <tr>
+                                    <td>Ganti</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
                     <?php

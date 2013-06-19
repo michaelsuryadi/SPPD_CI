@@ -50,4 +50,16 @@ class Sppd_config extends CI_Controller {
             redirect("/sppd_config");
         }
     }
+    
+    function hapus_pemeriksa(){
+        $get = $this->uri->uri_to_assoc();
+        $id = $get['id'];
+        
+        $this->load->model('admin_config');
+        $q = $this->admin_config->hapus_pemeriksa($id);
+        
+        if($q){
+            redirect("/sppd_config");
+        }
+    }
 }

@@ -188,7 +188,7 @@
                         ?>
                         <tr>
                             <td>Pemeriksa <?php echo $rowdata->job_name; ?></td>
-                            <td> : <?php echo $rowdata->emp_firstname . " " . $rowdata->emp_lastname . "/" . $rowdata->job_code . "-" . $rowdata->emp_id . "/" . $rowdata->org_code; ?></td>
+                            <td><p style="margin-left:20px;"> : <?php echo $rowdata->emp_firstname . " " . $rowdata->emp_lastname . "/" . $rowdata->job_code . "-" . $rowdata->emp_id . "/" . $rowdata->org_code; ?></p></td>
                         <input type="hidden" name="pemeriksa[]" value="<?php echo $rowdata->emp_num; ?>"/>
                         </tr>
                         <?php
@@ -196,15 +196,15 @@
                         ?>
                         <tr>
                             <td>Pemeriksa : </td>
-                            <td><select name="Pemeriksa" id="pemeriksa" style="margin-left:125px; width: 300px;" multiple></select></td>
+                            <td><select name="Pemeriksa" id="pemeriksa" style="margin-left:20px; width: 300px;" multiple></select></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td><p style="margin-left:125px;"><a href="javascript:window.open('<?php echo base_url(); ?>index.php/sppd/show_exam','Pilih Pemeriksa','height=500,width=800')">Add Person</a></p></td>
+                            <td><p style="margin-left:20px;"><a href="javascript:window.open('<?php echo base_url(); ?>index.php/sppd/show_exam','Pilih Pemeriksa','height=500,width=800')">Add Person</a></p></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td><p style="margin-left:105px;"><?php
+                            <td><p style="margin-left:15px;"><?php
                 echo form_open('sppd/save_profile');
                 echo form_checkbox('save_check');
                         ?>  Save Profile</p></td>

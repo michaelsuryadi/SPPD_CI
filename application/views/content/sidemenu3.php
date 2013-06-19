@@ -1,12 +1,10 @@
 <div id="side-menu" style='background-color: #1f2024; margin-bottom: 0px;'>
     <ul id="css3menu1" class="topmenu">
-
-        <li class="topfirst"><a href="<?php echo base_url() ?>index.php/site" style="height:15px;line-height:15px;">Home</a></li>
-
         <?php
         $dat = $result->row();
         if ($dat->emp_role == 1) {
             ?>
+            <li class="topfirst"><a href="<?php echo base_url() ?>index.php/site/admin_index" style="height:15px;line-height:15px;">Home</a></li>
             <li class="topmenu"><a href="#" style="height:15px;line-height:15px;"><span>Organization</span></a>
                 <ul>
                     <li class="subfirst"><a href="<?php echo base_url() ?>index.php/org">View Organization Structure</a></li>
@@ -32,6 +30,7 @@
         <?php
         if ($dat->emp_role == 1) {
             ?>
+            
             <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">Application Config</a>
                 <ul>
                     <li class="subfirst"><a href="<?php echo base_url() ?>index.php/sppd_config">SPPD Flow Configuration</a></li>
@@ -43,7 +42,7 @@
             <?php
         } else {
             ?>
-
+            <li class="topfirst"><a href="<?php echo base_url() ?>index.php/site" style="height:15px;line-height:15px;">Home</a></li>
             <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">SPPD</a>
                 <ul>
                     <li class="subfirst"><a href="<?php echo base_url() ?>index.php/sppd/new_sppd">Create New SPPD</a></li>

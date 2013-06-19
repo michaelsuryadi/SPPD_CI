@@ -124,4 +124,17 @@ a {
     float:left;
 }
 
+.content-div-data-left {
+    float:left;
+    width: 600px;
+    height: 100px;
+}
+
+.content-div-data-right {
+    float:left;
+    width: 99px;
+    border-left: 1px dotted black;
+    height: 100px;
+}
+
 

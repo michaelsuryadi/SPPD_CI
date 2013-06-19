@@ -122,7 +122,7 @@ class Sppd extends CI_Controller {
             $data['all_atasan'] = $this->employee->get_emp_byname($this->input->post('keyword'));
         }
         
-        $this->load->view('content/sppd/pilih_pemeriksa', $data);
+        $this->load->view('content/sppd/pilih_pemeriksa_sppd', $data);
     }
 
     function process() {

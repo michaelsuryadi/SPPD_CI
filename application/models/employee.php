@@ -146,6 +146,7 @@ class Employee extends CI_Model {
         $this->db->from('hrms_employees as A');
         $this->db->join('hrms_job as C','A.emp_job=C.job_num');
         $this->db->join('hrms_organization as D','A.org_id=D.org_num');
+        $this->db->where('A.emp_num !=','24');
         $q = $this->db->get();
         
         

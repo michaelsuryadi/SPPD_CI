@@ -53,5 +53,17 @@ class Admin_config extends CI_Model {
         $q = $this->db->get();
         return $q;
     }
+    
+    function hapus_pemeriksa($id) {
+        $this->db->where("emp_num",$id);
+        $q = $this->db->delete("flow_sppd");
+        
+        if($q){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 }

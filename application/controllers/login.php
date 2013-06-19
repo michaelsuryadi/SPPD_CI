@@ -27,7 +27,12 @@ class Login extends CI_Controller {
             );
 
             $this->session->set_userdata($data);
-            redirect('site/index');
+
+            if ($this->input->post('username') == "admin") {
+                redirect ('site/admin_index');
+            } else {
+                redirect('site/index');
+            }
         } else {
             redirect('login/index');
         }
