@@ -248,7 +248,7 @@
             </table>
         </fieldset>
         <br/>
-        <table id="table-karyawan-3" style="width: 800px">
+        <table id="table-karyawan-3" style="width: 800px; height:50px;">
             <tr>
                 <td></td>
                 <td></td>
