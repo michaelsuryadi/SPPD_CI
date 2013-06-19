@@ -68,6 +68,7 @@
         }
         ?>
             
+        <li class="toplast"><a href="#" style="height:15px;line-height:15px;">Change Password</a></li>
         <li class="toplast"><a href="<?php echo base_url() ?>index.php/login/signout" style="height:15px;line-height:15px;">Log Out</a></li>
       </ul>
 </div>

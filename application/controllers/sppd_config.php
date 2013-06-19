@@ -47,7 +47,7 @@ class Sppd_config extends CI_Controller {
         $q = $this->admin_config->save_sppd_flow();
         
         if($q){
-            $this->index();
+            redirect("/sppd_config");
         }
     }
 }

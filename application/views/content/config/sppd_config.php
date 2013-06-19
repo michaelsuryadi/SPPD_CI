@@ -1,6 +1,6 @@
 <script type="text/javascript">
     $("document").ready(function() {
-        var i = 1;
+        var i = $("#counter2").html();
         $("#tambah-btn").click(function() {
 
             $("#first_div").remove();
@@ -32,17 +32,81 @@
         <div id="main_table">
             <div id="awal">
                 <div id="first_div">
+                    <?php 
+                        if($flow->num_rows()==0){
+                            
+                            ?>
                     <p>Belum Ada Pemeriksa</p>
+                    <?php
+                        }
+                    ?>
                 </div>
                 <div id="tambah">   
+                    <?php
+                    $i=1;
+                    $total = $flow->num_rows();
+                        foreach($flow->result() as $row) {
+                            
+                            ?>
+                    <p><b>Pemeriksa ke <?php echo $i; ?></b></p>
+                <div class="content-div">
+                    <div class="content-div-image">
+                        <img style="margin-left: 10px; margin-top: 10px;" height="80" width="80" src="<?php echo base_url(); ?>css/unknown-prof-pic.png"/>
+                    </div>
+                    <div class="content-div-data">
+                        <table>
+                            <tr>
+                                <td>NIK</td>
+                                <td> : <?php echo $row->emp_id; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Nama</td>
+                                <td> : <?php echo $row->emp_firstname." ".$row->emp_lastname; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Jabatan</td>
+                                <td> : <?php echo $row->job_name; ?></td>
+                            </tr>
+                            <tr>
+                                <td>Organisasi</td>
+                                <td> : <?php echo $row->org_name; ?></td>
+                            </tr>
+                            
+                        </table>
+                    </div>
+                </div>
+                    <?php
                     
+                    if($i== $total){
+                        ?>
+                    <p id="counter2" style="display: none;"><?php echo $i+1; ?></p>
+                    <?php
+                    }
+                    else {
+                        if($total==0){
+                            ?>
+                    <p id="counter2" style="display: none;">1</p>
+                    <?php
+                        }
+                    }
+                    $i++;
+                        }
+                    ?>
                 </div>
                 <div id="pilihan">
                     
                 </div>
                 
                 <div id="inputan">
-                    
+                    <?php
+                        foreach($flow->result() as $row2) {
+                            
+                            ?>
+                    <input type="hidden" name="fitur_id[]" value="<?php echo $row2->fitur_id; ?>" />
+                    <input type="hidden" name="emp_num[]" value="<?php echo $row2->emp_num; ?>" />
+                    <?php
+                        }
+                    ?>
                 </div>
             </div>
 

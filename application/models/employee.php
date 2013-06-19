@@ -202,8 +202,8 @@ class Employee extends CI_Model {
         $this->db->from('flow_sppd as B');
         $this->db->join('hrms_employees as A','A.emp_num=B.emp_num','left outer');
         $this->db->join('hrms_job as C','A.emp_job=C.job_num');
-        $this->db->where('B.fitur_id','1');
-        $this->db->or_where('B.fitur_id','2');
+        $this->db->where('B.fitur_id','3');
+        $this->db->or_where('B.fitur_id','4');
         $this->db->order_by('B.flow_id',"ASC");
         $q = $this->db->get();
         return $q;
