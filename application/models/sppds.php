@@ -144,10 +144,11 @@ class Sppds extends CI_Model {
 
     function list_perlu_diproses($empnum) {
 
-        $this->db->select("A.sppd_num,B.sppd_id,A.status,C.emp_id,C.org_code,C.job_code,B.sppd_tuj,B.sppd_tgl,C.emp_firstname,C.emp_lastname");
+        $this->db->select("A.sppd_num,B.sppd_id,A.status,C.emp_id,C.org_code,C.job_code,B.sppd_tuj,B.sppd_tgl,C.emp_firstname,C.emp_lastname, D.emp_id as pem_id,D.emp_num as pem_num, D.emp_firstname as pem_fname, D.emp_lastname as pem_lname, D.org_code as pem_org, D.job_code as pem_job");
         $this->db->from('sppd_examine as A');
         $this->db->join('sppd_data as B', 'A.sppd_num=B.sppd_num');
         $this->db->join('hrms_employees as C', 'C.emp_num=A.emp_id');
+        $this->db->join('hrms_employees as D','D.emp_num=B.emp_create_id');
         $this->db->where('A.pem_id', $empnum);
         $this->db->where('flag', '1');
         $q = $this->db->get();

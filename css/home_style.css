@@ -87,12 +87,25 @@ body {
 }
 
 #content2 {
-    
     width: 1000px;
     margin:auto;
     margin-top: 20px;
     height: 400px;
     background-color: white;
+}
+
+#login-content-left{
+    height: 350px;
+    width:599px;
+    border-right: 1px dotted black;
+    float:left;
+}
+
+#login-content-right {
+    height: 400px;
+    width:400px;
+    
+    float:left;
 }
 
 #top-left-content {

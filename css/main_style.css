@@ -40,6 +40,10 @@ body {
     color: white;
 }
 
+#login-content-left{
+    
+}
+
 #footer p {
     padding-top: 10px;
 }
@@ -55,11 +59,11 @@ body {
 }
 
 #login-form table {
-    text-align: center;
+
 }
 
 #login-form form {
-    margin-left: 370px;
+    margin-left: 70px;
 }
 
 a {
