@@ -38,6 +38,9 @@
                   option.value= empnum;
                   x.add(option, x.options[null]);
                   
+                  var tmbh = "<input type=\"hidden\" name=\"pemeriksa[]\" value=\""+empnum+"\" />";
+                  
+                  $('#tambah-input',opener.window.document).append(tmbh);
                   window.close();
                   return false;
                });

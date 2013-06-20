@@ -181,7 +181,6 @@ class Sppd extends CI_Controller {
         
         $data['approval_prg'] = $this->sppds->get_approval($sppdId);
         
-        
         $this->load->view("includes/home_template",$data);
     }
     

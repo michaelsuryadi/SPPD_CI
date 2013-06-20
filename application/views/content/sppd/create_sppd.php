@@ -198,9 +198,11 @@
                             <td>Pemeriksa : </td>
                             <td><select name="Pemeriksa" id="pemeriksa" style="margin-left:20px; width: 300px;" multiple></select></td>
                         </tr>
+                        
                         <tr>
                             <td></td>
-                            <td><p style="margin-left:20px;"><a href="javascript:window.open('<?php echo base_url(); ?>index.php/sppd/show_exam','Pilih Pemeriksa','height=500,width=800')">Add Person</a></p></td>
+                            <td><p style="margin-left:20px;"><a href="javascript:window.open('<?php echo base_url(); ?>index.php/sppd/show_exam','Pilih Pemeriksa','height=500,width=800')">Add Person</a></p>
+                            <p id="tambah-input" style="display:none;"></p></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -209,6 +211,7 @@
                 echo form_checkbox('save_check');
                         ?>  Save Profile</p></td>
                         </tr>
+                        
                         <?php
                     }
                 }
