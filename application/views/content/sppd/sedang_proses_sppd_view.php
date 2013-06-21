@@ -182,7 +182,7 @@
         <table id="table-karyawan-3" style="width: 800px;">
             <tr>
                 <td style="text-align: left;">Komentar :</td>
-                <td colspan="4" id="content2" style="text-align: left;"><?php
+                <td colspan="4" id="content4" style="text-align: left;"><?php
                     foreach ($data_komentar->result() as $rowkomentar) {
                         ?>
                         <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->time_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>

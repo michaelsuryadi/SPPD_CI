@@ -38,8 +38,8 @@ class Sppd extends CI_Controller {
         $data['result'] = $this->employee->get_detail_emp($username);
         $row = $data['result']->row();
         $empId = $row->emp_num;
-        $data['draft'] = $this->sppds->get_proses_sppd($empId);
-
+        $dt['sppd_list'] = $this->sppds->get_proses_sppd($empId);
+        $data['sppd_list'] = $dt['sppd_list'][0];
         $this->load->view('includes/home_template', $data);
     }
     
@@ -108,7 +108,6 @@ class Sppd extends CI_Controller {
         $data['title'] = 'Pilih Pemeriksa';
         $this->load->model('employee');
         $username = $this->session->userdata('username');
-        
         
         
         if ($this->input->post('keyword') == null || $this->input->post('keyword') == "") {

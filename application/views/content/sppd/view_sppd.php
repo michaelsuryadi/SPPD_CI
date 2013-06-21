@@ -137,30 +137,14 @@
         <?php
         ?>
     </fieldset>
-    <fieldset>
-        <legend>Data Lampiran</legend>
-        <table id="table-karyawan-2" style="width: 800px;">
-            <tr>
-                <td style="text-align: left;">File Lampiran :</td>
-                <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
-            </tr>
-        </table>
-    </fieldset>
+    
 
     <fieldset>
         <legend>Komentar</legend>
         <table id="table-karyawan-3" style="width: 800px;">
             <tr>
                 <td style="text-align: left;">Komentar :</td>
-                <td colspan="4" id="content2" style="text-align: left;"><?php
+                <td colspan="4" id="content4" style="text-align: left;"><?php
         foreach ($data_komentar->result() as $rowkomentar) {
             ?>
                         <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->time_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>

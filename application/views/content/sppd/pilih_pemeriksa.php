@@ -32,6 +32,7 @@
                 var jobcode="";
                 var empid="";
                 var empnum="";
+                
                $('.pem').click(function(){
                   var id = $(this).attr('id').split('-')[1];
                   var data = $('#nama-'+id).html();
@@ -47,23 +48,18 @@
                
                $('#btnPilih').click(function(){
                   var x = opener.document.getElementById("nama");
-                  var x1 = opener.document.getElementById("nama2");
                   
                   x.value=nama;
-                  x1.value=nama;
                   var y = opener.document.getElementById("emp_id");
-                  var y1 = opener.document.getElementById("emp_id2");
                   y.value=empid;
-                  y1.value=empid;
+                   
                   var z = opener.document.getElementById("job_code");
-                  var z1 = opener.document.getElementById("job_code2");
                   z.value=jobcode;
-                  z1.value=jobcode;
                   var w = opener.document.getElementById("emp_num");
                   w.value=empnum;
                   
                   window.close();
-                  return false;
+                  
                });
                
             });
@@ -77,7 +73,7 @@
             <h2>Pilih Pemeriksa :</h2>
         </div>
 
-        <div id='content' style='height: 370px; text-align: center;'>
+        <div id='content' style='min-height: 370px; margin-bottom: 10px; text-align: center;'>
 
             <p><b>Search By Name:</b></p>
             <?php
@@ -85,6 +81,7 @@
             echo form_open('sppd/show_exam');
             echo form_input('keyword');
             echo form_submit('submit', 'Search');
+            echo form_close();
             ?>
             <br/>
             <p><b>List Employees : </b></p>

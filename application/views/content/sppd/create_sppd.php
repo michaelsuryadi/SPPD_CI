@@ -98,9 +98,7 @@
         echo form_input(array('name' => 'emp_name2', 'disabled' => 'disabled', 'value' => $row->emp_firstname . " " . $row->emp_lastname, 'id' => 'nama'));
         echo form_input(array('name' => 'emp_id2', 'disabled' => 'disabled', 'value' => $row->id_emp, 'id' => 'emp_id'));
         echo form_input(array('name' => 'job_code2', 'disabled' => 'disabled', 'value' => $row->job_code, 'id' => 'job_code'));
-        echo form_hidden(array('name' => 'emp_name', 'value' => $row->emp_firstname . " " . $row->emp_lastname, 'id' => 'nama2'));
-        echo form_hidden(array('name' => 'emp_id', 'value' => $row->id_emp, 'id' => 'emp_id2'));
-        echo form_hidden(array('name' => 'job_code', 'value' => $row->job_code, 'id' => 'job_code2'));
+        
         ?><a id="pilih-pemohon" href="#">Pilih</a></td>
 
                 <td><?php echo form_input('destination'); ?></td>
