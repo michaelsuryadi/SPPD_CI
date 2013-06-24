@@ -69,7 +69,7 @@
                         <p style='margin-left:10px; font-size: smaller'>Last Approved By : -</p>
                     </div>
                     <div class='sppd-opsi'>
-                        <p style='padding-top: 30px; margin-left: 0px;'><a href='<?php echo base_url(); ?>index.php/sppd/view_sppd/id/<?php echo $row->sppd_num; ?>' style='color:black;'>Proses</a></p>
+                        <p style='padding-top: 30px; margin-left: 0px;'><a href='<?php echo base_url(); ?>index.php/sppd/view_sppd/id/<?php echo $row->sppd_num; ?>' style='color:black;'>View</a></p>
                     </div>
                 </div>
     <?php }

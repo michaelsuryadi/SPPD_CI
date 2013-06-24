@@ -12,4 +12,13 @@ class Notifications extends CI_Model {
         return $q;
     }
     
+    function get_url_address($id) {
+        $this->db->select('A.notif_link,B.type_url');
+        $this->db->from('hrms_notification as A');
+        $this->db->where('notif_id',$id);
+        $this->db->join('hrms_notification_type as B','B.type_id=A.notif_type');
+        $q = $this->get();
+        
+    }
+    
 }

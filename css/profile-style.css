@@ -9,7 +9,6 @@
 root { 
     display: block;
 }
-
 #content {
     min-height: 400px;
 }
@@ -26,3 +25,6 @@ root {
     width:650px;
 }
 
+#left_content table tr td input {
+    width: 200px;
+}

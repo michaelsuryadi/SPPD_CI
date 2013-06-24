@@ -43,6 +43,7 @@ class Utilities extends CI_Controller {
         $data['mid_content'] = 'content/utilities/edit_profile';
         $this->load->model('employee');
         $data['employees'] = $this->employee->get_all_emp();
+        $data['employee_data'] = $this->employee->get_employee_data_by_username();
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
         $this->load->view('includes/home_template', $data);

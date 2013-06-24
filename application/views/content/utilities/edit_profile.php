@@ -15,18 +15,19 @@
         </div>
     </div>
     <div id="left_content">
-        <table style="padding-left: 10px; width: 300px;">
+        <table style="padding-left: 10px;">
             <?php
             $this->load->helper('form');
             echo form_open('utilities/process_edit_profile');
+            $row2 = $employee_data->row();
             ?>
             <tr>
                 <td>Firstname</td>
-                <td> : <?php echo form_input("firstname"); ?></td>
+                <td> : <?php echo form_input("firstname",$row2->emp_firstname); ?></td>
             </tr>
             <tr>
                 <td>Lastname</td>
-                <td> : <?php echo form_input("lastname"); ?></td>
+                <td> : <?php echo form_input("lastname",$row2->emp_lastname); ?></td>
             </tr>
             <tr>
                 <td>Gender</td>
@@ -38,19 +39,19 @@
             </tr>
             <tr>
                 <td>Date Of Birth</td>
-                <td> : <input type="text" name="dob" id="datebirth" /></td>
+                <td> : <input type="text" name="dob" id="datebirth" value="<?php echo $row2->emp_dob; ?>" /></td>
             </tr>
             <tr>
                 <td>Street Address</td>
-                <td> : <input type="text" name="address" /></td>
+                <td> : <input type="text" name="address" value="<?php echo $row2->emp_street; ?>" /></td>
             </tr>
             <tr>
                 <td>Telp Number</td>
-                <td> : <input type="text" name="telp" /></td>
+                <td> : <input type="text" name="telp" value="<?php echo $row2->emp_work_telp; ?>" /></td>
             </tr>
             <tr>
                 <td>Email</td>
-                <td> : <input type="text" name="email" /></td>
+                <td> : <input type="text" name="email" value="<?php echo $row2->emp_email; ?>"/></td>
             </tr>
 
             <tr>

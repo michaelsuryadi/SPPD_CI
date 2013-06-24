@@ -35,6 +35,10 @@
 
             return false;
         });
+        
+        $("#cancel-btn").click(function(){
+        
+        });
     });
 
 </script>
@@ -198,7 +202,7 @@
         <tr>
             <td></td>
             <td></td>
-            <td style="width: 300px;"><?php echo form_submit('submit', 'Approve'); ?></td>
+            <td style="width: 300px;"><button id="cancel-btn">Reject</button><?php echo form_submit('submit', 'Approve'); ?></td>
             <td></td>
             <td></td>
         </tr>

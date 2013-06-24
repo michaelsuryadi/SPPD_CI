@@ -4,18 +4,21 @@ class Sppds extends CI_Model {
 
     var $gallery_path;
     var $gallery_path_url;
-    
+
     public function __construct() {
         parent::__construct();
-        
+
         $this->gallery_path = realpath(APPPATH . '../images');
         $this->gallery_path_url = base_url() . 'images/';
     }
+
     function get_draft_sppd($empnum) {
-        $this->db->select('*');
-        $this->db->from('sppd_data');
-        $this->db->where('emp_id', $empnum);
-        $this->db->where('sppd_status', 2);
+        $this->db->select('A.sppd_id,A.sppd_num,A.sppd_tgl,A.sppd_tuj,B.emp_id,B.emp_firstname,B.emp_lastname, C.emp_id as pem_id, C.emp_firstname as pem_fname, C.emp_lastname as pem_lname');
+        $this->db->from('sppd_data as A');
+        $this->db->where('A.emp_id', $empnum);
+        $this->db->where('A.sppd_status', 2);
+        $this->db->join('hrms_employees as B', 'A.emp_id=B.emp_num');
+        $this->db->join('hrms_employees as C', 'A.emp_create_id=C.emp_num');
 
         $query = $this->db->get();
 
@@ -26,17 +29,17 @@ class Sppds extends CI_Model {
         $this->db->select('A.sppd_num,A.sppd_id,A.sppd_tgl,A.sppd_tuj,B.emp_id,B.emp_firstname,B.emp_lastname, C.emp_id as pem_id, C.emp_firstname as pem_fname, C.emp_lastname as pem_lname,E.emp_firstname as curr_fname,E.emp_lastname as curr_lname,E.emp_id as curr_empid,D.order');
         $this->db->from('sppd_data as A');
         $this->db->where('A.emp_id', $empnum);
-        $this->db->join('hrms_employees as B','A.emp_id=B.emp_num');
-        $this->db->join('hrms_employees as C','A.emp_create_id=C.emp_num');
-        $this->db->join('sppd_examine as D','D.sppd_num=A.sppd_num');
-        $this->db->join('hrms_employees as E','E.emp_num=D.pem_id');
-        $this->db->where('D.flag','1');
-        $this->db->where('D.status','0');
+        $this->db->join('hrms_employees as B', 'A.emp_id=B.emp_num');
+        $this->db->join('hrms_employees as C', 'A.emp_create_id=C.emp_num');
+        $this->db->join('sppd_examine as D', 'D.sppd_num=A.sppd_num');
+        $this->db->join('hrms_employees as E', 'E.emp_num=D.pem_id');
+        $this->db->where('D.flag', '1');
+        $this->db->where('D.status', '0');
         $this->db->where('A.sppd_status', 1);
-        
+
         $hasil = array();
         $query = $this->db->get();
-        $hasil[]=$query;
+        $hasil[] = $query;
 //        foreach($query->result() as $row){
 //            if($row->order !=1){
 //                $order = $row->order;
@@ -50,9 +53,9 @@ class Sppds extends CI_Model {
 //                $hasil[] = $this->db->get();
 //            }
 //        }
-        
-        
-        
+
+
+
         return $hasil;
     }
 
@@ -99,11 +102,11 @@ class Sppds extends CI_Model {
 
         $q = $this->db->insert("sppd_data", $data);
 
-        $next_counter = $row_counter->sppd_counter_id+1;
-        
-        $d= array("sppd_counter_id" => $next_counter);
-        $this->db->update("hrms_counter",$d);
-        
+        $next_counter = $row_counter->sppd_counter_id + 1;
+
+        $d = array("sppd_counter_id" => $next_counter);
+        $this->db->update("hrms_counter", $d);
+
         $config = array(
             'allowed_types' => 'jpg|jpeg|gif|png',
             'upload_path' => $this->gallery_path,
@@ -113,9 +116,9 @@ class Sppds extends CI_Model {
         $this->load->library('upload', $config);
         $this->upload->do_upload();
         $image_data = $this->upload->data();
-        
+
         if ($this->input->post('tipe') == '1') {
-            $this->db->select("sppd_num,emp_id");
+            $this->db->select("sppd_num,sppd_id,emp_id");
             $this->db->from("sppd_data");
             $this->db->where("sppd_id", $sppdnum);
             $q2 = $this->db->get();
@@ -135,35 +138,51 @@ class Sppds extends CI_Model {
             $pemeriksa = $this->input->post('pemeriksa');
             $count = 1;
             for ($i = 0; $i < count($pemeriksa); $i++) {
-               
-                    if($count==1){
-                        $flag = 1;
-                    }
-                    else {
-                        $flag=0;
-                    }
-                    
-                    if($count == count($pemeriksa)){
-                        $final = 1;
-                    }
-                    else {
-                        $final=0;
-                    }
-                    
-                    $pemdata = array(
-                        "sppd_num" => $res->sppd_num,
-                        "emp_id" => $res->emp_id,
-                        "pem_id" => $pemeriksa[$i],
-                        "status" => "0",
-                        "comment" => "",
-                        "exam_date" => "",
-                        "exam_time" => "",
-                        "order" => $count,
-                        "final"=>$final,
-                        "flag"=>$flag
-                    );
-                    
+
+                if ($count == 1) {
+                    $flag = 1;
+                } else {
+                    $flag = 0;
+                }
+
+                if ($count == count($pemeriksa)) {
+                    $final = 1;
+                } else {
+                    $final = 0;
+                }
+
+                $pemdata = array(
+                    "sppd_num" => $res->sppd_num,
+                    "emp_id" => $res->emp_id,
+                    "pem_id" => $pemeriksa[$i],
+                    "status" => "0",
+                    "comment" => "",
+                    "exam_date" => "",
+                    "exam_time" => "",
+                    "order" => $count,
+                    "final" => $final,
+                    "flag" => $flag
+                );
+
                 $this->db->insert('sppd_examine', $pemdata);
+
+                if ($count == 1) {
+                     $datestring = "%Y-%m-%d";
+                     $datestring2 = "%h:%i %A";
+                     $time = time();
+                     $timezone = 'UP7';
+                     $timedata=  gmt_to_local($time, $timezone, FALSE);
+                     $tgl =  unix_to_human($timedata);
+                    $data5 = array(
+                        "notif_desc" => "SPPD Dengan ID " . $res->sppd_id . " Perlu Diproses",
+                        "notif_link" => $res->sppd_num,
+                        "notif_type" => "1",
+                        "emp_num" => $pemeriksa[$i]
+                    );
+
+                    $this->db->insert('hrms_notification', $data5);
+                }
+
                 $count++;
             }
 
@@ -172,12 +191,10 @@ class Sppds extends CI_Model {
             } else {
                 return false;
             }
-        }
-        else {
-            if($q){
+        } else {
+            if ($q) {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         }
@@ -189,7 +206,7 @@ class Sppds extends CI_Model {
         $this->db->from('sppd_examine as A');
         $this->db->join('sppd_data as B', 'A.sppd_num=B.sppd_num');
         $this->db->join('hrms_employees as C', 'C.emp_num=A.emp_id');
-        $this->db->join('hrms_employees as D','D.emp_num=B.emp_create_id');
+        $this->db->join('hrms_employees as D', 'D.emp_num=B.emp_create_id');
         $this->db->where('A.pem_id', $empnum);
         $this->db->where('flag', '1');
         $q = $this->db->get();
@@ -237,6 +254,12 @@ class Sppds extends CI_Model {
         $this->db->where("pem_id", $this->input->post('pem_id'));
         $q = $this->db->update("sppd_examine", $data);
 
+        $this->db->select("sppd_num,sppd_id,emp_id");
+        $this->db->from("sppd_data");
+        $this->db->where("sppd_num", $this->input->post('sppd_num'));
+        $q6 = $this->db->get();
+        $rowsppd = $q6->row();
+
         $this->db->select("order,final");
         $this->db->from("sppd_examine");
         $this->db->where("sppd_num", $this->input->post('sppd_num'));
@@ -246,7 +269,7 @@ class Sppds extends CI_Model {
         $order = $dat->order;
         $order++;
 
-        $this->db->select("order");
+        $this->db->select("order,pem_id");
         $this->db->from("sppd_examine");
         $this->db->where("sppd_num", $this->input->post('sppd_num'));
         $this->db->where("order", $order);
@@ -259,16 +282,27 @@ class Sppds extends CI_Model {
             $this->db->where("sppd_num", $this->input->post('sppd_num'));
             $this->db->where("order", $order);
             $q2 = $this->db->update("sppd_examine", $data4);
+
+            $rowexam = $q->row();
+
+            $data5 = array(
+                "notif_desc" => "SPPD Dengan ID " . $this->input->post('sppd_num') . " Perlu Diproses",
+                "notif_link" => $this->input->post('sppd_num'),
+                "notif_type" => "1",
+                "emp_num" => $rowexam->pem_id
+            );
+
+            $this->db->insert('hrms_notification', $data5);
         }
-        
-        if($dat->final == "1"){
+
+        if ($dat->final == "1") {
             echo 'msk';
             $dta = array(
-                "sppd_status"=>"3"
+                "sppd_status" => "3"
             );
-            
-            $this->db->where("sppd_num",$this->input->post('sppd_num'));
-            $q3 = $this->db->update("sppd_data",$dta);
+
+            $this->db->where("sppd_num", $this->input->post('sppd_num'));
+            $q3 = $this->db->update("sppd_data", $dta);
         }
 
 
@@ -284,8 +318,8 @@ class Sppds extends CI_Model {
         $this->db->from("sppd_examine as A");
         $this->db->where("A.sppd_num", $sppdnum);
         $this->db->join("hrms_employees as B", "A.pem_id=B.emp_num");
-        $this->db->join("hrms_job as C","B.emp_job=C.job_num");
-        $this->db->order_by("A.order","ASC");
+        $this->db->join("hrms_job as C", "B.emp_job=C.job_num");
+        $this->db->order_by("A.order", "ASC");
         $q = $this->db->get();
 
         return $q;
@@ -322,17 +356,17 @@ class Sppds extends CI_Model {
             return false;
         }
     }
-    
-    function list_telah_diproses($empnum){
+
+    function list_telah_diproses($empnum) {
         $this->db->select('A.sppd_num,A.sppd_read_stat,A.sppd_id,A.sppd_tgl,A.sppd_depart,A.sppd_arrive,A.sppd_tuj,B.emp_id,B.emp_firstname,B.emp_lastname,C.emp_id as pem_id,C.emp_firstname as pem_fname,C.emp_lastname as pem_lname');
         $this->db->from('sppd_data as A');
         $this->db->where('A.emp_id', $empnum);
-        $this->db->join('hrms_employees as B','B.emp_num=A.emp_id');
-        $this->db->join('hrms_employees as C','C.emp_num=A.emp_create_id');
-        $this->db->where('sppd_status', 3); 
+        $this->db->join('hrms_employees as B', 'B.emp_num=A.emp_id');
+        $this->db->join('hrms_employees as C', 'C.emp_num=A.emp_create_id');
+        $this->db->where('sppd_status', 3);
         $query = $this->db->get();
 
         return $query;
-    
     }
+
 }

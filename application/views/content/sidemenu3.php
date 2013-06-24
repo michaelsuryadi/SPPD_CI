@@ -26,7 +26,6 @@
             <?php
         }
         ?>
-
         <?php
         if ($dat->emp_role == 1) {
             ?>
@@ -57,9 +56,9 @@
             <li class="toplast"><a href="#" style="height:15px;line-height:15px;">Pengajuan Cuti</a></li>
             <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">Utilities</a>
                 <ul>
-                    <li class="subfirst"><a href="<?php echo base_url() ?>index.php/sppd_config">Edit Profile</a></li>
+                    <li class="subfirst"><a href="<?php echo base_url() ?>index.php/utilities/edit_profile_view">Edit Profile</a></li>
                     <li><a href="#">Delegasi Jabatan</a></li>
-                    <li><a href="#">Change Password</a></li>
+                    <li><a href="<?php echo base_url(); ?>index.php/utilities/change_password_view">Change Password</a></li>
                     <li><a href="#">Help</a></li>
                 </ul>
 

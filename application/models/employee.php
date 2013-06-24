@@ -219,4 +219,22 @@ class Employee extends CI_Model {
         $curr_num = $row->emp_start_num + $row->emp_counter_id;
         return $curr_num;
     }
+    
+    function get_employee_data_by_username(){
+        $this->db->select('emp_id');
+        $this->db->from('hrms_user');
+        $this->db->where('emp_username',$this->session->userdata('username'));
+        
+        $q = $this->db->get();
+        $r = $q->row();
+        $empid = $r->emp_id;
+        
+        $this->db->select("emp_num,emp_firstname,emp_lastname,emp_gender,emp_dob,emp_street,emp_work_telp,emp_email");
+        $this->db->from("hrms_employees");
+        $this->db->where("emp_num",$empid);
+        
+        $q2 = $this->db->get();
+        
+        return $q2;
+    }
 }

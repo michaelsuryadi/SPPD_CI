@@ -11,7 +11,7 @@
                 <?php foreach($notif->result() as $rownotif){
                     
                     ?>
-                <a href="<?php echo $rownotif->notif_link; ?>"><?php
+                <a href="<?php echo base_url(); ?>index.php/site/notif_redirect/id/<?php echo $rownotif->notif_id; ?>"><?php
                 
                 if($rownotif->status == 0){
                     echo '<b>';

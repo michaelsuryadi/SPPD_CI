@@ -26,7 +26,7 @@
                     success: function(data) {
                         if(data!=""){
                             alert("Komentar telah terkirim");
-                            $("#content2").append(data+"<br/>");
+                            $("#content4").append(data+"<br/>");
                             $("#komentator").val("");
                         }
                     }

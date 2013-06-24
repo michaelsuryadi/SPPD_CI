@@ -43,6 +43,14 @@
         }
         ?>
     </p>
+        <?php
+        $datestring = "%d-%m-%Y - %h:%i %A";
+         $time = time();
+         $timezone = 'UP7';
+         $timedata=  gmt_to_local($time, $timezone, FALSE);
+         echo unix_to_human($timedata);
+//        echo mdate($datestring, $gmt);
+        ?>
     <p style="margin-left: 10px;" id="clock">
         
     <?php

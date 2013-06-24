@@ -43,5 +43,14 @@ class Site extends CI_Controller {
             $data['mid_content'] = 'content/home/home_admin';
             $this->load->view('includes/home_template', $data);
     }
+    
+    function notif_redirect(){
+        $get = $this->uri->uri_to_assoc();
+        $id = $get['id'];
+        $this->load->model('notifications');
+        $address = $this->notifications->get_url_address($id);
+        
+        redirect($address);
+    }
 
 }

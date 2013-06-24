@@ -164,14 +164,6 @@ $("document").ready(function(){
                 <td style="text-align: left;">File Lampiran :</td>
                 <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
             </tr>
-            <tr>
-                <td></td>
-                <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
-            </tr>
         </table>
     </fieldset>
     <fieldset>
