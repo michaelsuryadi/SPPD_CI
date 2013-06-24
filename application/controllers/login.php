@@ -26,10 +26,15 @@ class Login extends CI_Controller {
                 'is_logged_in' => TRUE
             );
 
+            if (!$this->input->post('remember')) {
+                $this->session->sess_expiration = 7200;
+                $this->session->sess_expire_on_close = TRUE;
+            }
+            
             $this->session->set_userdata($data);
 
             if ($this->input->post('username') == "admin") {
-                redirect ('site/admin_index');
+                redirect('site/admin_index');
             } else {
                 redirect('site/index');
             }

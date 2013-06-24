@@ -39,6 +39,7 @@
                     <li><a href="#">Aplikasi Cuti Flow Configuration</a></li>
                 </ul>
             </li>
+            <li class="toplast"><a href="#" style="height:15px;line-height:15px;">Change Password</a></li>
             <?php
         } else {
             ?>
@@ -56,7 +57,7 @@
             <li class="toplast"><a href="#" style="height:15px;line-height:15px;">Pengajuan Cuti</a></li>
             <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">Utilities</a>
                 <ul>
-                    <li class="subfirst"><a href="<?php echo base_url() ?>index.php/sppd_config">Profile Information</a></li>
+                    <li class="subfirst"><a href="<?php echo base_url() ?>index.php/sppd_config">Edit Profile</a></li>
                     <li><a href="#">Delegasi Jabatan</a></li>
                     <li><a href="#">Change Password</a></li>
                     <li><a href="#">Help</a></li>
@@ -67,7 +68,7 @@
         }
         ?>
             
-        <li class="toplast"><a href="#" style="height:15px;line-height:15px;">Change Password</a></li>
+        
         <li class="toplast"><a href="<?php echo base_url() ?>index.php/login/signout" style="height:15px;line-height:15px;">Log Out</a></li>
       </ul>
 </div>

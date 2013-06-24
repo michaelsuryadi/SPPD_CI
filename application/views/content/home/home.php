@@ -103,7 +103,7 @@
                      <td></td>
                  </tr>
                  <tr>
-                     <td><a href="#">Edit Account</a></td>
+                     <td><a href="#">Edit Profile</a></td>
                      <td></td>
                  </tr>
              </table>
