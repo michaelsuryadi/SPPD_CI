@@ -15,6 +15,7 @@ class Employee extends CI_Model {
         $this->db->from('hrms_employees as A');
         $this->db->join('hrms_job as B','A.emp_job = B.job_num');
         $this->db->where('A.emp_firstname not like','admin');
+        $this->db->where('A.emp_id <>',9999);
         $this->db->order_by('A.emp_num','ASC');
         $q = $this->db->get();
         

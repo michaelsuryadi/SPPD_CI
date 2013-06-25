@@ -17,7 +17,7 @@
                     echo '<b>';
                 }
                 
-                echo $rownotif->date_post." pk.".$rownotif->time_post." - ".$rownotif->notif_desc; ?>
+                echo $rownotif->date_post." - ".$rownotif->notif_desc; ?>
                 <?php
                 
                 if($rownotif->status == 0){
@@ -33,14 +33,13 @@
                 <?php
                     if($notif->num_rows() > 0){
                         ?>
-                        <br/><a href="#">See All Notifications..</a>
+                        <br/><a href="<?php echo base_url(); ?>index.php/notif">See All Notifications..</a>
                     <?php
                         }
                         else {
-                            echo "<p id='notif'>Tidak ada notifikasi baru</p>";
+                            echo "<p id='notif' style='font-size:smaller;'><b>Tidak ada notifikasi baru</b></p>";
                         }
                 ?>
-                
             </div>
         </div>
         <div class="content-left-data">
@@ -103,7 +102,7 @@
                      <td></td>
                  </tr>
                  <tr>
-                     <td><a href="#">Edit Profile</a></td>
+                     <td><a href="<?php echo base_url(); ?>index.php/utilities/edit_profile_view">Edit Profile</a></td>
                      <td></td>
                  </tr>
              </table>

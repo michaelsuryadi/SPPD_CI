@@ -185,7 +185,7 @@
                 <td colspan="4" id="content4" style="text-align: left;"><?php
                     foreach ($data_komentar->result() as $rowkomentar) {
                         ?>
-                        <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->time_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
+                        <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
                         <?php
                     }
                     ?></td>
@@ -242,5 +242,5 @@
             <td></td>
         </tr>
     </table>
-
+    
 </div>

@@ -19,9 +19,9 @@ class Sppd extends CI_Controller {
 
         $employee = $data['result'];
         $emp_data = $employee->row();
-        
+
         $data['pemeriksa'] = $this->employee->load_pemeriksa_sppd();
-        
+
 //        $data['fiatur'] = $this->employee->load_fiatur($emp_data->org_id);
 //        $data['perinci'] = $this->employee->load_rinci($emp_data->org_id);
 //        $data['posting'] = $this->employee->load_posting($emp_data->org_id);
@@ -42,8 +42,8 @@ class Sppd extends CI_Controller {
         $data['sppd_list'] = $dt['sppd_list'][0];
         $this->load->view('includes/home_template', $data);
     }
-    
-    function perlu_proses_sppd(){
+
+    function perlu_proses_sppd() {
         $data['title'] = 'SPPD Perlu Diproses';
         $data['mid_content'] = 'content/sppd/perlu_proses_sppd';
         $this->load->model('employee');
@@ -85,42 +85,40 @@ class Sppd extends CI_Controller {
             redirect('/sppd/draft_sppd');
         }
     }
-    
-    function edit(){
+
+    function edit() {
         $get = $this->uri->uri_to_assoc();
         $sppdId = $get['id'];
         $this->load->model('sppds');
-        
+
         $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
         $data['data_komentar'] = $this->sppds->load_comment($sppdId);
         $data['title'] = 'View SPPD';
         $data['mid_content'] = 'content/sppd/edit_sppd';
-        
+
         $this->load->model('employee');
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
-        
+
         $this->load->view('includes/home_template', $data);
-        
     }
 
     function show_exam() {
         $data['title'] = 'Pilih Pemeriksa';
         $this->load->model('employee');
         $username = $this->session->userdata('username');
-        
-        
+
+
         if ($this->input->post('keyword') == null || $this->input->post('keyword') == "") {
             $query = $this->employee->get_detail_emp($username);
             $res = $query->row();
             $mgrId = $this->employee->get_mgr_id($res->emp_num);
             $arrdata = array();
             $data['all_atasan'] = $this->employee->get_all_atasan($mgrId, $arrdata, 0);
-        }
-        else {
+        } else {
             $data['all_atasan'] = $this->employee->get_emp_byname($this->input->post('keyword'));
         }
-        
+
         $this->load->view('content/sppd/pilih_pemeriksa_sppd', $data);
     }
 
@@ -134,40 +132,40 @@ class Sppd extends CI_Controller {
             redirect('/sppd/new_sppd');
         }
     }
-    
+
     function view_sppd() {
         $get = $this->uri->uri_to_assoc();
         $sppdId = $get['id'];
         $this->load->model('sppds');
-        
+
         $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
         $data['data_komentar'] = $this->sppds->load_comment($sppdId);
         $data['title'] = 'View SPPD';
         $data['mid_content'] = 'content/sppd/view_sppd';
-        
+
         $this->load->model('employee');
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
-        
+
         $this->load->view('includes/home_template', $data);
     }
-    
-    function approve_sppd(){
+
+    function approve_sppd() {
         $this->load->model('sppds');
         $q = $this->sppds->upd_sppd();
-        
-        if($q){
+
+        if ($q) {
             redirect("/sppd/perlu_proses_sppd");
         }
     }
-    
-    function view_sedang_proses_sppd(){
-        
-        
+
+    function view_sedang_proses_sppd() {
+
+
         $get = $this->uri->uri_to_assoc();
         $sppdId = $get['id'];
         $this->load->model('sppds');
-        
+
         $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
         $data['data_komentar'] = $this->sppds->load_comment($sppdId);
         $data['title'] = 'View SPPD Sedang Diproses';
@@ -176,50 +174,67 @@ class Sppd extends CI_Controller {
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
         $employee = $data['result'];
-        
-        
+
+
         $data['approval_prg'] = $this->sppds->get_approval($sppdId);
-        
-        $this->load->view("includes/home_template",$data);
+
+        $this->load->view("includes/home_template", $data);
     }
-    
-    function send_comment(){
+
+    function view_telah_proses_sppd() {
+        $get = $this->uri->uri_to_assoc();
+        $sppdId = $get['id'];
+        $this->load->model('sppds');
+
+        $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
+        $data['data_komentar'] = $this->sppds->load_comment($sppdId);
+        $data['title'] = 'View SPPD Sedang Diproses';
+        $data['mid_content'] = 'content/sppd/telah_proses_sppd_view';
+        $this->load->model('employee');
+        $username = $this->session->userdata('username');
+        $data['result'] = $this->employee->get_detail_emp($username);
+        $employee = $data['result'];
+
+
+        $data['approval_prg'] = $this->sppds->get_approval($sppdId);
+
+        $this->load->view("includes/home_template", $data);
+    }
+
+    function send_comment() {
         $this->load->model('sppds');
         $this->load->helper('date');
-        $datestring = "%Y-%m-%d";
-        $datestring2 = "%h:%i %a";
-        $time = time();
-        $tgl = mdate($datestring, $time);
-        $wkt = mdate($datestring2,$time);
-        $q = $this->sppds->send_comment_data();
         
-        if($q) {
-            echo $tgl." - ".$wkt." - ".$q->emp_firstname." ".$q->emp_lastname." - <i>".$this->input->post('isi')."</i>";
+        date_default_timezone_set("Asia/Jakarta");
+        $today = date("Y-m-d H:i:s");
+        $q = $this->sppds->send_comment_data();
+
+        if ($q) {
+            echo $today . " - " . $q->emp_firstname . " " . $q->emp_lastname . " - <i>" . $this->input->post('isi') . "</i>";
         }
     }
-    
-    function show_emp(){
+
+    function show_emp() {
         $data['title'] = 'Pilih Pemeriksa';
         $this->load->model('employee');
         $username = $this->session->userdata('username');
-        
-        
-        
+
+
+
         if ($this->input->post('keyword') == null || $this->input->post('keyword') == "") {
             $query = $this->employee->get_detail_emp($username);
             $res = $query->row();
             $mgrId = $this->employee->get_mgr_id($res->emp_num);
             $arrdata = array();
             $data['all_atasan'] = $this->employee->get_all_atasan($mgrId, $arrdata, 0);
-        }
-        else {
+        } else {
             $data['all_atasan'] = $this->employee->get_emp_byname($this->input->post('keyword'));
         }
-        
+
         $this->load->view('content/sppd/pilih_pemeriksa', $data);
     }
-    
-    function telah_proses_sppd(){
+
+    function telah_proses_sppd() {
         $data['title'] = 'SPPD Perlu Diproses';
         $data['mid_content'] = 'content/sppd/telah_proses_sppd';
         $this->load->model('employee');
@@ -232,4 +247,14 @@ class Sppd extends CI_Controller {
 
         $this->load->view('includes/home_template', $data);
     }
+    
+    function reject_sppd(){
+        $this->load->model('sppds');
+        $q = $this->sppds->reject_sppd();
+        
+        if($q){
+//            redirect('/sppd/perlu_proses_sppd');
+        }
+    }
+
 }

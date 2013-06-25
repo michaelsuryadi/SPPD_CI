@@ -38,7 +38,7 @@
                     <li><a href="#">Aplikasi Cuti Flow Configuration</a></li>
                 </ul>
             </li>
-            <li class="toplast"><a href="#" style="height:15px;line-height:15px;">Change Password</a></li>
+            <li class="toplast"><a href="<?php echo base_url(); ?>index.php/utilities/change_password_view" style="height:15px;line-height:15px;">Change Password</a></li>
             <?php
         } else {
             ?>

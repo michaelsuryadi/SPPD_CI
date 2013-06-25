@@ -43,7 +43,7 @@ $("document").ready(function(){
 
 
 <div id="content">
-    <h2 style="margin: 0px; padding: 20px; text-align: left;">Create New SPPD</h2>
+    <h2 style="margin: 0px; padding: 20px; text-align: left;">Edit SPPD</h2>
     <div style="text-align: right; margin-left: 560px;">
         <table>
             <tr><td><b>Status Dokumen</b></td><td>: Dokumen Baru</td></tr>

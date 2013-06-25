@@ -26,7 +26,7 @@
                     success: function(data) {
                         if (data != "") {
                             alert("Komentar telah terkirim");
-                            $("#content2").append(data+"<br/>");
+                            $("#content4").append(data+"<br/>");
                             $("#komentar").val("");
                         }
                     }
@@ -37,7 +37,9 @@
         });
         
         $("#cancel-btn").click(function(){
-        
+        alert('testt');
+            $('#frm-reject').submit();
+            return false;
         });
     });
 
@@ -207,5 +209,9 @@
             <td></td>
         </tr>
     </table>
-
+    <?php echo form_close(); ?>
+    
+    <form id="frm-reject" method="post" action="<?php echo base_url(); ?>index.php/sppd/reject_sppd">
+        <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>"/>
+    </form>
 </div>
