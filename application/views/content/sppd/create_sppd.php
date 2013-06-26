@@ -47,6 +47,12 @@
 
         $('#depart').datepicker();
         $('#arrive').datepicker();
+        
+        $('#cancel-btn').click(function(){
+            
+           window.location="<?php echo base_url(); ?>index.php/site";
+           return false; 
+        });
     });
 
 
@@ -260,7 +266,7 @@
                     "disabled" => "disabled"
                 );
                 ?>
-                <td style="width: 300px;"><button id="draft-btn">Draft</button> <?php echo form_submit($data, "Simpan"); ?> <button id="cancel-btn">Cancel</button></td>
+                <td style="width: 300px;"><button id="draft-btn">Draft</button> <?php echo form_submit($data, "Kirim"); ?> <button id="cancel-btn">Cancel</button></td>
                 <td></td>
                 <td></td>
             </tr>

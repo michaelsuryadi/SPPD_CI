@@ -23,12 +23,6 @@
                     <li><a href="<?php echo base_url() ?>index.php/emp/add_emp">Add New Employee</a></li>
                 </ul>
             </li>
-            <li class="toplast"><a href="#">Reservation</a>
-                <ul>
-                    <li class="subfirst"><a href="#">Flight Reservation</a></li>
-                    <li><a href="#">Hotel Reservation</a></li>
-                </ul>
-            </li>
             <?php
         }
         ?>
@@ -66,7 +60,6 @@
                     <li><a href="<?php echo base_url(); ?>index.php/utilities/change_password_view">Change Password</a></li>
                     <li><a href="#">Help</a></li>
                 </ul>
-
             </li>
                 <?php
         }

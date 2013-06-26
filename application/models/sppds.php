@@ -243,6 +243,7 @@ class Sppds extends CI_Model {
                 );
 
                 $this->db->insert('sppd_examine', $pemdata);
+                $count++;
             }
             if ($q) {
                 return true;

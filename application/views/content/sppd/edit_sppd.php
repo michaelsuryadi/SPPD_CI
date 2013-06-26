@@ -278,7 +278,7 @@ $("document").ready(function(){
             );
             
             ?>
-            <td style="width: 300px;"><button id="save-btn" disabled="disabled">Simpan & Submit</button><?php echo form_submit($data,"Simpan"); ?></td>
+            <td style="width: 300px;"><button id="save-btn" disabled="disabled">Simpan</button><?php echo form_submit($data,"Simpan"); ?></td>
             <td></td>
             <td></td>
         </tr>

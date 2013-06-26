@@ -71,6 +71,18 @@ class Employee extends CI_Model {
         );
         
         $q2 = $this->db->insert('hrms_user',$data2);
+        
+        $this->db->select('emp_counter_id');
+        $this->db->from('hrms_counter');
+        $q = $this->db->get();
+        $empCurr = $q->row()->emp_counter_id;
+        
+        $nextId = $empCurr + 1;
+        $dataConfig = array(
+            'emp_counter_id' => $nextId
+        );
+        $this->db->where('id','1');
+        $this->db->update('hrms_counter',$dataConfig);
         if($q && $q2){
             return true;
         }
