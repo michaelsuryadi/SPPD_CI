@@ -63,4 +63,19 @@ class Utilities extends CI_Controller {
         $data['result'] = $this->employee->get_detail_emp($username);
         $this->load->view('includes/home_template', $data);
     }
+    
+    /*
+     * Function untuk mem-process edit profile
+     */
+    function process_edit_profile(){
+        $this->load->model('utility_model');
+        $q = $this->utility_model->process_edit_profile();
+        
+        if($q){
+            redirect('/site');
+        }
+        else {
+            redirect('/utilities/edit_profile_view');
+        }
+    }
 }

@@ -21,6 +21,9 @@
             echo form_open('utilities/process_edit_profile');
             $row2 = $employee_data->row();
             ?>
+            <?php
+                echo form_hidden("emp_num",$row2->emp_num);
+            ?>
             <tr>
                 <td>Firstname</td>
                 <td> : <?php echo form_input("firstname",$row2->emp_firstname); ?></td>
@@ -33,8 +36,8 @@
                 <td>Gender</td>
                 <td> : <select name="gender">
                         <option value="0">--Pilih--</option>
-                        <option value="L">Laki-Laki</option>
-                        <option value="P">Perempuan</option>
+                        <option value="L" <?php if($row2->emp_gender == 'L'){ echo "selected='selected' ";} ?>>Laki-Laki</option>
+                        <option value="P" <?php if($row2->emp_gender == 'P'){ echo "selected='selected' ";} ?>>Perempuan</option>
                     </select></td>
             </tr>
             <tr>

@@ -12,13 +12,13 @@ class Sppds extends CI_Model {
         $this->gallery_path_url = base_url() . 'images/';
     }
 
-    
     /*
      * function untuk menampilkan seluruh draft sppd
      * sesuai dengan pemohon / user yang sedang aktif
      * 
      * 
      */
+
     function get_draft_sppd($empnum) {
         $this->db->select('A.sppd_id,A.sppd_num,A.sppd_tgl,A.sppd_tuj,B.emp_id,B.emp_firstname,B.emp_lastname, C.emp_id as pem_id, C.emp_firstname as pem_fname, C.emp_lastname as pem_lname');
         $this->db->from('sppd_data as A');
@@ -26,18 +26,18 @@ class Sppds extends CI_Model {
         $this->db->where('A.sppd_status', 2);
         $this->db->join('hrms_employees as B', 'A.emp_id=B.emp_num');
         $this->db->join('hrms_employees as C', 'A.emp_create_id=C.emp_num');
-        $this->db->limit(4,0);
-        $this->db->order_by('A.sppd_id','DESC');
+        $this->db->limit(4, 0);
+        $this->db->order_by('A.sppd_id', 'DESC');
         $query = $this->db->get();
 
         return $query;
     }
 
-    
     /*
      * Menampilkan seluruh sppd yang perlu di proses oleh pemeriksa
      * 
      */
+
     function get_proses_sppd($empnum) {
         $this->db->select('A.sppd_num,A.sppd_id,A.sppd_tgl,A.sppd_tuj,B.emp_id,B.emp_firstname,B.emp_lastname, C.emp_id as pem_id, C.emp_firstname as pem_fname, C.emp_lastname as pem_lname,E.emp_firstname as curr_fname,E.emp_lastname as curr_lname,E.emp_id as curr_empid,D.order');
         $this->db->from('sppd_data as A');
@@ -49,8 +49,8 @@ class Sppds extends CI_Model {
         $this->db->where('D.flag', '1');
         $this->db->where('D.status', '0');
         $this->db->where('A.sppd_status', 1);
-        $this->db->order_by('A.sppd_num','DESC');
-        
+        $this->db->order_by('A.sppd_num', 'DESC');
+
         $hasil = array();
         $query = $this->db->get();
         $hasil[] = $query;
@@ -71,11 +71,11 @@ class Sppds extends CI_Model {
         return $hasil;
     }
 
-    
     /*
      * Function untuk menghapus draft SPPD yang dibuat
      * 
      */
+
     function remove($sppdnum) {
         $this->db->where('sppd_num', $sppdnum);
         $q = $this->db->delete('sppd_data');
@@ -87,11 +87,11 @@ class Sppds extends CI_Model {
         }
     }
 
-    
     /*
      * Function untuk meng-create SPPD baru
      * 
      */
+
     function add_new_sppd() {
 
         $this->db->select('sppd_start_num,sppd_counter_id');
@@ -255,6 +255,7 @@ class Sppds extends CI_Model {
     /*
      * Untuk menampilkan list SPPD yang perlu di proses
      */
+
     function list_perlu_diproses($empnum) {
 
         $this->db->select("A.sppd_num,B.sppd_id,A.status,C.emp_id,C.org_code,C.job_code,B.sppd_tuj,B.sppd_tgl,C.emp_firstname,C.emp_lastname, D.emp_id as pem_id,D.emp_num as pem_num, D.emp_firstname as pem_fname, D.emp_lastname as pem_lname, D.org_code as pem_org, D.job_code as pem_job");
@@ -264,7 +265,7 @@ class Sppds extends CI_Model {
         $this->db->join('hrms_employees as D', 'D.emp_num=B.emp_create_id');
         $this->db->where('A.pem_id', $empnum);
         $this->db->where('A.flag', '1');
-        $this->db->where('A.send_status','1');
+        $this->db->where('A.send_status', '1');
         $q = $this->db->get();
 
         return $q;
@@ -274,6 +275,7 @@ class Sppds extends CI_Model {
      * Untuk menampilkan data-data yang terdapat di SPPD
      * $sppdnum : sppd number
      */
+
     function load_data_sppd($sppdnum) {
         $this->db->select("A.sppd_num,A.sppd_id,A.sppd_tgl,A.sppd_catt,A.sppd_dest,A.sppd_tuj,A.sppd_dsr,A.sppd_ket,A.sppd_depart,A.sppd_arrive,A.sppd_status,A.sppd_desc,B.emp_num,B.emp_id,B.emp_firstname,B.emp_lastname,B.job_code,B.org_code,C.emp_id as pem_id,C.emp_firstname as pem_fname,C.emp_lastname as pem_lname,C.job_code as pem_jobcode,C.org_code as pem_orgcode");
         $this->db->from('sppd_data as A');
@@ -285,21 +287,21 @@ class Sppds extends CI_Model {
 
         return $q;
     }
-    
+
     /*
      * Menampilkan list pemeriksa dari suatu SPPD
      * $sppdnum = sppd number
      */
-    function load_pemeriksa_sppd($sppdnum){
+
+    function load_pemeriksa_sppd($sppdnum) {
         $this->db->select("A.emp_num,A.emp_id, A.emp_firstname,A.emp_lastname,A.job_code,A.org_code,C.job_name");
         $this->db->from("sppd_examine as B");
-        $this->db->where('B.sppd_num',$sppdnum);
-        $this->db->join('hrms_employees as A','A.emp_num=B.pem_id');
-        $this->db->join('hrms_job as C','A.emp_job=C.job_num');
+        $this->db->where('B.sppd_num', $sppdnum);
+        $this->db->join('hrms_employees as A', 'A.emp_num=B.pem_id');
+        $this->db->join('hrms_job as C', 'A.emp_job=C.job_num');
         $q = $this->db->get();
-        
+
         return $q;
-        
     }
 
     /*
@@ -307,6 +309,7 @@ class Sppds extends CI_Model {
      * atau pemohon
      * $sppdnum = sppd number
      */
+
     function load_comment($sppdnum) {
         $this->db->select("A.sppd_num,A.emp_num,B.emp_id,B.job_code,B.org_code,B.emp_firstname,B.emp_lastname,A.comment,A.date_comment,A.time_comment");
         $this->db->from("sppd_comment as A");
@@ -321,6 +324,7 @@ class Sppds extends CI_Model {
     /*
      * Mengupdate current pemeriksa sesuai dengan urutan
      */
+
     function upd_sppd() {
         $this->load->helper('date');
         $datestring = "%Y-%m-%d";
@@ -430,11 +434,13 @@ class Sppds extends CI_Model {
             return false;
         }
     }
-
+    
+    
     /*
      * Menampilkan status approval dari pemeriksa terhadap sppd
      * 
      */
+
     function get_approval($sppdnum) {
         $this->db->select("B.emp_num,B.emp_id,B.job_code,B.org_code,B.emp_firstname,B.emp_lastname,A.status,A.flag,C.job_name");
         $this->db->from("sppd_examine as A");
@@ -450,6 +456,7 @@ class Sppds extends CI_Model {
     /*
      * Function untuk mengirimkan komentar yang ditulis oleh pemohon/pemeriksa sppd
      */
+
     function send_comment_data() {
 
         date_default_timezone_set("Asia/Jakarta");
@@ -480,6 +487,7 @@ class Sppds extends CI_Model {
     /*
      * Function untuk menampilkan list sppd yang telah selesai di proses
      */
+
     function list_telah_diproses($empnum) {
         $this->db->select('A.sppd_num,A.sppd_read_stat,A.sppd_id,A.sppd_tgl,A.sppd_depart,A.sppd_arrive,A.sppd_tuj,B.emp_id,B.emp_firstname,B.emp_lastname,C.emp_id as pem_id,C.emp_firstname as pem_fname,C.emp_lastname as pem_lname');
         $this->db->from('sppd_data as A');
@@ -495,6 +503,7 @@ class Sppds extends CI_Model {
     /*
      * Function untuk memproses sppd yang di reject
      */
+
     function reject_sppd() {
 
         $this->db->select('emp_id');
@@ -510,7 +519,7 @@ class Sppds extends CI_Model {
         );
 
         $this->db->where('sppd_num', $this->input->post('sppd_num'));
-        $this->db->where('emp_id', $emp_id);
+        $this->db->where('pem_id', $emp_id);
         $this->db->update('sppd_examine', $data);
 
 
@@ -535,7 +544,63 @@ class Sppds extends CI_Model {
             $this->db->where('sppd_num', $this->input->post('sppd_num'));
             $this->db->update('sppd_examine', $data);
         } else {
-            
+            $data = array(
+                'sppd_status' => '2'
+            );
+
+            $this->db->where('sppd_num', $this->input->post('sppd_num'));
+            $this->db->update('sppd_data', $data);
+
+            $data2 = array(
+                'send_status' => '0'
+            );
+
+            $this->db->where('sppd_num', $this->input->post('sppd_num'));
+            $this->db->update('sppd_examine', $data2);
         }
+        return true;
     }
+
+    function process_edit() {
+        $data = array(
+            "emp_id" => $this->input->post('emp_num'),
+            "sppd_dest" => $this->input->post('destination'),
+            "sppd_depart" => $this->input->post('depart'),
+            "sppd_arrive" => $this->input->post('arrive'),
+            "sppd_ket" => $this->input->post('keterangan'),
+            "sppd_dsr" => $this->input->post('dasar'),
+            "sppd_tuj" => $this->input->post('tujuan'),
+            "sppd_catt" => $this->input->post('catt')
+        );
+
+        $this->db->where('sppd_num', $this->input->post('sppd_id'));
+        $this->db->update('sppd_data', $data);
+
+        if ($this->input->post('tipe') == 1) {
+            $data2 = array(
+                "sppd_status" => '1'
+            );
+
+            $this->db->where('sppd_num', $this->input->post('sppd_id'));
+            $this->db->update('sppd_data',$data2);
+            
+            $data3 = array(
+                "send_status"=>'1'
+            );
+            
+            $this->db->where('sppd_num',$this->input->post('sppd_id'));
+            $this->db->update('sppd_examine',$data3);
+            
+            $data4 = array(
+              'flag'=>'1'  
+            );
+            
+            $this->db->where('sppd_num',$this->input->post('sppd_id'));
+            $this->db->where('order','1');
+            $this->db->update('sppd_examine',$data4);
+        }
+
+        return true;
+    }
+
 }

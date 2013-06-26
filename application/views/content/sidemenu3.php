@@ -23,13 +23,18 @@
                     <li><a href="<?php echo base_url() ?>index.php/emp/add_emp">Add New Employee</a></li>
                 </ul>
             </li>
+            <li class="toplast"><a href="#">Reservation</a>
+                <ul>
+                    <li class="subfirst"><a href="#">Flight Reservation</a></li>
+                    <li><a href="#">Hotel Reservation</a></li>
+                </ul>
+            </li>
             <?php
         }
         ?>
         <?php
         if ($dat->emp_role == 1) {
             ?>
-            
             <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">Application Config</a>
                 <ul>
                     <li class="subfirst"><a href="<?php echo base_url() ?>index.php/sppd_config">SPPD Flow Configuration</a></li>
@@ -49,7 +54,7 @@
                     <li><a href="<?php echo base_url() ?>index.php/sppd/draft_sppd">SPPD Draft</a></li>
                     <li><a href="<?php echo base_url() ?>index.php/sppd/proses_sppd">SPPD Sedang Diproses</a></li>
                     <li><a href="<?php echo base_url()?>index.php/sppd/perlu_proses_sppd">SPPD Perlu Diproses</a></li>
-                    <li><a href="#">SPPD Reservation</a></li>
+                    
                     <li><a href="<?php echo base_url()?>index.php/sppd/telah_proses_sppd">SPPD Telah Diproses</a></li>
                 </ul></li>
             <li class="toplast"><a href="#" style="height:15px;line-height:15px;">Nota Dinas</a></li>
@@ -66,8 +71,6 @@
                 <?php
         }
         ?>
-            
-        
         <li class="toplast"><a href="<?php echo base_url() ?>index.php/login/signout" style="height:15px;line-height:15px;">Log Out</a></li>
       </ul>
 </div>

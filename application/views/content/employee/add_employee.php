@@ -236,7 +236,9 @@
                         <?php
                         $data = array(
                             'name' => 'username',
-                            'size' => '30'
+                            'size' => '30',
+                            'value' => $emp_curr_num,
+                            'readonly'=>'readonly'
                         );
 
                         echo form_input($data);

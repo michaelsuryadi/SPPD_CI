@@ -260,7 +260,7 @@
                     "disabled" => "disabled"
                 );
                 ?>
-                <td style="width: 300px;"><button id="draft-btn">Draft</button> <?php echo form_submit($data, "Simpan"); ?> <?php echo form_submit('keluar', 'Keluar'); ?></td>
+                <td style="width: 300px;"><button id="draft-btn">Draft</button> <?php echo form_submit($data, "Simpan"); ?> <button id="cancel-btn">Cancel</button></td>
                 <td></td>
                 <td></td>
             </tr>

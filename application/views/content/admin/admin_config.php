@@ -3,6 +3,32 @@
 
     <fieldset>
         <legend>Basic Settings</legend>
+        <table>
+            <tr>
+                <td>Application title : </td>
+                <td> : <input style="width: 300px;" type="text" name="tech_support" /></td>
+            </tr>
+            <tr>
+                <td>Technical Support : </td>
+                <td> : <input style="width: 300px;" type="text" name="tech_support" /></td>
+            </tr>
+            <tr>
+                <td>Customize Application Banner : </td>
+                <td> : <input type="file" name="company_banner" /></td>
+            </tr>
+            <tr>
+                <td>Customize Company Logo Login Page</td>
+                <td> : <input type="file" name="company_logo" /></td>
+            </tr>
+            <tr>
+                <td>Related Links : </td>
+                <td>&nbsp; &nbsp;<select name="rel_links" multiple style="width:200px;">
+                    </select></td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend>HRM Settings</legend>
         <?php
         $this->load->helper('form');
         $totalrow = $config->num_rows();
@@ -36,6 +62,7 @@
 
 
     </fieldset>
+    
     <div style="text-align: center; margin-top: 10px;">
         <?php echo form_submit('submit', 'Simpan'); ?>
     </div>

@@ -42,4 +42,26 @@ class Utility_model extends CI_Model {
         }
         
     }
+    
+    function process_edit_profile(){
+        $data = array(
+          "emp_firstname"=>$this->input->post('firstname'),
+          "emp_lastname"=>$this->input->post('lastname'),
+          "emp_gender" =>$this->input->post('gender'),
+          "emp_dob"=>$this->input->post('dob'),
+          "emp_street"=>$this->input->post('address'),
+          "emp_work_telp"=>$this->input->post('telp'),
+          "emp_email"=>$this->input->post('email')
+        );
+        
+        $this->db->where('emp_num',$this->input->post('emp_num'));
+        $q = $this->db->update('hrms_employees',$data);
+        
+        if($q){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }

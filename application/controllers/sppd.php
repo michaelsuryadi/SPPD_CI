@@ -142,6 +142,7 @@ class Sppd extends CI_Controller {
 
         $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
         $data['data_komentar'] = $this->sppds->load_comment($sppdId);
+        $data['pemeriksa'] = $this->sppds->load_pemeriksa_sppd($sppdId);
         $data['title'] = 'View SPPD';
         $data['mid_content'] = 'content/sppd/view_sppd';
 
@@ -176,7 +177,6 @@ class Sppd extends CI_Controller {
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
         $employee = $data['result'];
-
 
         $data['approval_prg'] = $this->sppds->get_approval($sppdId);
 
@@ -258,5 +258,32 @@ class Sppd extends CI_Controller {
             redirect('/sppd/perlu_proses_sppd');
         }
     }
+    
+    function edit_sppd_by_pemeriksa(){
+        $get = $this->uri->uri_to_assoc();
+        $sppdId = $get['id'];
+        $this->load->model('sppds');
 
+        $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
+        $data['data_komentar'] = $this->sppds->load_comment($sppdId);
+        $data['pemeriksa'] = $this->sppds->load_pemeriksa_sppd($sppdId);
+        
+        $data['title'] = 'View SPPD';
+        $data['mid_content'] = 'content/sppd/edit_sppd_by_pemeriksa';
+
+        $this->load->model('employee');
+        $username = $this->session->userdata('username');
+        $data['result'] = $this->employee->get_detail_emp($username);
+
+        $this->load->view('includes/home_template', $data);
+    }
+    
+    function process_edit(){
+        $this->load->model('sppds');
+        $q = $this->sppds->process_edit();
+        
+        if($q){
+            redirect('/sppd/draft_sppd');
+        }
+    }
 }

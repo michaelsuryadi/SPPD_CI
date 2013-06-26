@@ -12,14 +12,11 @@
 $("document").ready(function(){
     $("#komentator").keyup(function(){
         var isi = $("#komentator").val();
-        
         if(isi!=""){
             $("#submit_button").attr("disabled",false);
-            $("#save-btn").attr("disabled",false);
         }
         else {
             $("#submit_button").attr("disabled",true);
-            $("#save-btn").attr("disabled",true);
         }
     });
     
@@ -32,15 +29,13 @@ $("document").ready(function(){
         return false;
     });
     
-    $('#save-btn').click(function(){
+    $('#draft-btn').click(function(){
         $('#tipe').val('2');
         $('#form-data').submit();
     });
     
     $('#depart').datepicker();
     $('#arrive').datepicker();
-    
-    
 });
 
 
@@ -51,20 +46,22 @@ $("document").ready(function(){
     <h2 style="margin: 0px; padding: 20px; text-align: left;">Edit SPPD</h2>
     <div style="text-align: right; margin-left: 560px;">
         <table>
-            <tr><td><b>Status Dokumen</b></td><td>: Dokumen Baru</td></tr>
+            <tr><td><b>Status Dokumen</b></td><td>: Sedang Diproses</td></tr>
             <tr><td><b>Pembuat Dokumen</b></td>
                 <td>: 
                     <?php
                     $row = $result->row();
-                    echo $row->emp_firstname . " " . $row->emp_lastname . "/" . $row->job_code . "-" . $row->id_emp . '/' . $row->org_code;
+                    $dataSppd = $data_sppd->row();
+                    echo $dataSppd->emp_firstname . " " . $dataSppd->emp_lastname . "/" . $dataSppd->job_code . "-" . $dataSppd->emp_id . '/' . $dataSppd->org_code;
                     ?>
                 </td>
             </tr>
         </table>
     </div>
-    <form id="form-data" method="post" action="<?php echo base_url() ?>index.php/sppd/process_edit">
+    <form id="form-data" method="post" action="<?php echo base_url() ?>index.php/sppd/process">
     <?php
     $this->load->helper('form');
+    
     echo form_hidden("emp_create_id", $row->emp_num);
     
     ?>
@@ -88,19 +85,18 @@ $("document").ready(function(){
             </tr>
             <tr>
                 <?php
-                    $dataSppd = $data_sppd->row();
+                    
                 ?>
                 <td><?php
-                    echo form_hidden("emp_num", $row->emp_num);
-                    echo form_hidden("sppd_id",$dataSppd->sppd_num);
+                echo form_hidden("emp_num", $dataSppd->emp_num);
     
     ?>
                     
-                    <input type="text" name="first_name" disabled="disabled" value="<?php echo $row->emp_firstname.' '.$row->emp_lastname; ?>"/>
-                    <input type="text" name="emp_id" disabled="disabled" value="<?php echo $row->id_emp; ?>"/>
-                    <input type="text" name="job_code" disabled="disabled" value="<?php echo $row->job_code; ?>"/>
+                    <input type="text" name="first_name" disabled="disabled" value="<?php echo $dataSppd->emp_firstname.' '.$dataSppd->emp_lastname; ?>"/>
+                    <input type="text" name="emp_id" disabled="disabled" value="<?php echo $dataSppd->emp_id; ?>"/>
+                    <input type="text" name="job_code" disabled="disabled" value="<?php echo $dataSppd->job_code; ?>"/>
         <a href="#">Pilih</a></td>
-                
+
                 <td><?php echo form_input('destination',$dataSppd->sppd_dest); ?></td>
                 <td><?php echo form_input(array('id'=>'depart','name' => 'depart', 'size' => '10','value'=>$dataSppd->sppd_depart)); ?></td>
                 <td><?php echo form_input(array('id'=>'arrive','name' => 'arrive', 'size' => '10','value'=>$dataSppd->sppd_arrive)); ?></td>
@@ -119,7 +115,7 @@ $("document").ready(function(){
                 $data = array(
                     'name' => 'dasar',
                     'size' => '74',
-                    'value' => $dataSppd->sppd_dsr
+                    'value' => $dataSppd->sppd_ket
                 );
                 ?>
                 <td colspan="4" style="text-align: left;"><?php echo form_input($data); ?></td>
@@ -215,70 +211,21 @@ $("document").ready(function(){
             ?>
         </table>
     </fieldset>
-    <fieldset>
-        <legend>Komentar</legend>
-        <table id="table-karyawan-3" style="width: 800px;">
-            <tr>
-                <td style="text-align: left;">Komentar :</td>
-                <td colspan="4" id="content4" style="text-align: left;"><?php
-                    foreach ($data_komentar->result() as $rowkomentar) {
-                        ?>
-                        <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
-                        <?php
-                    }
-                    ?></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td style="text-align: left;">Tanggal/Komentator :</td>
-                <td colspan="4" style="text-align: left;"><?php
-                    $datestring = "%d-%m-%Y";
-                    $time = time();
-                    echo mdate($datestring, $time) . " - ";
-                    echo $row->emp_firstname . " " . $row->emp_lastname . "/" . $row->job_code . "-" . $row->id_emp . '/' . $row->org_code;
-                    ?></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <?php
-            $data = array(
-                'id' =>'komentator',
-                'name' => 'komentator',
-                'size' => '74'
-            );
-            ?>
-            <tr>
-                <td style="text-align: left;">Komentator Baru : </td>
-                <td colspan="4" style="text-align: left;"><?php echo form_input($data); ?></td>
-            </tr>
-        </table>
-    </fieldset>
+    
     <br/>
     
-    <table id="table-karyawan-3" style="width: 800px;">
+    <table id="table-karyawan-3" style="width: 800px">
         <tr>
             <td></td>
             <td></td>
             <?php
             $data = array(
                 "id"=>"submit_button",
-                "name"=>"submit_button",
-                "disabled"=>"disabled"
+                "name"=>"submit_button"
             );
             
             ?>
-            <td style="width: 300px;"><button id="save-btn" disabled="disabled">Simpan & Submit</button><?php echo form_submit($data,"Simpan"); ?></td>
+            <td style="width: 300px;"><?php echo form_submit($data,"Update"); ?><button id="cancel-btn">Cancel</button></td>
             <td></td>
             <td></td>
         </tr>

@@ -9,6 +9,8 @@
                 <p><b>Employees :</b></p>
                 <a href="<?php echo base_url(); ?>index.php/emp/add_emp">Add New Employees</a><br/>
                 <a href="<?php echo base_url(); ?>index.php/emp">View & Edit Employees</a><br/>
+                <a href="<?php echo base_url(); ?>index.php/reservation">Employees Reservation</a><br/>
+                
             </div>
         </div>
         <div class="content-left-data">
@@ -48,7 +50,7 @@
         <div id="content-right-data">
             <p><b>Your Account :</b></p>
              <img width="80" style="margin-left: 105px; margin-top: 20px;" height="80" src="<?php echo base_url();?>css/unknown-prof-pic.png"/>
-             <table style="margin-left: 20px; margin-top: 40px;">
+             <table style="margin-left: 50px; margin-top: 40px;">
                  <?php $row = $result->row(); ?>
                  
                  <tr>
@@ -59,10 +61,7 @@
                      <td>Account Type</td>
                      <td> : Administrator</td>
                  </tr>
-                 <tr>
-                     <td>Organisasi</td>
-                     <td> : <?php echo $job->org_name; ?></td>
-                 </tr>
+                 
                  <br/>
                  <tr>
                      <td>&nbsp;</td>
