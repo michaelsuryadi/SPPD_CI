@@ -93,6 +93,8 @@ class Sppd extends CI_Controller {
 
         $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
         $data['data_komentar'] = $this->sppds->load_comment($sppdId);
+        $data['pemeriksa'] = $this->sppds->load_pemeriksa_sppd($sppdId);
+        
         $data['title'] = 'View SPPD';
         $data['mid_content'] = 'content/sppd/edit_sppd';
 
@@ -253,7 +255,7 @@ class Sppd extends CI_Controller {
         $q = $this->sppds->reject_sppd();
         
         if($q){
-//            redirect('/sppd/perlu_proses_sppd');
+            redirect('/sppd/perlu_proses_sppd');
         }
     }
 

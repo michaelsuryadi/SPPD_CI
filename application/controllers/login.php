@@ -16,6 +16,9 @@ class Login extends CI_Controller {
         }
     }
 
+    /*
+     * function untuk memvalidasi credential login
+     */
     function validate_credentials() {
         $this->load->model('login_model');
         $query = $this->login_model->validate();

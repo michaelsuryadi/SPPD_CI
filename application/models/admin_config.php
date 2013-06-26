@@ -2,6 +2,9 @@
 
 class Admin_config extends CI_Model {
 
+    /*
+     * Function untuk mengupdate config counter employee, sppd, dan job number
+     */
     function upd_config_data() {
         $data = array(
             "emp_start_num" => $this->input->post('emp_start'),
@@ -20,10 +23,16 @@ class Admin_config extends CI_Model {
         }
     }
 
+    /*
+     * function untuk memperoleh seluruh config aplikasi
+     */
     function load_config_data() {
         return $this->db->get("hrms_counter");
     }
 
+    /*
+     * function untuk menyimpan konfigurasi flow sppd
+     */
     function save_sppd_flow() {
         $this->db->empty_table('flow_sppd');
 
@@ -41,6 +50,9 @@ class Admin_config extends CI_Model {
         return true;
     }
 
+    /*
+     * Function untuk menampilkan flow konfigurasi dari sppd
+     */
     function get_list_flow_sppd() {
         $this->db->select('B.emp_num,A.fitur_id,B.emp_id,B.emp_firstname,B.emp_lastname,C.job_name,D.org_name');
         $this->db->from('flow_sppd as A');
@@ -54,6 +66,11 @@ class Admin_config extends CI_Model {
         return $q;
     }
     
+    /*
+     * Function yang digunakan untuk menghapus pemeriksa
+     * dari flow sppd
+     * $id = ID pemeriksa
+     */
     function hapus_pemeriksa($id) {
         $this->db->where("emp_num",$id);
         $q = $this->db->delete("flow_sppd");

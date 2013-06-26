@@ -20,6 +20,9 @@ class Sppd_config extends CI_Controller {
         $this->load->view('includes/home_template', $data);
     }
     
+    /*
+     * Function untuk menampilkan pop-up menampilkan list pemeriksa
+     */
     function show_exam() {
         $get = $this->uri->uri_to_assoc();
         $id = $get['id'];
@@ -42,6 +45,9 @@ class Sppd_config extends CI_Controller {
         $this->load->view('content/config/show_all_pemeriksa', $data);
     }
     
+    /*
+     * Function untuk menyimpan flow sppd
+     */
     function save_flow_sppd(){
         $this->load->model('admin_config');
         $q = $this->admin_config->save_sppd_flow();
@@ -51,6 +57,9 @@ class Sppd_config extends CI_Controller {
         }
     }
     
+    /*
+     * Function untuk menghapus pemeriksa dari flow sppd
+     */
     function hapus_pemeriksa(){
         $get = $this->uri->uri_to_assoc();
         $id = $get['id'];

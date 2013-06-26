@@ -1,6 +1,11 @@
 <?php
 
 class Employee extends CI_Model {
+    
+    /*
+     * function untuk memperoleh detail data dari employee
+     * berdasarkan usernamenya
+     */
     function get_detail_emp($username){
         $this->db->select('A.emp_num,A.emp_id as id_emp,A.emp_firstname,A.emp_lastname,A.job_code,A.org_code,A.org_id,B.emp_role');
         $this->db->from ('hrms_employees as A');
@@ -10,6 +15,9 @@ class Employee extends CI_Model {
         return $query;
     }
     
+    /*
+     * function untuk memperoleh list seluruh employee
+     */
     function get_all_emp(){
         $this->db->select('A.emp_id,A.emp_num,A.emp_firstname,A.emp_lastname,A.emp_dob,A.emp_email,A.emp_work_telp,A.emp_street,B.job_name');
         $this->db->from('hrms_employees as A');
@@ -22,6 +30,9 @@ class Employee extends CI_Model {
         return $q;
     }
     
+    /*
+     * function untuk menambah data employee baru
+     */
     function add_employee(){
         $data = array(
             "emp_id"=>  $this->input->post('emp_id'),
@@ -68,6 +79,9 @@ class Employee extends CI_Model {
         }
     }
     
+    /*
+     * function untuk mendapatkan data employee berdasarkan emp number nya
+     */
     function get_emp_data($user) {
         $this->db->select("*");
         $this->db->from('hrms_employees');
@@ -76,6 +90,10 @@ class Employee extends CI_Model {
         return $query;  
     }
     
+    /*
+     * function untuk mendapatkan detail data login user
+     * berdasarkan emp id nya
+     */
     function get_user_data($user){
         $this->db->select('emp_id,emp_username,emp_password');
         $this->db->from('hrms_user');
@@ -85,6 +103,9 @@ class Employee extends CI_Model {
         return $query;
     }
     
+    /*
+     * function untuk mengupdate data employee
+     */
     function update_emp(){
         
         $this->load->model('job');
@@ -125,6 +146,11 @@ class Employee extends CI_Model {
             $this->db->update('hrms_user',$data2);
         }
     }
+    
+    /*
+     * function untuk mendapatkan list employee
+     * berdasarkan keyword yang diinput oleh user
+     */
     function get_filter_employee(){
         
         $this->db->select('A.emp_id,A.emp_firstname,A.emp_lastname,A.emp_dob,A.emp_email,A.emp_work_telp,A.emp_street,B.job_name');
@@ -165,6 +191,10 @@ class Employee extends CI_Model {
         
     }
     
+    /*
+     * Function untuk mendapatkan data employee berdasarkan name
+     * yang diinput oleh user
+     */
     function get_emp_byname($keyword){
         $this->db->select("A.emp_num,A.emp_id,A.emp_firstname,A.emp_lastname,A.mgr_id,C.job_code,A.org_code,C.job_name");
         $this->db->from('hrms_employees as A');
@@ -180,6 +210,9 @@ class Employee extends CI_Model {
         return $data;
     }
     
+    /*
+     * function untuk memperoleh manager dari suatu employee
+     */
     function get_mgr_id($empnum){
         $this->db->select('mgr_id');
         $this->db->from('hrms_employees');
@@ -190,6 +223,10 @@ class Employee extends CI_Model {
         return $row->mgr_id;
     }
     
+    /*
+     * function untuk memperoleh list employee berdasarkan organisasi
+     * masing-masing
+     */
     function load_emp_by_org(){
         $this->db->select('emp_num,emp_id,emp_firstname,emp_lastname');
         $this->db->from('hrms_employees');
@@ -199,6 +236,9 @@ class Employee extends CI_Model {
         return json_encode($q->result_array());
     }
     
+    /*
+     * function untuk menampilkan data pemeriksa dari suatu sppd
+     */
     function load_pemeriksa_sppd(){
         $this->db->select('A.emp_num,A.emp_id,A.emp_firstname,A.emp_lastname,C.job_name,A.org_code,A.job_code,C.job_name');
         $this->db->from('flow_sppd as B');
@@ -211,6 +251,9 @@ class Employee extends CI_Model {
         return $q;
     }
     
+    /*
+     * function untuk memperoleh counter terakhir dari employee
+     */
     function load_curr_num(){
         $this->db->select('emp_start_num,emp_counter_id');
         $this->db->from('hrms_counter');
@@ -221,6 +264,9 @@ class Employee extends CI_Model {
         return $curr_num;
     }
     
+    /*
+     * function untuk mendapat data employee berdasarkan username
+     */
     function get_employee_data_by_username(){
         $this->db->select('emp_id');
         $this->db->from('hrms_user');

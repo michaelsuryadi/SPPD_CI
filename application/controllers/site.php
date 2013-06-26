@@ -28,6 +28,10 @@ class Site extends CI_Controller {
         }
     }
     
+    
+    /*
+     * Function untuk menampilkan home milik user Admin
+     */
     function admin_index(){
         $data['title'] = 'Home';
             $this->load->model('employee');
@@ -44,6 +48,9 @@ class Site extends CI_Controller {
             $this->load->view('includes/home_template', $data);
     }
     
+    /*
+     * Function untuk melakukan redirect dari notification
+     */
     function notif_redirect(){
         $get = $this->uri->uri_to_assoc();
         $id = $get['id'];

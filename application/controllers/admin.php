@@ -20,6 +20,9 @@ class Admin extends CI_Controller{
         $this->load->view('includes/home_template', $data);
     }
     
+    /*
+     * Function untuk menyimpan update dari config
+     */
     function upd_config(){
         $this->load->model('admin_config');
         $q = $this->admin_config->upd_config_data();

@@ -2,6 +2,10 @@
 
 class Utility_model extends CI_Model {
     
+    
+    /*
+     * Function untuk mem-proses penggantian password
+     */
     function process_change_password() {
         $this->db->select('emp_password');
         $this->db->from('hrms_user');

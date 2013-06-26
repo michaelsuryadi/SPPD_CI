@@ -42,8 +42,6 @@
                   empid = data.split('/')[1].split('-')[1];
                   empnum = $('#emp_num-'+id).html();
                   
-                  return false;
-                  
                });
                
                $('#btnPilih').click(function(){

@@ -2,6 +2,9 @@
 
 class Notifications extends CI_Model {
     
+    /*
+     * Function untuk mengambil seluruh notifikasi berdasarkan user/employee yang sedang aktif
+     */
     function get_notifications($empnum){
         $this->db->select('A.notif_id,A.notif_desc,A.notif_link,A.notif_type,A.date_post,A.time_post,A.status,B.type_url,B.type_name');
         $this->db->from('hrms_notification as A');
@@ -15,6 +18,10 @@ class Notifications extends CI_Model {
         return $q;
     }
     
+    /*
+     * Untuk mengambil URL dari setiap notifications
+     * $id = Notification ID
+     */
     function get_url_address($id) {
         
         $data = array(
@@ -36,6 +43,10 @@ class Notifications extends CI_Model {
         return $url;
     }
     
+    
+    /*
+     * Function untuk menghapus notifications
+     */
     function delete($id){
         $this->db->where('notif_id',$id);
         $q = $this->db->delete('hrms_notification');

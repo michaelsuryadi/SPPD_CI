@@ -14,6 +14,9 @@ class Jobs extends CI_Controller {
         $this->load->view('includes/home_template', $data);
     }
 
+    /*
+     * Untuk menampilkan form untuk add job baru
+     */
     function form_job() {
         $res = $this->get_session();
         $data['result'] = $res['result'];
@@ -28,6 +31,9 @@ class Jobs extends CI_Controller {
         $this->load->view('includes/home_template', $data);
     }
 
+    /*
+     * untuk memperoleh username dari session yang sedang aktif
+     */
     function get_session() {
         $this->load->model('employee');
         $username = $this->session->userdata('username');
@@ -36,6 +42,10 @@ class Jobs extends CI_Controller {
         return $data;
     }
 
+    /*
+     * Untuk memproses add job
+     */
+    
     function process_add() {
         $this->load->model('job');
         $q = $this->job->add_job();
@@ -45,6 +55,9 @@ class Jobs extends CI_Controller {
         }
     }
 
+    /*
+     * Function untuk memproses update job
+     */
     function upd() {
         $get = $this->uri->uri_to_assoc();
         $data['id'] = $get['id'];
@@ -60,6 +73,10 @@ class Jobs extends CI_Controller {
         $this->load->view('includes/home_template', $data);
     }
 
+    /*
+     * Function untuk mengupdate perubahan dari data job
+     */
+    
     function process_update() {
         $this->load->model('job');
         $q = $this->job->upd_job();
@@ -69,17 +86,21 @@ class Jobs extends CI_Controller {
         }
     }
     
+    /*
+     * Function untuk menampilkan list job berdasarkan organisasi masing-masing
+     */
     function load_job(){
         $this->load->model('job');
         $q = $this->job->list_job_by_org();
         echo $q;
     }
     
+    /*
+     * Function untuk menampilkan manager dari setiap job
+     */
     function load_mgr(){
         $this->load->model('job');
         $q = $this->job->get_mgr_detail();
         echo $q;
     }
-    
-
 }

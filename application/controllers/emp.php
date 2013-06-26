@@ -100,7 +100,6 @@ class Emp extends CI_Controller {
     function load_emp_per_org(){
         $this->load->model('employee');
         $q = $this->employee->load_emp_by_org();
-        
         echo $q;
     }
 

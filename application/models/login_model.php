@@ -6,6 +6,9 @@ class Login_model extends CI_Model {
         
     }
     
+    /*
+     * Untuk mem-validasi login user
+     */
     function validate() {
         $this->db->where('emp_username', $this->input->post('username'));
         $this->db->where('emp_password', md5($this->input->post('password')));

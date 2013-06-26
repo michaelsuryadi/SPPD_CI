@@ -26,7 +26,7 @@
                   jobname = $('#job-'+id).html();
                   orgname = $('#org-'+id).html();
                   
-                  return false;
+                  
                   
                });
                

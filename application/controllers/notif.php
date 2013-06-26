@@ -26,6 +26,9 @@ class Notif extends CI_Controller {
         }
     }
     
+    /*
+     * Function untuk menghapus notification
+     */
     function delete_notif(){
         $get = $this->uri->uri_to_assoc();
         $id = $get['id'];

@@ -6,6 +6,9 @@ class Utilities extends CI_Controller {
         parent::__construct();
     }
 
+    /*
+     * Menampilkan form untuk mengganti password
+     */
     function change_password_view() {
         $data['title'] = "Change Password";
         $data['mid_content'] = 'content/utilities/change_password';
@@ -16,6 +19,9 @@ class Utilities extends CI_Controller {
         $this->load->view('includes/home_template', $data);
     }
 
+    /*
+     * Function untuk memproses pergantian password user
+     */
     function process_change_password() {
         $this->load->model('utility_model');
         $query = $this->utility_model->process_change_password();
@@ -31,6 +37,9 @@ class Utilities extends CI_Controller {
         }
     }
 
+    /*
+     * Function untuk menampilkan halaman help
+     */
     function help_view() {
         $data['title'] = "Help";
         $data['mid_content'] = 'content/utilities/help';
@@ -41,6 +50,9 @@ class Utilities extends CI_Controller {
         $this->load->view('includes/home_template', $data);
     }
 
+    /*
+     * Function untuk menampilkan form untuk edit profile
+     */
     function edit_profile_view() {
         $data['title'] = "Edit Profile";
         $data['mid_content'] = 'content/utilities/edit_profile';
@@ -51,5 +63,4 @@ class Utilities extends CI_Controller {
         $data['result'] = $this->employee->get_detail_emp($username);
         $this->load->view('includes/home_template', $data);
     }
-
 }

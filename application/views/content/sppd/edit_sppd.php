@@ -83,17 +83,23 @@ $("document").ready(function(){
                 <td>5</td>
             </tr>
             <tr>
+                <?php
+                    $dataSppd = $data_sppd->row();
+                ?>
                 <td><?php
     echo form_hidden("emp_num", $row->emp_num);
-    echo form_input('first_name', $row->emp_firstname . " " . $row->emp_lastname);
-    echo form_input('emp_id', $row->id_emp);
-    echo form_input('job_code', $row->job_code);
-    ?><a href="#">Pilih</a></td>
+    
+    ?>
+                    
+                    <input type="text" name="first_name" disabled="disabled" value="<?php echo $row->emp_firstname.' '.$row->emp_lastname; ?>"/>
+                    <input type="text" name="emp_id" disabled="disabled" value="<?php echo $row->id_emp; ?>"/>
+                    <input type="text" name="job_code" disabled="disabled" value="<?php echo $row->job_code; ?>"/>
+        <a href="#">Pilih</a></td>
 
-                <td><?php echo form_input('destination'); ?></td>
-                <td><?php echo form_input(array('id'=>'depart','name' => 'depart', 'size' => '10')); ?></td>
-                <td><?php echo form_input(array('id'=>'arrive','name' => 'arrive', 'size' => '10')); ?></td>
-                <td><textarea name="keterangan" cols="20" rows="4"></textarea></td>
+                <td><?php echo form_input('destination',$dataSppd->sppd_dest); ?></td>
+                <td><?php echo form_input(array('id'=>'depart','name' => 'depart', 'size' => '10','value'=>$dataSppd->sppd_depart)); ?></td>
+                <td><?php echo form_input(array('id'=>'arrive','name' => 'arrive', 'size' => '10','value'=>$dataSppd->sppd_arrive)); ?></td>
+                <td><textarea name="keterangan" cols="20" rows="4"><?php echo $dataSppd->sppd_ket; ?></textarea></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
@@ -107,7 +113,8 @@ $("document").ready(function(){
                 <?php
                 $data = array(
                     'name' => 'dasar',
-                    'size' => '74'
+                    'size' => '74',
+                    'value' => $dataSppd->sppd_ket
                 );
                 ?>
                 <td colspan="4" style="text-align: left;"><?php echo form_input($data); ?></td>
@@ -124,7 +131,8 @@ $("document").ready(function(){
                 <?php
                 $data = array(
                     'name' => 'tujuan',
-                    'size' => '74'
+                    'size' => '74',
+                    'value'=>$dataSppd->sppd_tuj
                 );
                 ?>
                 <td colspan="4" style="text-align: left;"><?php echo form_input($data); ?></td>
@@ -141,7 +149,8 @@ $("document").ready(function(){
                 <?php
                 $data = array(
                     'name' => 'catt',
-                    'size' => '74'
+                    'size' => '74',
+                    'value'=>$dataSppd->sppd_catt
                 );
                 ?>
                 <td colspan="4" style="text-align: left;"><?php echo form_input($data); ?></td>
@@ -241,12 +250,11 @@ $("document").ready(function(){
             <?php
             $data = array(
                 "id"=>"submit_button",
-                "name"=>"submit_button",
-                "disabled"=>"disabled"
+                "name"=>"submit_button"
             );
             
             ?>
-            <td style="width: 300px;"><button id="draft-btn">Draft</button> <?php echo form_submit($data,"Simpan"); ?> <?php echo form_submit('keluar', 'Keluar'); ?></td>
+            <td style="width: 300px;"><button id="save-btn">Simpan</button><?php echo form_submit($data,"Simpan & Submit"); ?></td>
             <td></td>
             <td></td>
         </tr>

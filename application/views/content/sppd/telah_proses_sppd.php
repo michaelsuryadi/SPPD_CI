@@ -19,17 +19,26 @@
                 <tr>
                     <td><b style='margin-left: 20px;'>Sort SPPD By :</b></td>
                 </tr>
-                
                 <tr>
-                    <td><p style='margin-left: 20px; font-size: smaller;'>SPPD ID</p></td>
+                    <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td><p style='margin-left: 20px; font-size: smaller;'>Created Date</p></td>
+                    <td>
+                        <select style="margin-left:20px;">
+                            <option value="0">--Select Month--</option>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
-                    <td><p style='margin-left: 20px; font-size: smaller;'>Depart Date</p></td>
+                    <td>
+                        <select style="margin-left:20px;">
+                            <option value="0">--Select Year--</option>
+                        </select>
+                    </td>
                 </tr>
-                
+                <tr>
+                    <td><button style="margin-left: 20px;">Process</button></td>
+                </tr>
                 
             </table>
         </div>
