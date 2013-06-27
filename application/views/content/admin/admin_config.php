@@ -25,6 +25,14 @@
                 <td>&nbsp; &nbsp;<select name="rel_links" multiple style="width:200px;">
                     </select></td>
             </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Simpan"/></td>
+            </tr>
         </table>
     </fieldset>
     <fieldset>
@@ -60,13 +68,12 @@
 
         </table>
 
-
-    </fieldset>
-    
     <div style="text-align: center; margin-top: 10px;">
         <?php echo form_submit('submit', 'Simpan'); ?>
     </div>
     <?php
     echo form_close();
     ?>
+    </fieldset>
+    
 </div>

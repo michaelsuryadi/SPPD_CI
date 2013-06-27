@@ -546,7 +546,7 @@ class Sppds extends CI_Model {
             $this->db->update('sppd_examine', $data);
         } else {
             $data = array(
-                'sppd_status' => '2'
+                'sppd_status' => ''
             );
 
             $this->db->where('sppd_num', $this->input->post('sppd_num'));

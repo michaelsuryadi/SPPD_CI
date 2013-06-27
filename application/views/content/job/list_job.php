@@ -10,7 +10,7 @@
 </style>
 
 <div id="content">
-    <h2 style="margin: 0px; padding: 20px; text-align: left;">List Jobs</h2>
+    <h2 style="margin: 0px; padding: 20px; text-align: left;">List Semua Jabatan</h2>
     
     <?php
         $this->load->view('filter/job_filter');

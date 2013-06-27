@@ -470,7 +470,7 @@ div.ui-datepicker{
  font-size:12px;
 }
 .ui-dialog {
-	position: absolute;
+	position: relative;
 	top: 0;
 	left: 0;
 	padding: .2em;
@@ -483,6 +483,7 @@ div.ui-datepicker{
 .ui-dialog .ui-dialog-title {
 	float: left;
 	margin: .1em 0;
+        font-size: 12px;
 	white-space: nowrap;
 	width: 90%;
 	overflow: hidden;
@@ -500,12 +501,14 @@ div.ui-datepicker{
 .ui-dialog .ui-dialog-content {
 	position: relative;
 	border: 0;
+        font-size: 10px;
 	padding: .5em 1em;
 	background: none;
 	overflow: auto;
 }
 .ui-dialog .ui-dialog-buttonpane {
 	text-align: left;
+        font-size: 12px;
 	border-width: 1px 0 0 0;
 	background-image: none;
 	margin-top: .5em;

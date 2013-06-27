@@ -15,7 +15,6 @@
                 array("", ""),
                 array(form_label("Username :"), form_input('username', "")),
                 array(form_label('Password :'), form_password('password', "")),
-                array("", form_checkbox('remember', "Remember Me")." Remember Me"),
                 array("", form_submit('submit', 'Login'))
             );
 

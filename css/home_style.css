@@ -160,6 +160,11 @@ body {
     text-decoration: underline;
 }
 
-
+#dialog-form label{
+    display:block;
+}
+#dialog-form input{
+    width: 280px;
+}
 
 

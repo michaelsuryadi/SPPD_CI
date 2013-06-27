@@ -12,8 +12,6 @@ class Emp extends CI_Controller {
         $this->load->model('employee');
         $data['employees'] = $this->employee->get_all_emp();
 
-        
-
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
         $this->load->view('includes/home_template', $data);
@@ -25,7 +23,7 @@ class Emp extends CI_Controller {
 
         $this->load->model('job');
         $data['jobs'] = $this->job->get_all_job();
-        
+        $data['job_curr'] = $this->job->load_curr_num();
         $this->load->model('employee');
         $data['emp_curr_num'] = $this->employee->load_curr_num();
         
@@ -66,12 +64,16 @@ class Emp extends CI_Controller {
         $this->load->model('organization');
         $data['org'] = $this->organization->get_all_org();
         $data['employee_data'] = $this->employee->get_emp_data($data['res']);
+        
         $data['title'] = 'Employee Profile';
         $data['mid_content'] = 'content/employee/update_employee';
         $res = $this->get_session();
 
         $data['user_data'] = $this->employee->get_user_data($data['res']);
+        $orgid = $data['employee_data']->row()->org_id;
 
+        $data['job'] = $this->job->load_job_by_org($orgid);
+        
         $data['result'] = $res['result'];
         $this->load->view('includes/home_template', $data);
     }

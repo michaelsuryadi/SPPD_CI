@@ -54,6 +54,15 @@ class Jobs extends CI_Controller {
             redirect('/jobs');
         }
     }
+    
+    function process_add_ajax(){
+        $this->load->model('job');
+        $q = $this->job->add_job_ajax();
+
+        if ($q !="") {
+            echo "<option value='".$q."'>".$this->input->post('job_name')."</option>;".$q;
+        }
+    }
 
     /*
      * Function untuk memproses update job
@@ -102,5 +111,17 @@ class Jobs extends CI_Controller {
         $this->load->model('job');
         $q = $this->job->get_mgr_detail();
         echo $q;
+    }
+    
+     function pilih_employee(){
+        $get = $this->uri->uri_to_assoc();
+        $id = $get['id'];
+        $this->load->model('employee');
+        
+        $data['employee'] = $this->employee->load_emp_by_org($id);
+        $username = $this->session->userdata('username');
+        $data['title'] = 'Pilih Employee';
+        $this->load->view('content/job/pilih_employee', $data);
+        
     }
 }

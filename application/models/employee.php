@@ -14,16 +14,16 @@ class Employee extends CI_Model {
         $query = $this->db->get();
         return $query;
     }
-    
     /*
      * function untuk memperoleh list seluruh employee
      */
     function get_all_emp(){
-        $this->db->select('A.emp_id,A.emp_num,A.emp_firstname,A.emp_lastname,A.emp_dob,A.emp_email,A.emp_work_telp,A.emp_street,B.job_name');
+        $this->db->select('A.emp_id,A.emp_num,A.emp_firstname,A.emp_lastname,A.emp_dob,A.emp_email,A.emp_work_telp,A.emp_street');
         $this->db->from('hrms_employees as A');
-        $this->db->join('hrms_job as B','A.emp_job = B.job_num');
         $this->db->where('A.emp_firstname not like','admin');
         $this->db->where('A.emp_id <>',9999);
+        $this->db->where('A.emp_id <>',0000000);
+        $this->db->where('A.emp_id <>',9998);
         $this->db->order_by('A.emp_num','ASC');
         $q = $this->db->get();
         
@@ -43,16 +43,14 @@ class Employee extends CI_Model {
             "emp_street"=> $this->input->post("emp_street"),
             "emp_work_telp"=> $this->input->post("emp_work_telp"),
             "emp_email" => $this->input->post("emp_email"),
-            "emp_reg_salary"=>$this->input->post("reg_salary"),
-            "emp_over_salary"=>$this->input->post("over_salary"),
-            "mgr_id" => $this->input->post("mgr_num"),
             "emp_cutah" =>"10",
             "emp_trip" =>"10",
             "emp_cubes" =>"10",
-            "emp_job" =>$this->input->post("emp_job"),
-            "job_code"=>$this->input->post('job_code'),
             "org_code"=>$this->input->post('org_code'),
-            "org_id" => $this->input->post("emp_org")
+            "org_id" => $this->input->post("emp_org"),
+            "emp_job"=> $this->input->post('emp_job'),
+            "job_code"=>$this->input->post('job_code'),
+            "org_code"=>$this->input->post('org_code')
         );
         
         
@@ -67,7 +65,8 @@ class Employee extends CI_Model {
         $data2 = array(
             "emp_id"=> $empnum,
             "emp_username"=>$this->input->post('username'),
-            "emp_password"=>md5($this->input->post('password'))
+            "emp_password"=>md5($this->input->post('password')),
+            "status"=>'1'
         );
         
         $q2 = $this->db->insert('hrms_user',$data2);
@@ -181,7 +180,7 @@ class Employee extends CI_Model {
     
     
     function get_all_atasan(){
-        $this->db->select("A.emp_num,A.emp_id,A.emp_firstname,A.emp_lastname,A.mgr_id,C.job_code,A.org_code,C.job_name,D.org_name");
+        $this->db->select("A.emp_num,A.emp_id,A.emp_firstname,A.emp_lastname,C.job_code,A.org_code,C.job_name,D.org_name");
         $this->db->from('hrms_employees as A');
         $this->db->join('hrms_job as C','A.emp_job=C.job_num');
         $this->db->join('hrms_organization as D','A.org_id=D.org_num');
@@ -239,13 +238,14 @@ class Employee extends CI_Model {
      * function untuk memperoleh list employee berdasarkan organisasi
      * masing-masing
      */
-    function load_emp_by_org(){
-        $this->db->select('emp_num,emp_id,emp_firstname,emp_lastname');
+    function load_emp_by_org($id){
+        $this->db->select('emp_num,emp_id,emp_firstname,emp_lastname,org_code');
         $this->db->from('hrms_employees');
-        $this->db->where('org_id',$this->input->post('org'));
+        $this->db->where('emp_id <>',9999);
+        $this->db->where('org_id',$id);
         $q = $this->db->get();
         
-        return json_encode($q->result_array());
+        return $q;
     }
     
     /*

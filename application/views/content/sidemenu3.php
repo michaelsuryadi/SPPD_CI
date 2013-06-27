@@ -5,22 +5,22 @@
         if ($dat->emp_role == 1) {
             ?>
             <li class="topfirst"><a href="<?php echo base_url() ?>index.php/site/admin_index" style="height:15px;line-height:15px;">Home</a></li>
-            <li class="topmenu"><a href="#" style="height:15px;line-height:15px;"><span>Organization</span></a>
+            <li class="topmenu"><a href="#" style="height:15px;line-height:15px;"><span>Organisasi</span></a>
                 <ul>
-                    <li class="subfirst"><a href="<?php echo base_url() ?>index.php/org">View Organization Structure</a></li>
-                    <li><a href="#">Add New Organization</a></li>
+                    <li class="subfirst"><a href="<?php echo base_url() ?>index.php/org">Lihat Struktur Organisasi</a></li>
+                    <li><a href="#">Tambah Organisasi Baru</a></li>
                 </ul>
             </li>
-            <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">Job</a>
+            <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">Jabatan</a>
                 <ul>
-                    <li class="subfirst"><a href="<?php echo base_url() ?>index.php/jobs">View List Jobs</a></li>
-                    <li><a href="<?php echo base_url() ?>index.php/jobs/form_job">Add New Job</a></li>
+                    <li class="subfirst"><a href="<?php echo base_url() ?>index.php/jobs">Manage jabatan</a></li>
+                    <li><a href="<?php echo base_url() ?>index.php/jobs/form_job">Tambah jabatan baru</a></li>
                 </ul>
             </li>
-            <li class="toplast"><a href="#" style="height:15px;line-height:15px;">Employees</a>
+            <li class="toplast"><a href="#" style="height:15px;line-height:15px;">Pegawai</a>
                 <ul>
-                    <li class="subfirst"><a href="<?php echo base_url() ?>index.php/emp">View List Employees</a></li>
-                    <li><a href="<?php echo base_url() ?>index.php/emp/add_emp">Add New Employee</a></li>
+                    <li class="subfirst"><a href="<?php echo base_url() ?>index.php/emp">Lihat List Pegawai</a></li>
+                    <li><a href="<?php echo base_url() ?>index.php/emp/add_emp">Tambah Pegawai Baru</a></li>
                 </ul>
             </li>
             <?php
@@ -40,6 +40,15 @@
             <li class="toplast"><a href="<?php echo base_url(); ?>index.php/utilities/change_password_view" style="height:15px;line-height:15px;">Change Password</a></li>
             <?php
         } else {
+            if($dat->emp_role == 3){
+                
+                ?>
+            <li class="topfirst"><a href="<?php echo base_url() ?>index.php/site/home_reservation" style="height:15px;line-height:15px;">Home</a></li>
+            <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">View All Reservation Request</a>
+                
+                <?php
+            }
+            else {
             ?>
             <li class="topfirst"><a href="<?php echo base_url() ?>index.php/site" style="height:15px;line-height:15px;">Home</a></li>
             <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">SPPD</a>
@@ -62,6 +71,7 @@
                 </ul>
             </li>
                 <?php
+            }
         }
         ?>
         <li class="toplast"><a href="<?php echo base_url() ?>index.php/login/signout" style="height:15px;line-height:15px;">Log Out</a></li>

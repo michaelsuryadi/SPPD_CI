@@ -8,9 +8,22 @@
 
     }
 </style>
-
+<?php
+    $sppd = $data_sppd->row();
+?>
 <script type="text/javascript">
     $('document').ready(function() {
+        
+        $('#komentar').keyup(function(){
+           var data = $('#komentar').val();
+           if(data!=""){
+               $('#submit-btn').attr('disabled',false);
+           }
+           else {
+               $('#submit-btn').attr('disabled',true);
+           }
+        });
+        
         $('#send-btn').click(function() {
             var isi = $('#komentar').val();
             var sppdnum = $('#sppd_number').val();
@@ -37,8 +50,14 @@
         });
         
         $("#cancel-btn").click(function(){
-        alert('testt');
+        
             $('#frm-reject').submit();
+            return false;
+        });
+        
+        $('#edit-btn').click(function(){
+            window.location = "<?php echo base_url(); ?>index.php/sppd/edit_sppd_by_pemeriksa/id/<?php echo $row->sppd_num; ?>";
+            
             return false;
         });
     });
@@ -57,7 +76,7 @@
             <tr><td><b>Pembuat Dokumen</b></td>
                 <td>: 
                     <?php
-                    $sppd = $data_sppd->row();
+                    
                     $res = $result->row();
                     $row = $data_sppd->row();
                     echo $row->pem_fname . " " . $row->pem_lname . "/" . $row->pem_jobcode . "-" . $row->pem_id . '/' . $row->pem_orgcode;
@@ -142,6 +161,7 @@
 
         <?php
         ?>
+        <button style="margin-left: 20px;" id="edit-btn">Edit</button>
     </fieldset>
     <fieldset>
         <legend>Urutan Pemeriksa</legend>
@@ -184,12 +204,17 @@
     <fieldset>
         <legend>Komentar</legend>
         <table id="table-karyawan-3" style="width: 800px;">
+            <?php
+                if($data_komentar->num_rows()>0){
+                    
+                    ?>
+            
             <tr>
                 <td style="text-align: left;">Komentar :</td>
                 <td colspan="4" id="content4" style="text-align: left;"><?php
         foreach ($data_komentar->result() as $rowkomentar) {
             ?>
-                        <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->time_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
+                        <?php echo $rowkomentar->date_comment .  " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
                         <?php
                     }
                     ?></td>
@@ -201,6 +226,9 @@
                 <td></td>
                 <td></td>
             </tr>
+            <?php
+                }
+            ?>
             <tr>
                 <td style="text-align: left;">Tanggal/Komentator :</td>
                 <td colspan="4" style="text-align: left;"><?php
@@ -226,7 +254,7 @@
             ?>
             <tr>
                 <td style="text-align: left;">Komentator Baru : </td>
-                <td colspan="4" style="text-align: left;"><?php echo form_input($data); ?><button id="send-btn">Kirim</button></td>
+                <td colspan="4" style="text-align: left;"><?php echo form_input($data); ?>
             </tr>
 
             <input type="hidden" name="approved" value="1" id="app"/>
@@ -240,13 +268,12 @@
         <tr>
             <td></td>
             <td></td>
-            <td style="width: 300px;"><button id="cancel-btn">Reject</button><button id="edit-btn">Edit</button><?php echo form_submit('submit', 'Approve'); ?></td>
+            <td style="width: 500px;"><button id="simpan-btn">Simpan</button><button id="approve-btn">Setuju</button><button id="return-btn">Kembalikan</button><button id="cancel-btn">Tolak</button><button id="tutup-btn">Tutup</button></td>
             <td></td>
             <td></td>
         </tr>
     </table>
     <?php echo form_close(); ?>
-    
     <form id="frm-reject" method="post" action="<?php echo base_url(); ?>index.php/sppd/reject_sppd">
         <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>"/>
     </form>

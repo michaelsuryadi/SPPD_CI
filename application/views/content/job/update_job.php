@@ -1,3 +1,19 @@
+<script type="text/javascript">
+$('document').ready(function(){
+   $('#pilih-pegawai').click(function(){
+            var org = $('#list_org').val();
+            window.open('http://127.0.0.1/sppd_ci/index.php/jobs/pilih_employee/id/'+org, 'Pilih Pemeriksa', 'height=500,width=800');
+            return false;
+        });
+        
+        $('#list_org').change(function(){
+           $('#employee').val("");
+           $('#emp_num').val("");
+        });
+});
+
+</script>
+
 <div id="content">
     <h2 style="margin: 0px; padding: 20px; text-align: left;">Update Job</h2>
     <fieldset style="border:1px dotted black;">
@@ -29,7 +45,7 @@
                     <td><?php 
                 $data = array(
                     'name'=>'job_name',
-                    'size'=>'20',
+                    'size'=>'40',
                     'value'=>$row->job_name
                     
                 );
@@ -68,7 +84,7 @@
                 <td>Organization : </td>
                 <td> : </td>
                 
-                <td><select name="org">
+                <td><select name="org" id="list_org">
                         <?php
                         foreach($org->result() as $rowOrg){
                             

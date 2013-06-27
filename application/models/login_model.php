@@ -15,7 +15,14 @@ class Login_model extends CI_Model {
         $query = $this->db->get('hrms_user');
 
         if ($query->num_rows() == 1) {
-            return true;
+            $row = $query->row();
+            
+            if($row->status==1){
+                return true;
+            }
+            else {
+                return false;
+            }
         }
         else {
             return false;

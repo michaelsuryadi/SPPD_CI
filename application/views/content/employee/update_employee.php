@@ -122,26 +122,7 @@
     <fieldset style="border:1px dotted black; margin-top: 10px;">
         <legend>Employment Information</legend>
         <table>
-            <tr>
-                <td>Employee Job</td>
-                <td> : <select name="emp_job">
-                        <option value="0">--Pilih--</option>
-                        
-                        <?php
-                            foreach($jobs->result() as $row2){
-                                
-                                ?>
-                        <option value="<?php echo $row2->job_num; ?>" <?php
-                        if($row->emp_job == $row2->job_num){
-                            echo 'selected=selected ';
-                        }
-                        
-                        ?>><?php echo $row2->job_name; ?></option>
-                        <?php
-                            }
-                        ?>
-                    </select></td>
-            </tr>
+            
             <tr>
                 <td>Employee Organization</td>
                 <td>      : <select name="emp_org">
@@ -158,10 +139,29 @@
                         ?>><?php echo $row3->org_name; ?></option>
                         <?php
                         }
-                        
                         ?>
                         
                     </select></td>
+            </tr>
+            <tr>
+                <td>Employee Job</td>
+                <td> : <select name="emp_job">
+                        <option value="0">--Pilih--</option>
+                            <?php
+                                foreach($job->result() as $row4){
+                                    
+                                    ?>
+                        <option value="<?php echo $row4->job_num; ?>" <?php
+                        if($row->emp_job == $row4->job_num){
+                            echo 'selected=selected ';
+                        }
+                        
+                        ?>><?php echo $row4->job_name; ?></option>
+                        <?php
+                                }
+                            ?>
+                       </select>
+                </td>
             </tr>
         </table>
     </fieldset>

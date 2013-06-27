@@ -180,6 +180,9 @@
     <fieldset>
         <legend>Komentar</legend>
         <table id="table-karyawan-3" style="width: 800px;">
+            <?php 
+            if($data_komentar->num_rows()>0){
+                ?>
             <tr>
                 <td style="text-align: left;">Komentar :</td>
                 <td colspan="4" id="content4" style="text-align: left;"><?php
@@ -197,6 +200,10 @@
                 <td></td>
                 <td></td>
             </tr>
+            <?php
+            }
+            ?>
+            
             <tr>
                 <td style="text-align: left;">Tanggal/Komentator :</td>
                 <td colspan="4" id="" style="text-align: left;"><?php

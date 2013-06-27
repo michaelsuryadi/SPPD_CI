@@ -23,7 +23,6 @@
             <th>Date Of Birth</th>
             <th>Telp</th>
             <th>Email</th>
-            <th>Job</th>
         </thead>
     <?php
         foreach($employees->result() as $row){  
@@ -35,7 +34,7 @@
             <td><a style="color:black;" href="emp/view/id/<?php echo $row->emp_num; ?>"><?php echo $row->emp_dob; ?></a></td>
             <td><a style="color:black;" href="emp/view/id/<?php echo $row->emp_num; ?>"><?php echo $row->emp_work_telp; ?></a></td>
             <td><a style="color:black;" href="emp/view/id/<?php echo $row->emp_num; ?>"><?php echo $row->emp_email; ?></a></td>
-            <td><a style="color:black;" href="emp/view/id/<?php echo $row->emp_num; ?>"><?php echo $row->job_name; ?></a></td>
+            
         </tr>
             <?php
         }

@@ -19,6 +19,7 @@ class Login extends CI_Controller {
     /*
      * function untuk memvalidasi credential login
      */
+
     function validate_credentials() {
         $this->load->model('login_model');
         $query = $this->login_model->validate();
@@ -33,13 +34,17 @@ class Login extends CI_Controller {
                 $this->session->sess_expiration = 7200;
                 $this->session->sess_expire_on_close = TRUE;
             }
-            
+
             $this->session->set_userdata($data);
 
             if ($this->input->post('username') == "admin") {
                 redirect('site/admin_index');
             } else {
-                redirect('site/index');
+                if ($this->input->post('username') == "reservation") {
+                    redirect('site/home_reservation');
+                } else {
+                    redirect('site/index');
+                }
             }
         } else {
             redirect('login/index');

@@ -35,9 +35,66 @@
 
             return false;
         });
+        
+        $("#dialog-form").dialog({
+            autoOpen: false,
+            width: 550,
+            modal: true,
+            position: 'top',
+            buttons: {
+                "Kirim": function() {
+                    var bValid = true;
+                    if (bValid) {
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: "http://127.0.0.1/sppd_ci/index.php/jobs/process_add_ajax",
+                            //data: "job_id=" + jobid + "&job_name=" + jobname + "&job_code=" + jobcode + "&job_description=" + jobdesc + "&organization=" + org,
+                            success: function(data) {
+                                
+                            }
+                        });
+
+                        $(this).dialog("close");
+                    }
+                },
+                Cancel: function() {
+                    $(this).dialog("close");
+                }
+            },
+            close: function() {
+                $(this).dialog("close");
+            }
+        }).css("font-size", "15px");
+        
+        $('#reserve-btn').click(function(){
+            $('#dialog-form').dialog('open');
+            return false;
+        });
     });
 
 </script>
+
+<div id="dialog-form" title="Create new Reservation Request">
+    <form>
+        <fieldset>
+            <legend>Deskripsi Perjalanan</legend>
+            <fieldset>
+                <legend>Flight Request</legend>
+            <label for="flight">Request Airline : </label>
+            <textarea name="flight" id="flight" cols="40" rows="7" class="text ui-widget-content ui-corner-all"></textarea>
+            <label for="time">Request Time : </label>
+            <textarea name="time" id="time" cols="40" rows="7" class="text ui-widget-content ui-corner-all"></textarea>
+        
+            </fieldset>
+            <fieldset>
+                <legend>Hotel Request</legend>
+                <textarea name="hotel" cols="40" rows="7" class="text ui-widget-content ui-corner-all"></textarea>
+            </fieldset>
+        </fieldset>
+            
+    </form>
+</div>
 
 <div id="content">
     <h2 style="margin: 0px; padding: 20px; text-align: left;">SPPD Telah Diproses</h2>
@@ -152,8 +209,6 @@
     <fieldset>
         <legend>Approval Progress</legend>
         <table>
-
-
             <?php
             $i = 1;
             foreach ($approval_prg->result() as $rowapp) {
@@ -178,7 +233,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>Komentar</legend>
+        <legend>Histori Komentar</legend>
         <table id="table-karyawan-3" style="width: 800px;">
             <tr>
                 <td style="text-align: left;">Komentar :</td>
@@ -197,40 +252,23 @@
                 <td></td>
                 <td></td>
             </tr>
-            <tr>
-                <td style="text-align: left;">Tanggal/Komentator :</td>
-                <td colspan="4" id="" style="text-align: left;"><?php
-                    $datestring = "%d-%m-%Y";
-                    $res = $result->row();
-                    $time = time();
-                    echo mdate($datestring, $time) . " - ";
-                    echo $res->emp_firstname . " " . $res->emp_lastname . "/" . $res->job_code . "-" . $res->id_emp . '/' . $res->org_code;
-                    ?></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
             <?php
-            $data = array(
-                'id' => 'komentator',
-                'name' => 'komentator',
-                'size' => '74'
-            );
+            $res = $result->row();
             ?>
-            <tr>
-                <td style="text-align: left;">Komentator Baru : </td>
-                <td colspan="4" style="text-align: left;"><?php echo form_input($data); ?><button id="send-btn">Kirim</button></td>
-            </tr>
+           
+           
+            
 
             <input type="hidden" name="approved" value="1" id="app"/>
             <input type="hidden" name="pem_id" value="<?php echo $res->emp_num; ?>"/>
             <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>" />
 
         </table>
+    </fieldset>
+    <fieldset style="text-align: center;">
+        <legend>Options</legend>
+        <button id="reserve-btn">Request Reservation</button>
+        <button id="print-btn">Print SPPD</button>
     </fieldset>
     <br/>
     <table id="table-karyawan-3" style="width: 800px">

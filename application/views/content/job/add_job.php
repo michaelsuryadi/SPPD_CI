@@ -25,6 +25,12 @@
                 }
             });
         });
+        
+        $('#pilih-pegawai').click(function(){
+            var org = $('#list_org').val();
+            window.open('http://127.0.0.1/sppd_ci/index.php/jobs/pilih_employee/id/'+org, 'Pilih Pemeriksa', 'height=500,width=800');
+            return false;
+        });
     });
 </script>
 
@@ -59,7 +65,6 @@
                     'name'=>'job_name',
                     'size'=>'20'
                 );
-                
                 echo form_input($data);
                 ?></td>
             </tr>
@@ -104,13 +109,7 @@
                         ?>
                     </select></td>
             </tr>
-            <tr>
-                <td>Manager</td>
-                <td> : </td>
-                <td><select id="list_mgr" name="manager">
-                        <option value="0">--Pilih--</option>
-                    </select></td>
-            </tr>
+            
         </table>
     </fieldset>
     <div style="text-align: center; margin-top: 10px;">

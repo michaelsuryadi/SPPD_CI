@@ -1,5 +1,5 @@
 <div id="content">
-    <h2 style="margin: 0px; padding: 20px; text-align: left;">Welcome To e-Office System</h2>
+    <h2 style="margin: 0px; padding: 20px; text-align: left;">Welcome To e-Office Reservation Module</h2>
     <div id="content-left">
         <div class="content-left-data" id="top-left-content">
             <div class="content-left-img">

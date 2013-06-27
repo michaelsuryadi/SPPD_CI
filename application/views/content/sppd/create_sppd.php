@@ -10,6 +10,23 @@
 </style>
 <script type="text/javascript">
     $("document").ready(function() {
+
+        $("#depart").datepicker({
+            showOn: "button",
+            buttonImage: "<?php echo base_url(); ?>css/calendar.png",
+            buttonImageOnly: true
+        });
+        $("#arrive").datepicker({
+            showOn: "button",
+            buttonImage: "<?php echo base_url(); ?>css/calendar.png",
+            buttonImageOnly: true
+        });
+
+        $(".ui-datepicker-trigger").mouseover(function() {
+            $(this).css('cursor', 'pointer');
+        });
+
+
         $("#komentator").keyup(function() {
             var isi = $("#komentator").val();
             if (isi != "") {
@@ -38,7 +55,7 @@
             window.open('http://127.0.0.1/sppd_ci/index.php/sppd/show_emp', 'Pilih Pemeriksa', 'height=500,width=800');
             return false;
         });
-        
+
 
         $('#pmh').click(function() {
             window.open('http://127.0.0.1/sppd_ci/index.php/sppd/show_emp', 'Pilih Pemeriksa', 'height=500,width=800');
@@ -47,11 +64,17 @@
 
         $('#depart').datepicker();
         $('#arrive').datepicker();
+
+        $('#cancel-btn').click(function() {
+
+            window.location = "<?php echo base_url(); ?>index.php/site";
+            return false;
+        });
         
-        $('#cancel-btn').click(function(){
+        $('#back-btn').click(function(){
             
-           window.location="<?php echo base_url(); ?>index.php/site";
-           return false; 
+            window.location = '<?php echo base_url(); ?>index.php/site';
+            return false;
         });
     });
 
@@ -60,7 +83,22 @@
 
 
 <div id="content">
+    
     <h2 style="margin: 0px; padding: 20px; text-align: left;">Create New SPPD</h2>
+    <?php
+        if($pemeriksa->num_rows()==0){
+            ?>
+    <fieldset>
+        <legend>Warning</legend>
+        <p>Flow SPPD belum di konfigurasi</p>
+        <p>Mohon Hubungi Admin</p>
+        
+        <button id="back-btn">Kembali ke Home</button>
+    </fieldset>
+    <?php
+        }
+        else {
+    ?>
     <div style="text-align: right; margin-left: 560px;">
         <table>
             <tr><td><b>Status Dokumen</b></td><td>: Dokumen Baru</td></tr>
@@ -101,15 +139,14 @@
                 <tr>
                 <input type="hidden" name="emp_num" id="emp_num" value="<?php echo $row->emp_num; ?>"/>
                 <td id="pmh"><?php
-        echo form_input(array('name' => 'emp_name2', 'disabled' => 'disabled', 'value' => $row->emp_firstname . " " . $row->emp_lastname, 'id' => 'nama'));
-        echo form_input(array('name' => 'emp_id2', 'disabled' => 'disabled', 'value' => $row->id_emp, 'id' => 'emp_id'));
-        echo form_input(array('name' => 'job_code2', 'disabled' => 'disabled', 'value' => $row->job_code, 'id' => 'job_code'));
-        
-        ?><a id="pilih-pemohon" href="#">Pilih</a></td>
+                    echo form_input(array('name' => 'emp_name2', 'disabled' => 'disabled', 'value' => $row->emp_firstname . " " . $row->emp_lastname, 'id' => 'nama'));
+                    echo form_input(array('name' => 'emp_id2', 'disabled' => 'disabled', 'value' => $row->id_emp, 'id' => 'emp_id'));
+                    echo form_input(array('name' => 'job_code2', 'disabled' => 'disabled', 'value' => $row->job_code, 'id' => 'job_code'));
+                    ?><a id="pilih-pemohon" href="#">Pilih</a></td>
 
                 <td><?php echo form_input('destination'); ?></td>
-                <td><?php echo form_input(array('id' => 'depart', 'name' => 'depart', 'size' => '10')); ?></td>
-                <td><?php echo form_input(array('id' => 'arrive', 'name' => 'arrive', 'size' => '10')); ?></td>
+                <td><?php echo form_input(array('id' => 'depart', 'name' => 'depart', 'size' => '10', 'readonly' => 'readonly')); ?></td>
+                <td><?php echo form_input(array('id' => 'arrive', 'name' => 'arrive', 'size' => '10', 'readonly' => 'readonly')); ?></td>
                 <td><textarea name="keterangan" cols="20" rows="4"></textarea></td>
                 </tr>
                 <tr>
@@ -181,6 +218,14 @@
                     <td style="text-align: left;">File Lampiran :</td>
                     <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
                 </tr>
+                <tr>
+                    <td style="text-align: left;">File Lampiran :</td>
+                    <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">File Lampiran :</td>
+                    <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
+                </tr>
             </table>
         </fieldset>
         <fieldset>
@@ -202,20 +247,20 @@
                             <td>Pemeriksa : </td>
                             <td><select name="Pemeriksa" id="pemeriksa" style="margin-left:20px; width: 300px;" multiple></select></td>
                         </tr>
-                        
+
                         <tr>
                             <td></td>
                             <td><p style="margin-left:20px;"><a href="javascript:window.open('<?php echo base_url(); ?>index.php/sppd/show_exam','Pilih Pemeriksa','height=500,width=800')">Add Person</a></p>
-                            <p id="tambah-input" style="display:none;"></p></td>
+                                <p id="tambah-input" style="display:none;"></p></td>
                         </tr>
                         <tr>
                             <td></td>
                             <td><p style="margin-left:15px;"><?php
-                echo form_open('sppd/save_profile');
-                echo form_checkbox('save_check');
-                        ?>  Save Profile</p></td>
+                                    echo form_open('sppd/save_profile');
+                                    echo form_checkbox('save_check');
+                                    ?>  Save Profile</p></td>
                         </tr>
-                        
+
                         <?php
                     }
                 }
@@ -266,10 +311,14 @@
                     "disabled" => "disabled"
                 );
                 ?>
-                <td style="width: 300px;"><button id="draft-btn">Draft</button> <?php echo form_submit($data, "Kirim"); ?> <button id="cancel-btn">Cancel</button></td>
+                <td style="width: 300px;"><button id="draft-btn">Draft</button> <?php echo form_submit($data, "Submit"); ?> <button id="cancel-btn">Cancel</button></td>
                 <td></td>
                 <td></td>
             </tr>
             <?php echo form_close(); ?>
         </table>
+        
+        <?php
+        }
+        ?>
 </div>

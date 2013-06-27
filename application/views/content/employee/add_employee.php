@@ -3,25 +3,27 @@
     $(document).ready(function() {
         $("#list_org").change(function() {
             var orgnum = $('#list_org').val();
+            alert(orgnum);
             $.ajax({
                 type: "POST",
                 url: "http://127.0.0.1/sppd_ci/index.php/jobs/load_job",
                 dataType: "JSON",
                 data: "org=" + orgnum,
                 success: function(data) {
+                    var count = 1;
                     $('#list_job')
                             .find('option')
                             .remove()
                             .end()
                             .append('<option value="0">--Pilih--</option>');
                     $.each(data, function(i, n) {
+                        $("#org_code").val(n['org_code']);
                         var x = document.getElementById("list_job");
                         var option = document.createElement("option");
                         option.text = n['job_name'];
                         option.value = n['job_num'];
                         x.add(option, x.options[null]);
                     });
-//                   
                 }
             });
             return false;
@@ -39,9 +41,6 @@
                 success: function(data) {
                     $('#add_data').html("");
                     $.each(data, function(i, n) {
-                        $("#mgr_num").val(n['emp_num']);
-                        $("#mgr_name").val(n['emp_id'] + " - " + n['emp_firstname'] + " " + n['emp_lastname']);
-                        $("#org_code").val(n['org_code']);
                         $("#job_code").val(n['job_code']);
                     });
                 }
@@ -57,9 +56,9 @@
             dollars = dollars.split('').reverse().join('')
                     .replace(/(\d{3}(?!$))/g, '$1.')
                     .split('').reverse().join('');
-            $("#reg_salary").val("Rp. "+dollars);
+            $("#reg_salary").val("Rp. " + dollars);
         });
-        
+
         $("#over_salary").change(function() {
             var number = $("#over_salary").val();
             $("#over_salary_send").val(number);
@@ -69,14 +68,92 @@
             dollars = dollars.split('').reverse().join('')
                     .replace(/(\d{3}(?!$))/g, '$1.')
                     .split('').reverse().join('');
-            $("#over_salary").val("Rp. "+dollars);
-            
+            $("#over_salary").val("Rp. " + dollars);
+
         });
+
+        $("#dialog-form").dialog({
+            autoOpen: false,
+            width: 350,
+            modal: true,
+            position: 'top',
+            buttons: {
+                "Add Job": function() {
+                    var bValid = true;
+                    if (bValid) {
+                        var jobid = $('#job_id2').val();
+                        var jobname = $('#job_name2').val();
+                        var jobcode = $('#job_code2').val();
+                        var jobdesc = $('#job_desc2').val();
+                        var org = $('#list_org2').val();
+                        $.ajax({
+                            type: "POST",
+                            url: "http://127.0.0.1/sppd_ci/index.php/jobs/process_add_ajax",
+                            data: "job_id=" + jobid + "&job_name=" + jobname + "&job_code=" + jobcode + "&job_description=" + jobdesc + "&organization=" + org,
+                            success: function(data) {
+                                var output = data.split(';')[0];
+                                var value = data.split(';')[1];
+                                $('#list_job').append(output);
+                                $('#list_job').val(value);
+                                $("#job_code").val(jobcode);
+                            }
+                        });
+
+                        $(this).dialog("close");
+                    }
+                },
+                Cancel: function() {
+                    $(this).dialog("close");
+                }
+            },
+            close: function() {
+                $(this).dialog("close");
+            }
+        }).css("font-size", "15px");
+        
+
+        $('#add-job').click(function() {
+            $('#dialog-form').dialog("open");
+            return false;
+        });
+
     });
 
 
 
 </script>
+
+<div id="dialog-form" title="Create new Job">
+    <p class="validateTips">All form fields are required.</p>
+
+    <form>
+        <fieldset>
+            <label for="job_id">Job ID</label>
+            <input type="text" name="job_id" id="job_id2" class="text ui-widget-content ui-corner-all" readonly="readonly" value="<?php echo $job_curr; ?>"/>
+            <label for="job_name">Job Name</label>
+            <input type="text" name="job_name" id="job_name2" value="" class="text ui-widget-content ui-corner-all" />
+            <label for="job_code">Job Code</label>
+            <input type="text" name="job_code" id="job_code2" value="" class="text ui-widget-content ui-corner-all" />
+            <label for="job_code">Job Description</label>
+            <textarea name="job_desc" id="job_desc2" class="text ui-widget-content ui-corner-all"></textarea>
+            <label for="org">Organization</label>
+            <select id="list_org2" name="emp_org" class="text ui-widget-content ui-corner-all">
+                <option value="0">--Pilih--</option>
+                <?php
+                foreach ($org->result() as $row3) {
+                    ?>
+                    <option value="<?php echo $row3->org_num; ?>"><?php echo $row3->org_name; ?></option>
+                    <?php
+                }
+                ?>
+
+            </select>
+
+
+        </fieldset>
+    </form>
+</div>
+
 <div id="content">
     <h2 style="margin: 0px; padding: 20px; text-align: left;">Add New Employees</h2>
     <form id="form_add_emp" action="<?php echo base_url(); ?>index.php/emp/process_add" method="post"> 
@@ -94,7 +171,7 @@
                         'name' => 'emp_id',
                         'size' => '15',
                         'value' => $emp_curr_num,
-                        'readonly'=>'readonly'
+                        'readonly' => 'readonly'
                     );
                     ?>
                     <td> : <?php echo form_input($data); ?></td>
@@ -202,29 +279,16 @@
 
                         </select></td>
                 </tr>
+                <input type="hidden" name="org_code" id="org_code" value=""/>
+                <input type="hidden" name="job_code" id="job_code" value=""/>
                 <tr>
                     <td>Employee Job</td>
                     <td> : <select id="list_job" onchange="load_manager()" name="emp_job">
                             <option value="0">--Pilih--</option>
-                        </select><a href="<?php echo base_url(); ?>/index.php/jobs/form_job">Add new Job</a></td>
+                        </select><a href="#" id="add-job">Add new Job</a></td>
                 </tr>
-                <tr>
-                    <td>Manager</td>
-                    <td> :  <input type="text" id="mgr_name" name="mgr_name" disabled="disabled"/></td>
-                <input type='hidden' name='mgr_num' id="mgr_num" />
-                <input type='hidden' name='org_code' id="org_code" />
-                <input type='hidden' name='job_code' id="job_code" />
-                </tr>
-                <tr>
-                    <td>Regular Salary</td>
-                    <td> : <input type="text" id="reg_salary" name="reg_salary2"/></td>
-                    <input type="hidden" id="reg_salary_send" name="reg_salary"/>
-                    <input type="hidden" id="over_salary_send" name="over_salary"/>
-                </tr>
-                <tr>
-                    <td>Overtime Salary : </td>
-                    <td> : <input type="text" id="over_salary" name="over_salary2"/></td>
-                </tr>
+
+
             </table>
         </fieldset>
         <fieldset style="border:1px dotted black; margin-top: 10px;">
@@ -238,7 +302,7 @@
                             'name' => 'username',
                             'size' => '30',
                             'value' => $emp_curr_num,
-                            'readonly'=>'readonly'
+                            'readonly' => 'readonly'
                         );
 
                         echo form_input($data);
@@ -279,3 +343,5 @@
     </form>
 
 </div>
+
+
