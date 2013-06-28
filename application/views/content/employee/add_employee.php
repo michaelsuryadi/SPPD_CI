@@ -1,9 +1,10 @@
 <script src="<?php echo base_url(); ?>js/jquery.numberformatter.js"></script>
 <script>
     $(document).ready(function() {
+        var orgnum="";
         $("#list_org").change(function() {
-            var orgnum = $('#list_org').val();
-            alert(orgnum);
+            orgnum = $('#list_org').val();
+            $('#list_org2').val(orgnum);
             $.ajax({
                 type: "POST",
                 url: "http://127.0.0.1/sppd_ci/index.php/jobs/load_job",
@@ -136,20 +137,8 @@
             <input type="text" name="job_code" id="job_code2" value="" class="text ui-widget-content ui-corner-all" />
             <label for="job_code">Job Description</label>
             <textarea name="job_desc" id="job_desc2" class="text ui-widget-content ui-corner-all"></textarea>
-            <label for="org">Organization</label>
-            <select id="list_org2" name="emp_org" class="text ui-widget-content ui-corner-all">
-                <option value="0">--Pilih--</option>
-                <?php
-                foreach ($org->result() as $row3) {
-                    ?>
-                    <option value="<?php echo $row3->org_num; ?>"><?php echo $row3->org_name; ?></option>
-                    <?php
-                }
-                ?>
-
-            </select>
-
-
+            <input type="hidden" name="emp_org" id="list_org2"/>
+            
         </fieldset>
     </form>
 </div>

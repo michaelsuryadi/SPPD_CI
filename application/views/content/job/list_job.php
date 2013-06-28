@@ -17,10 +17,10 @@
     ?>
     <table style="width: 900px; text-align: center; margin-left: 30px; border-collapse: collapse;">
         <thead style="background-color: black; color:white;">
-            <th>Job ID</th>
-            <th>Job Name</th>
-            <th>Job Description</th>
-            <th>Organization</th>
+            <th>ID Jabatan</th>
+            <th>Nama Jabatan</th>
+            <th>Deskripsi Jabatan</th>
+            <th>Organisasi</th>
     </thead>
             <?php
             foreach($job->result() as $row){

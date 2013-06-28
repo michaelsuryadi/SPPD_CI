@@ -147,7 +147,7 @@ class Sppds extends CI_Model {
             $data2 = array(
                 "sppd_num" => $res->sppd_num,
                 "emp_num" => $res->emp_id,
-                "comment" => $this->input->post('komentator'),
+                "comment" => 'Submit - '-$this->input->post('komentator'),
                 "date_comment" => $tgl
             );
 
@@ -203,6 +203,8 @@ class Sppds extends CI_Model {
 
                 $count++;
             }
+
+            $this->send_comment_data();
 
 
             if ($q && $q2) {
@@ -300,6 +302,7 @@ class Sppds extends CI_Model {
         $this->db->where('B.sppd_num', $sppdnum);
         $this->db->join('hrms_employees as A', 'A.emp_num=B.pem_id');
         $this->db->join('hrms_job as C', 'A.emp_job=C.job_num');
+        $this->db->order_by('B.order', 'ASC');
         $q = $this->db->get();
 
         return $q;
@@ -426,8 +429,20 @@ class Sppds extends CI_Model {
             );
 
             $this->db->insert('hrms_notification', $data5);
-        }
 
+            
+        }
+        date_default_timezone_set("Asia/Jakarta");
+        $today = date("Y-m-d H:i:s");
+
+        $data = array(
+            "sppd_num" => $this->input->post('sppd_num'),
+            "emp_num" => $this->input->post('pem_id'),
+            "comment" => 'Approve - '.$this->input->post('komentator'),
+            "date_comment" => $today
+        );
+
+        $q = $this->db->insert('sppd_comment', $data);
 
         if ($q || (isset($q3) && $q3)) {
             return true;
@@ -435,8 +450,7 @@ class Sppds extends CI_Model {
             return false;
         }
     }
-    
-    
+
     /*
      * Menampilkan status approval dari pemeriksa terhadap sppd
      * 
@@ -545,16 +559,8 @@ class Sppds extends CI_Model {
             $this->db->where('sppd_num', $this->input->post('sppd_num'));
             $this->db->update('sppd_examine', $data);
         } else {
-            $data = array(
-                'sppd_status' => ''
-            );
 
-            $this->db->where('sppd_num', $this->input->post('sppd_num'));
-            $this->db->update('sppd_data', $data);
 
-            $data2 = array(
-                'send_status' => '0'
-            );
 
             $this->db->where('sppd_num', $this->input->post('sppd_num'));
             $this->db->update('sppd_examine', $data2);
@@ -583,22 +589,47 @@ class Sppds extends CI_Model {
             );
 
             $this->db->where('sppd_num', $this->input->post('sppd_id'));
-            $this->db->update('sppd_data',$data2);
-            
+            $this->db->update('sppd_data', $data2);
+
             $data3 = array(
-                "send_status"=>'1'
+                "send_status" => '1'
             );
-            
-            $this->db->where('sppd_num',$this->input->post('sppd_id'));
-            $this->db->update('sppd_examine',$data3);
-            
+
+            $this->db->where('sppd_num', $this->input->post('sppd_id'));
+            $this->db->update('sppd_examine', $data3);
+
             $data4 = array(
-              'flag'=>'1'  
+                'flag' => '1'
             );
+
+            $this->db->where('sppd_num', $this->input->post('sppd_id'));
+            $this->db->where('order', '1');
+            $this->db->update('sppd_examine', $data4);
+
+            $this->db->select('pem_id');
+            $this->db->from('sppd_examine');
+            $this->db->where('order', '1');
+            $this->db->where('sppd_num', $this->input->post('sppd_id'));
+            $pemid = $this->db->get()->row()->pem_id;
             
+            $this->db->select('sppd_id');
+            $this->db->from('sppd_data');
             $this->db->where('sppd_num',$this->input->post('sppd_id'));
-            $this->db->where('order','1');
-            $this->db->update('sppd_examine',$data4);
+            $sppdid = $this->db->get()->row()->sppd_id;
+
+            $time = time();
+            date_default_timezone_set('Asia/Jakarta');
+            $tgl = date("Y-m-d H:i:s", $time);
+
+            $data5 = array(
+                "notif_desc" => "SPPD Dengan ID " . $sppdid . " Perlu Diproses",
+                "notif_link" => $this->input->post('sppd_id'),
+                "notif_type" => "1",
+                "date_post" => $tgl,
+                "emp_num" => $pemid
+            );
+
+            $this->db->insert('hrms_notification', $data5);
         }
 
         return true;

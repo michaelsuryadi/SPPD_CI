@@ -26,4 +26,35 @@ class Reservation extends CI_Controller{
             redirect("/login");
         }
     }
+    
+    function process_req(){
+        $this->load->model('reservation_model');
+        $q = $this->reservation_model->process_req();
+        if($q){
+            echo 'OK';
+        }
+    }
+    
+    function view_all_reservation(){
+        if ($this->session->userdata('username') != "") {
+            $data['title'] = 'All Reservation';
+            $this->load->model('employee');
+            $this->load->model('reservation_model');
+            $username = $this->session->userdata('username');
+            $data['result'] = $this->employee->get_detail_emp($username);
+            $data['reservation'] = $this->reservation_model->get_all_reservation_req();
+            $data['mid_content'] = 'content/reservation/view_all_reservation';
+            $this->load->view('includes/home_template', $data);
+        }
+        else {
+            redirect("/login");
+        }
+    }
+    
+    function load_request(){
+        $this->load->model('reservation_model');
+        $q = $this->reservation_model->load_request();
+        
+        echo $q;
+    }
 }

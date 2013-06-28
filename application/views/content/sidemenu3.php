@@ -44,7 +44,7 @@
                 
                 ?>
             <li class="topfirst"><a href="<?php echo base_url() ?>index.php/site/home_reservation" style="height:15px;line-height:15px;">Home</a></li>
-            <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">View All Reservation Request</a>
+            <li class="topmenu"><a href="<?php echo base_url(); ?>index.php/reservation/view_all_reservation" style="height:15px;line-height:15px;">View All Reservation Request</a>
                 
                 <?php
             }

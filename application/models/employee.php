@@ -207,7 +207,7 @@ class Employee extends CI_Model {
      * yang diinput oleh user
      */
     function get_emp_byname($keyword){
-        $this->db->select("A.emp_num,A.emp_id,A.emp_firstname,A.emp_lastname,A.mgr_id,C.job_code,A.org_code,C.job_name");
+        $this->db->select("A.emp_num,A.emp_id,A.emp_firstname,A.emp_lastname,C.job_code,A.org_code,C.job_name");
         $this->db->from('hrms_employees as A');
         $this->db->like(mb_strtolower('A.emp_firstname'),mb_strtolower($keyword));
         $this->db->join('hrms_job as C','A.emp_job=C.job_num');

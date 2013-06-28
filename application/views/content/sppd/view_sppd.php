@@ -9,21 +9,10 @@
     }
 </style>
 <?php
-    $sppd = $data_sppd->row();
+$sppd = $data_sppd->row();
 ?>
 <script type="text/javascript">
     $('document').ready(function() {
-        
-        $('#komentar').keyup(function(){
-           var data = $('#komentar').val();
-           if(data!=""){
-               $('#submit-btn').attr('disabled',false);
-           }
-           else {
-               $('#submit-btn').attr('disabled',true);
-           }
-        });
-        
         $('#send-btn').click(function() {
             var isi = $('#komentar').val();
             var sppdnum = $('#sppd_number').val();
@@ -39,7 +28,7 @@
                     success: function(data) {
                         if (data != "") {
                             alert("Komentar telah terkirim");
-                            $("#content4").append(data+"<br/>");
+                            $("#content4").append(data + "<br/>");
                             $("#komentar").val("");
                         }
                     }
@@ -48,16 +37,32 @@
 
             return false;
         });
-        
-        $("#cancel-btn").click(function(){
-        
+
+        $('#komentar').keyup(function() {
+            
+            if ($('#komentar').val() != "") {
+                $('#simpan-btn').attr('disabled', false);
+                $('#setuju-btn').attr('disabled', false);
+                $('#return-btn').attr('disabled', false);
+                $('#reject-btn').attr('disabled', false);
+            }
+            else {
+                $('#simpan-btn').attr('disabled', true);
+                $('#setuju-btn').attr('disabled', true);
+                $('#return-btn').attr('disabled', true);
+                $('#reject-btn').attr('disabled', true);
+            }
+        });
+
+        $("#cancel-btn").click(function() {
+
             $('#frm-reject').submit();
             return false;
         });
-        
-        $('#edit-btn').click(function(){
+
+        $('#edit-btn').click(function() {
             window.location = "<?php echo base_url(); ?>index.php/sppd/edit_sppd_by_pemeriksa/id/<?php echo $row->sppd_num; ?>";
-            
+
             return false;
         });
     });
@@ -76,7 +81,6 @@
             <tr><td><b>Pembuat Dokumen</b></td>
                 <td>: 
                     <?php
-                    
                     $res = $result->row();
                     $row = $data_sppd->row();
                     echo $row->pem_fname . " " . $row->pem_lname . "/" . $row->pem_jobcode . "-" . $row->pem_id . '/' . $row->pem_orgcode;
@@ -165,7 +169,7 @@
     </fieldset>
     <fieldset>
         <legend>Urutan Pemeriksa</legend>
-        
+
         <table>
             <?php
             foreach ($pemeriksa->result() as $rowdata) {
@@ -174,7 +178,7 @@
                     <tr>
                         <td>Pemeriksa <?php echo $rowdata->job_name; ?></td>
                         <td> : <?php echo $rowdata->emp_firstname . " " . $rowdata->emp_lastname . "/" . $rowdata->job_code . "-" . $rowdata->emp_id . "/" . $rowdata->org_code; ?></td>
-                        <input type="hidden" name="pemeriksa[]" value="<?php echo $rowdata->emp_num; ?>"/>
+                    <input type="hidden" name="pemeriksa[]" value="<?php echo $rowdata->emp_num; ?>"/>
                     </tr>
                     <?php
                 } else {
@@ -189,8 +193,9 @@
                     </tr>
                     <tr>
                         <td></td>
-                        <td><p style="margin-left:105px;"><?php echo form_open('sppd/save_profile');
-                             echo form_checkbox('save_check');
+                        <td><p style="margin-left:105px;"><?php
+            echo form_open('sppd/save_profile');
+            echo form_checkbox('save_check');
                     ?>  Save Profile</p></td>
                     </tr>
                     <?php
@@ -198,45 +203,44 @@
             }
             ?>
         </table>
-        
+
     </fieldset>
 
     <fieldset>
         <legend>Komentar</legend>
         <table id="table-karyawan-3" style="width: 800px;">
             <?php
-                if($data_komentar->num_rows()>0){
-                    
+            if ($data_komentar->num_rows() > 0) {
+                ?>
+
+                <tr>
+                    <td style="text-align: left;">Komentar :</td>
+                    <td colspan="4" id="content4" style="text-align: left;"><?php
+            foreach ($data_komentar->result() as $rowkomentar) {
                     ?>
-            
-            <tr>
-                <td style="text-align: left;">Komentar :</td>
-                <td colspan="4" id="content4" style="text-align: left;"><?php
-        foreach ($data_komentar->result() as $rowkomentar) {
-            ?>
-                        <?php echo $rowkomentar->date_comment .  " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
-                        <?php
-                    }
-                    ?></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <?php
-                }
+                            <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
+                            <?php
+                        }
+                        ?></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <?php
+            }
             ?>
             <tr>
                 <td style="text-align: left;">Tanggal/Komentator :</td>
                 <td colspan="4" style="text-align: left;"><?php
-                    $datestring = "%d-%m-%Y";
-                    $time = time();
-                    echo mdate($datestring, $time) . " - ";
-                    echo $res->emp_firstname . " " . $res->emp_lastname . "/" . $res->job_code . "-" . $res->id_emp . '/' . $res->org_code;
-                    ?></td>
+            $datestring = "%d-%m-%Y";
+            $time = time();
+            echo mdate($datestring, $time) . " - ";
+            echo $res->emp_firstname . " " . $res->emp_lastname . "/" . $res->job_code . "-" . $res->id_emp . '/' . $res->org_code;
+            ?></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
@@ -247,7 +251,7 @@
             </tr>
             <?php
             $data = array(
-                'id' =>'komentar',
+                'id' => 'komentar',
                 'name' => 'komentator',
                 'size' => '74'
             );
@@ -268,7 +272,7 @@
         <tr>
             <td></td>
             <td></td>
-            <td style="width: 500px;"><button id="simpan-btn">Simpan</button><button id="approve-btn">Setuju</button><button id="return-btn">Kembalikan</button><button id="cancel-btn">Tolak</button><button id="tutup-btn">Tutup</button></td>
+            <td style="width: 500px;"><button class="btn2" id="simpan-btn" onclick="return false;">Simpan</button><button class="btn2" id="setuju-btn">Setuju</button><button class="btn2" id="return-btn">Kembalikan</button><button disabled="disabled" class="btn2" id="reject-btn">Tolak</button><button  id="tutup-btn">Tutup</button></td>
             <td></td>
             <td></td>
         </tr>

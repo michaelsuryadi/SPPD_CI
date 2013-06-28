@@ -178,7 +178,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>Komentar</legend>
+        <legend>History Komentar</legend>
         <table id="table-karyawan-3" style="width: 800px;">
             <?php 
             if($data_komentar->num_rows()>0){
@@ -202,18 +202,10 @@
             </tr>
             <?php
             }
+            $res = $result->row();
             ?>
             
-            <tr>
-                <td style="text-align: left;">Tanggal/Komentator :</td>
-                <td colspan="4" id="" style="text-align: left;"><?php
-                    $datestring = "%d-%m-%Y";
-                    $res = $result->row();
-                    $time = time();
-                    echo mdate($datestring, $time) . " - ";
-                    echo $res->emp_firstname . " " . $res->emp_lastname . "/" . $res->job_code . "-" . $res->id_emp . '/' . $res->org_code;
-                    ?></td>
-            </tr>
+            
             <tr>
                 <td>&nbsp;</td>
                 <td></td>
@@ -228,11 +220,6 @@
                 'size' => '74'
             );
             ?>
-            <tr>
-                <td style="text-align: left;">Komentator Baru : </td>
-                <td colspan="4" style="text-align: left;"><?php echo form_input($data); ?><button id="send-btn">Kirim</button></td>
-            </tr>
-
             <input type="hidden" name="approved" value="1" id="app"/>
             <input type="hidden" name="pem_id" value="<?php echo $res->emp_num; ?>"/>
             <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>" />

@@ -61,7 +61,7 @@
             echo form_submit('submit', 'Search');
             ?>
             <br/>
-            <p><b>List Atasan : </b></p>
+            <p><b>List Jabatan : </b></p>
             
             <table style='width:600px; margin-top: 10px; margin-left: 80px; border: 1px dotted black; text-align: center;'>
                 <thead style='background-color: #1f2024; color:white;'>

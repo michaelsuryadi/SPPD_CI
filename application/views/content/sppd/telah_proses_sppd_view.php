@@ -24,9 +24,9 @@
                     url: "http://127.0.0.1/sppd_ci/index.php/sppd/send_comment",
                     data: "sppdnum=" + sppdnum + " &isi=" + isi + " &empnum=" + empnum,
                     success: function(data) {
-                        if(data!=""){
+                        if (data != "") {
                             alert("Komentar telah terkirim");
-                            $("#content4").append(data+"<br/>");
+                            $("#content4").append(data + "<br/>");
                             $("#komentator").val("");
                         }
                     }
@@ -35,7 +35,7 @@
 
             return false;
         });
-        
+
         $("#dialog-form").dialog({
             autoOpen: false,
             width: 550,
@@ -44,17 +44,24 @@
             buttons: {
                 "Kirim": function() {
                     var bValid = true;
+                    var sppdnum = $('#sppdnum').val();
+                    var flight = $('#flight').val();
+                    var time = $('#time').val();
+                    var hotel = $('#hotel').val();
                     if (bValid) {
-                        
                         $.ajax({
                             type: "POST",
-                            url: "http://127.0.0.1/sppd_ci/index.php/jobs/process_add_ajax",
-                            //data: "job_id=" + jobid + "&job_name=" + jobname + "&job_code=" + jobcode + "&job_description=" + jobdesc + "&organization=" + org,
+                            url: "http://127.0.0.1/sppd_ci/index.php/reservation/process_req",
+                            data: "sppdnum=" + sppdnum + " &flight=" + flight + " &time=" + time + "&hotel="+hotel,
                             success: function(data) {
-                                
+                                if(data=="OK") {
+                                    alert('Request Berhasil Dikirim');
+                                }
+                                else {
+                                    alert('Request Gagal Dikirim');
+                                }
                             }
                         });
-
                         $(this).dialog("close");
                     }
                 },
@@ -66,33 +73,34 @@
                 $(this).dialog("close");
             }
         }).css("font-size", "15px");
-        
-        $('#reserve-btn').click(function(){
+
+        $('#reserve-btn').click(function() {
             $('#dialog-form').dialog('open');
             return false;
         });
     });
 
 </script>
-
+<?php
+$sppd = $data_sppd->row();
+?>
 <div id="dialog-form" title="Create new Reservation Request">
-    <form>
+    <form id="frm-reservation" method="post">
         <fieldset>
             <legend>Deskripsi Perjalanan</legend>
             <fieldset>
                 <legend>Flight Request</legend>
-            <label for="flight">Request Airline : </label>
-            <textarea name="flight" id="flight" cols="40" rows="7" class="text ui-widget-content ui-corner-all"></textarea>
-            <label for="time">Request Time : </label>
-            <textarea name="time" id="time" cols="40" rows="7" class="text ui-widget-content ui-corner-all"></textarea>
-        
+                <input type="hidden" id="sppdnum" name="sppdnum" value="<?php echo $sppd->sppd_num; ?>"/>
+                <label for="flight">Request Airline : </label>
+                <textarea name="flight" id="flight" cols="40" rows="7" class="text ui-widget-content ui-corner-all"></textarea>
+                <label for="time">Request Time : </label>
+                <textarea name="time" id="time" cols="40" rows="7" class="text ui-widget-content ui-corner-all"></textarea>
             </fieldset>
             <fieldset>
                 <legend>Hotel Request</legend>
-                <textarea name="hotel" cols="40" rows="7" class="text ui-widget-content ui-corner-all"></textarea>
+                <textarea name="hotel" id="hotel" cols="40" rows="7" class="text ui-widget-content ui-corner-all"></textarea>
             </fieldset>
         </fieldset>
-            
     </form>
 </div>
 
@@ -108,7 +116,6 @@
             <tr><td><b>Pembuat Dokumen</b></td>
                 <td>: 
                     <?php
-                    $sppd = $data_sppd->row();
                     $row = $data_sppd->row();
                     echo $row->pem_fname . " " . $row->pem_lname . "/" . $row->pem_jobcode . "-" . $row->pem_id . '/' . $row->pem_orgcode;
                     ?>
@@ -130,7 +137,7 @@
                 <td> : <?php echo $sppd->sppd_tgl; ?></td>
             </tr>
         </table>
-        
+
     </fieldset>
     <fieldset>
         <legend>Data Karyawan</legend>
@@ -214,15 +221,15 @@
             foreach ($approval_prg->result() as $rowapp) {
                 ?>
                 <tr>
-                    <td>Pemeriksa ke <?php echo $i." - ".$rowapp->job_name; ?> </td>
+                    <td>Pemeriksa ke <?php echo $i . " - " . $rowapp->job_name; ?> </td>
                     <td> : <?php
-                        echo $rowapp->emp_firstname . " " . $rowapp->emp_lastname . "/" . $rowapp->job_code . "-" . $rowapp->emp_id . "/" . $rowapp->org_code;
-                        if ($rowapp->status == 1) {
-                            echo '<b> - Approved</b>';
-                        } else {
-                            echo '<b> -    On Progress</b>';
-                        }
-                        ?></td>
+            echo $rowapp->emp_firstname . " " . $rowapp->emp_lastname . "/" . $rowapp->job_code . "-" . $rowapp->emp_id . "/" . $rowapp->org_code;
+            if ($rowapp->status == 1) {
+                echo '<b> - Approved</b>';
+            } else {
+                echo '<b> -    On Progress</b>';
+            }
+                ?></td>
                 </tr>
 
                 <?php
@@ -238,8 +245,8 @@
             <tr>
                 <td style="text-align: left;">Komentar :</td>
                 <td colspan="4" id="content4" style="text-align: left;"><?php
-                    foreach ($data_komentar->result() as $rowkomentar) {
-                        ?>
+            foreach ($data_komentar->result() as $rowkomentar) {
+                ?>
                         <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
                         <?php
                     }
@@ -255,9 +262,9 @@
             <?php
             $res = $result->row();
             ?>
-           
-           
-            
+
+
+
 
             <input type="hidden" name="approved" value="1" id="app"/>
             <input type="hidden" name="pem_id" value="<?php echo $res->emp_num; ?>"/>
