@@ -219,23 +219,6 @@ $("document").ready(function(){
         <legend>Komentar</legend>
         <table id="table-karyawan-3" style="width: 800px;">
             <tr>
-                <td style="text-align: left;">Komentar :</td>
-                <td colspan="4" id="content4" style="text-align: left;"><?php
-                    foreach ($data_komentar->result() as $rowkomentar) {
-                        ?>
-                        <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
-                        <?php
-                    }
-                    ?></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
                 <td style="text-align: left;">Tanggal/Komentator :</td>
                 <td colspan="4" style="text-align: left;"><?php
                     $datestring = "%d-%m-%Y";

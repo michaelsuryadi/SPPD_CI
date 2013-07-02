@@ -61,8 +61,10 @@
                     <li><a href="<?php echo base_url()?>index.php/sppd/telah_proses_sppd">SPPD Telah Diproses</a></li>
                 </ul></li>
             <li class="toplast"><a href="#" style="height:15px;line-height:15px;">Nota Dinas</a></li>
+            
             <li class="toplast"><a href="#" style="height:15px;line-height:15px;">Pengajuan Cuti</a></li>
-            <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">Utilities</a>
+            <li class="toplast"><a href="#" style="height:15px;line-height:15px;">View Gaji</a></li>
+            <li class="topmenu"><a href="#" style="height:15px;line-height:15px;">Utilitas</a>
                 <ul>
                     <li class="subfirst"><a href="<?php echo base_url() ?>index.php/utilities/edit_profile_view">Edit Profile</a></li>
                     <li><a href="#">Delegasi Jabatan</a></li>

@@ -56,6 +56,7 @@
                             success: function(data) {
                                 if(data=="OK") {
                                     alert('Request Berhasil Dikirim');
+                                    $('#reserve-btn').attr('disabled',true);
                                 }
                                 else {
                                     alert('Request Gagal Dikirim');
@@ -272,9 +273,52 @@ $sppd = $data_sppd->row();
 
         </table>
     </fieldset>
+    <fieldset>
+        <?php $reserve = $rservation_detail->row(); ?>
+        <legend>Reservation</legend>
+        <p style="margin-left:20px;"><b>Reservation Request : </b></p>
+        <table style="margin-left:20px;">
+            <tr>
+                <td>Deskripsi Flight : </td>
+            </tr>
+            <tr>
+                <td style="font-size:smaller;"><?php echo $reserve->flight_desc; ?></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Request Waktu : </td>
+            </tr>
+            
+            <tr>
+                <td style="font-size:smaller;"><?php echo $reserve->time_desc; ?></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Deskripsi Hotel : </td>
+            </tr>
+            <tr>
+                <td style="font-size:smaller"><?php echo $reserve->hotel_desc; ?></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>Request Dikirim Pada : </td>
+            </tr>
+            <tr>
+                <td style="font-size:smaller"><?php echo $reserve->send_date; ?></td>
+            </tr>
+        </table>
+        
+    </fieldset>
+    
     <fieldset style="text-align: center;">
         <legend>Options</legend>
-        <button id="reserve-btn">Request Reservation</button>
+        <button id="reserve-btn" <?php if($sppd->reserve_status == 1){ echo " disabled='disabled' "; } ?>>Request Reservation</button>
         <button id="print-btn">Print SPPD</button>
     </fieldset>
     <br/>
@@ -287,5 +331,4 @@ $sppd = $data_sppd->row();
             <td></td>
         </tr>
     </table>
-
 </div>

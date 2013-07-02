@@ -143,16 +143,6 @@ class Sppds extends CI_Model {
         $res = $q2->row();
         if ($this->input->post('tipe') == '1') {
 
-
-            $data2 = array(
-                "sppd_num" => $res->sppd_num,
-                "emp_num" => $res->emp_id,
-                "comment" => 'Submit - '-$this->input->post('komentator'),
-                "date_comment" => $tgl
-            );
-
-            $q2 = $this->db->insert("sppd_comment", $data2);
-
             $pemeriksa = $this->input->post('pemeriksa');
             $count = 1;
             for ($i = 0; $i < count($pemeriksa); $i++) {
@@ -204,8 +194,17 @@ class Sppds extends CI_Model {
                 $count++;
             }
 
-            $this->send_comment_data();
+            date_default_timezone_set("Asia/Jakarta");
+            $today = date("Y-m-d H:i:s");
 
+            $data = array(
+                "sppd_num" => $res->sppd_num,
+                "emp_num" => $res->emp_id,
+                "comment" => 'Submit - ' . $this->input->post('komentator'),
+                "date_comment" => $today
+            );
+
+            $q = $this->db->insert('sppd_comment', $data);
 
             if ($q && $q2) {
                 return true;
@@ -280,7 +279,7 @@ class Sppds extends CI_Model {
      */
 
     function load_data_sppd($sppdnum) {
-        $this->db->select("A.sppd_num,A.sppd_id,A.sppd_tgl,A.sppd_catt,A.sppd_dest,A.sppd_tuj,A.sppd_dsr,A.sppd_ket,A.sppd_depart,A.sppd_arrive,A.sppd_status,A.sppd_desc,B.emp_num,B.emp_id,B.emp_firstname,B.emp_lastname,B.job_code,B.org_code,C.emp_id as pem_id,C.emp_firstname as pem_fname,C.emp_lastname as pem_lname,C.job_code as pem_jobcode,C.org_code as pem_orgcode");
+        $this->db->select("A.sppd_num,A.sppd_id,A.sppd_tgl,A.sppd_catt,A.sppd_dest,A.sppd_tuj,A.sppd_dsr,A.sppd_ket,A.sppd_depart,A.reserve_status,A.sppd_arrive,A.sppd_status,A.sppd_desc,B.emp_num,B.emp_id,B.emp_firstname,B.emp_lastname,B.job_code,B.org_code,C.emp_id as pem_id,C.emp_firstname as pem_fname,C.emp_lastname as pem_lname,C.job_code as pem_jobcode,C.org_code as pem_orgcode");
         $this->db->from('sppd_data as A');
         $this->db->join('hrms_employees as B', 'A.emp_id=B.emp_num');
         $this->db->join('hrms_employees as C', 'A.emp_create_id=C.emp_num');
@@ -429,8 +428,6 @@ class Sppds extends CI_Model {
             );
 
             $this->db->insert('hrms_notification', $data5);
-
-            
         }
         date_default_timezone_set("Asia/Jakarta");
         $today = date("Y-m-d H:i:s");
@@ -438,7 +435,7 @@ class Sppds extends CI_Model {
         $data = array(
             "sppd_num" => $this->input->post('sppd_num'),
             "emp_num" => $this->input->post('pem_id'),
-            "comment" => 'Approve - '.$this->input->post('komentator'),
+            "comment" => 'Approve - ' . $this->input->post('komentator'),
             "date_comment" => $today
         );
 
@@ -611,10 +608,10 @@ class Sppds extends CI_Model {
             $this->db->where('order', '1');
             $this->db->where('sppd_num', $this->input->post('sppd_id'));
             $pemid = $this->db->get()->row()->pem_id;
-            
+
             $this->db->select('sppd_id');
             $this->db->from('sppd_data');
-            $this->db->where('sppd_num',$this->input->post('sppd_id'));
+            $this->db->where('sppd_num', $this->input->post('sppd_id'));
             $sppdid = $this->db->get()->row()->sppd_id;
 
             $time = time();
@@ -630,9 +627,57 @@ class Sppds extends CI_Model {
             );
 
             $this->db->insert('hrms_notification', $data5);
+
+            date_default_timezone_set("Asia/Jakarta");
+            $today = date("Y-m-d H:i:s");
+
+            $data = array(
+                "sppd_num" => $this->input->post('sppd_id'),
+                "emp_num" => $this->input->post('emp_num'),
+                "comment" => 'Approve - ' . $this->input->post('komentator'),
+                "date_comment" => $today
+            );
+
+            $q = $this->db->insert('sppd_comment', $data);
         }
 
         return true;
+    }
+
+    function tolak_sppd() {
+        $sppdnum = $this->input->post('sppd_num');
+
+        $data = array(
+            "sppd_status" => "4"
+        );
+        $this->db->where('sppd_num', $sppdnum);
+        $q = $this->db->update('sppd_data', $data);
+
+        date_default_timezone_set("Asia/Jakarta");
+        $today = date("Y-m-d H:i:s");
+
+        $data = array(
+            "sppd_num" => $sppdnum,
+            "emp_num" => $this->input->post('emp_num'),
+            "comment" => 'Reject - ' . $this->input->post('komentator'),
+            "date_comment" => $today
+        );
+
+        $q = $this->db->insert('sppd_comment', $data);
+
+        
+        $data2 = array(
+            "flag"=>0
+        );
+        $this->db->where('sppd_num',$sppdnum);
+        $this->db->where('emp_id',$this->input->post('emp_num'));
+        $q2 = $this->db->update('sppd_examine',$data2);
+        
+        if ($q && $q2) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

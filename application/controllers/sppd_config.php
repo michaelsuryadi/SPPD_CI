@@ -34,7 +34,7 @@ class Sppd_config extends CI_Controller {
         if ($this->input->post('keyword') == null || $this->input->post('keyword') == "") {
             $query = $this->employee->get_detail_emp($username);
             $res = $query->row();
-            $mgrId = $this->employee->get_mgr_id($res->emp_num);
+            $mgrId = 0;
             $arrdata = array();
             $data['all_atasan'] = $this->employee->get_all_atasan($mgrId, $arrdata, 0);
         }

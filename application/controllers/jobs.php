@@ -17,15 +17,16 @@ class Jobs extends CI_Controller {
     /*
      * Untuk menampilkan form untuk add job baru
      */
+
     function form_job() {
         $res = $this->get_session();
         $data['result'] = $res['result'];
         $data['title'] = 'Add Job';
         $this->load->model('organization');
-        
+
         $this->load->model('job');
         $data['job_curr_num'] = $this->job->load_curr_num();
-        
+
         $data['org'] = $this->organization->get_all_org();
         $data['mid_content'] = 'content/job/add_job';
         $this->load->view('includes/home_template', $data);
@@ -34,6 +35,7 @@ class Jobs extends CI_Controller {
     /*
      * untuk memperoleh username dari session yang sedang aktif
      */
+
     function get_session() {
         $this->load->model('employee');
         $username = $this->session->userdata('username');
@@ -45,7 +47,7 @@ class Jobs extends CI_Controller {
     /*
      * Untuk memproses add job
      */
-    
+
     function process_add() {
         $this->load->model('job');
         $q = $this->job->add_job();
@@ -54,19 +56,20 @@ class Jobs extends CI_Controller {
             redirect('/jobs');
         }
     }
-    
-    function process_add_ajax(){
+
+    function process_add_ajax() {
         $this->load->model('job');
         $q = $this->job->add_job_ajax();
 
-        if ($q !="") {
-            echo "<option value='".$q."'>".$this->input->post('job_name')."</option>;".$q;
+        if ($q != "") {
+            echo "<option value='" . $q . "'>" . $this->input->post('job_name') . "</option>;" . $q;
         }
     }
 
     /*
      * Function untuk memproses update job
      */
+
     function upd() {
         $get = $this->uri->uri_to_assoc();
         $data['id'] = $get['id'];
@@ -85,7 +88,7 @@ class Jobs extends CI_Controller {
     /*
      * Function untuk mengupdate perubahan dari data job
      */
-    
+
     function process_update() {
         $this->load->model('job');
         $q = $this->job->upd_job();
@@ -94,34 +97,54 @@ class Jobs extends CI_Controller {
             redirect('/jobs');
         }
     }
-    
+
     /*
      * Function untuk menampilkan list job berdasarkan organisasi masing-masing
      */
-    function load_job(){
+
+    function load_job() {
         $this->load->model('job');
         $q = $this->job->list_job_by_org();
         echo $q;
     }
-    
+
     /*
      * Function untuk menampilkan manager dari setiap job
      */
-    function load_mgr(){
+
+    function load_mgr() {
         $this->load->model('job');
         $q = $this->job->get_mgr_detail();
         echo $q;
     }
-    
-     function pilih_employee(){
+
+    function pilih_employee() {
         $get = $this->uri->uri_to_assoc();
         $id = $get['id'];
         $this->load->model('employee');
-        
+
         $data['employee'] = $this->employee->load_emp_by_org($id);
         $username = $this->session->userdata('username');
         $data['title'] = 'Pilih Employee';
         $this->load->view('content/job/pilih_employee', $data);
-        
     }
+
+    function get_web_page(){
+        $this->load->model('reservation_model');
+        $q = (array) $this->reservation_model->get_web_page();
+        
+        foreach ($q['pointer'] as $key=>$value){
+            echo $value->name.'<br/>';
+        }
+    }
+    
+    function get_web_page_2(){
+        $this->load->model('reservation_model');
+        $q = (array) $this->reservation_model->get_web_page_2();
+        
+        foreach ($q['airlines'] as $key=>$value){
+            echo $value->code." ".$value->name." ".$value->label.'<br/>';
+        }
+    }
+
 }

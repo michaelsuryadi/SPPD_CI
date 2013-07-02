@@ -2,10 +2,13 @@
     $('document').ready(function() {
         $("#dialog-form").dialog({
             autoOpen: false,
-            width: 350,
+            width: 400,
             modal: true,
             position: 'top',
             buttons: {
+                "Proses Resrevasi" : function (){
+            
+                },
                 "Close": function() {
                     $(this).dialog("close");
                 }
@@ -26,19 +29,42 @@
                     var flight = data.split('!@#')[0];
                     var time = data.split('!@#')[1];
                     var hotel = data.split('!@#')[2];
+                    var sppdid = '<b>'+data.split('!@#')[3]+'</b>';
+                    var tuj = '<b>'+data.split('!@#')[4]+'</b>';
                     
                     $('#flight-desc').html(flight);
                     $('#time-desc').html(time);
                     $("#hotel-desc").html(hotel);
+                    $('#sppd_id').html(sppdid);
+                    $('#sppd_tuj').html(tuj);
+                    
                 }
             });
+        });
+        
+        $('.proses-btn').click(function(){
+            var id = $(this).attr('id').split('-')[1];
+            window.location='<?php echo base_url(); ?>index.php/reservation/reservation_view/id/'+id;
         });
     });
 
 
 </script>
 
-<div id="dialog-form" title="View Description">
+<div id="dialog-form" title="Lihat Deskripsi    ">
+    <fieldset>
+        <legend>SPPD Description</legend>
+        <table style="font-size: smaller;">
+            <tr>
+                <td><b>SPPD ID : </b></td>
+                <td id="sppd_id"></td>
+            </tr>
+            <tr>
+                <td><b>Tujuan Perjalanan : </b></td>
+                <td id="sppd_tuj"></td>
+            </tr>
+        </table>
+    </fieldset>
     <fieldset>
         <legend>Flight Description</legend>
         <p id="flight-desc" style="font-size: smaller;"></p>
@@ -55,7 +81,7 @@
 
 
 <div id="content">
-    <h2 style="margin: 0px; padding: 20px; text-align: left;">List Reservation Request</h2>
+    <h2 style="margin: 0px; padding: 20px; text-align: left;">List Permintaan Reservasi</h2>
     <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/style.css"/>
     <div id="content-sppd-left" style='border-top: 1px dotted black;'>
         <div id="sppd-right-title" style="">
@@ -92,7 +118,7 @@
 
     <div id="content-sppd-right" style='border-top: 1px dotted black;'>
         <div id="sppd-right-title" style="">
-            <p style="margin-left: 20px; margin-top: 10px;"><b>List Seluruh Request : </b></p>
+            <p style="margin-left: 20px; margin-top: 10px;"><b>List Seluruh Permintaan : </b></p>
         </div>
         <div id="sppd-right-filter">
             <div id='filter-left'>
@@ -127,13 +153,13 @@
                     <td><?php echo $row->job_name; ?></td>
                     <td><?php echo $row->sppd_depart; ?></td>
                     <td><?php echo $row->sppd_arrive; ?></td>
-                    <td><button id="<?php echo $row->req_id; ?>" class="desc-button" style="font-size: smaller;">View Deskripsi</button></td>
+                    <td><button id="<?php echo $row->req_id; ?>" class="desc-button" style="font-size: smaller;">Lihat Deskripsi</button></td>
                     <td><?php if ($row->status == 1) {
                 echo 'Belum Di Proses';
             } else {
                 echo 'Sudah Di proses';
             } ?></td>
-                    <td><button>Proses</button></td>
+                    <td><button class="proses-btn" id="req-<?php echo $row->req_id; ?>">Proses</button></td>
                 </tr>
                 <?php
             }

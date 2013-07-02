@@ -76,6 +76,25 @@
             window.location = '<?php echo base_url(); ?>index.php/site';
             return false;
         });
+        
+        var i = 1;
+        
+        $('#addfile-btn').click(function(){
+            var isi = "<tr id=\"baris-"+i+"\"><td style=\"text-align: left;\">File Lampiran :</td><td colspan=\"1\" style=\"text-align: left;\"><input type=\"file\" name=\"lampiran[]\" /></td><td colspan=\"2\"><button class=\"btn-"+i+"\" id=\"addfile-btn\">&nbsp;-</button> Hapus &nbsp;</td></tr>"
+//            var isi = "<input type=\"file\" name=\"lampiran[]\" "
+            $('#table-karyawan-2').append(isi);
+            
+            $(".btn-"+i).click(function(){
+                var id = $(this).attr("class").split('-')[1];
+                
+                $('#baris-'+id).remove();
+                
+                return false;
+                
+            });
+            i++;
+            return false;
+        });
     });
 
 
@@ -216,16 +235,10 @@
             <table id="table-karyawan-2" style="width: 800px;">
                 <tr>
                     <td style="text-align: left;">File Lampiran :</td>
-                    <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
+                    <td colspan="1" style="text-align: left;"><?php echo form_upload('lampiran[]'); ?></td>
+                    <td colspan="2"><button id="addfile-btn">+</button> Tambah</td>
                 </tr>
-                <tr>
-                    <td style="text-align: left;">File Lampiran :</td>
-                    <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;">File Lampiran :</td>
-                    <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
-                </tr>
+                
             </table>
         </fieldset>
         <fieldset>

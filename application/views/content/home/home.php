@@ -7,7 +7,7 @@
                 <img width="100" style="margin-left: 20px; margin-top: 20px;" height="100" src="<?php echo base_url();?>css/notification.png"/>
             </div>
             <div class="content-left-2">
-                <p><b>Notifications :</b></p>
+                <p><b>Notifikasi :</b></p>
                 <?php foreach($notif->result() as $rownotif){
                     
                     ?>
@@ -33,7 +33,7 @@
                 <?php
                     if($notif->num_rows() > 0){
                         ?>
-                        <br/><a href="<?php echo base_url(); ?>index.php/notif">See All Notifications..</a>
+                        <br/><a href="<?php echo base_url(); ?>index.php/notif">Lihat Semua Nofifikasi..</a>
                     <?php
                         }
                         else {

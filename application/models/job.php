@@ -24,58 +24,58 @@ class Job extends CI_Model {
             'job_id' => $this->input->post('job_id'),
             'job_name' => $this->input->post('job_name'),
             'job_description' => $this->input->post('job_description'),
-            'job_code'=> $this->input->post('job_code'),
+            'job_code' => $this->input->post('job_code'),
             'org_num' => $this->input->post('organization')
         );
 
         $q = $this->db->insert('hrms_job', $data);
-        
+
         $this->db->select('job_counter_id');
         $this->db->from('hrms_counter');
         $counter = $this->db->get()->row()->job_counter_id;
-        
+
         $nextCounter = $counter + 1;
-        
+
         $data2 = array(
-            'job_counter_id'=>$nextCounter
+            'job_counter_id' => $nextCounter
         );
-        $this->db->where('id','1');
-        $this->db->update('hrms_counter',$data2);
-        
+        $this->db->where('id', '1');
+        $this->db->update('hrms_counter', $data2);
+
         if ($q) {
             return true;
         } else {
             return false;
         }
     }
-    
-    function add_job_ajax(){
+
+    function add_job_ajax() {
         $data = array(
             'job_id' => $this->input->post('job_id'),
             'job_name' => $this->input->post('job_name'),
             'job_description' => $this->input->post('job_description'),
-            'job_code'=> $this->input->post('job_code'),
+            'job_code' => $this->input->post('job_code'),
             'org_num' => $this->input->post('organization')
         );
 
         $q = $this->db->insert('hrms_job', $data);
-        
+
         $this->db->select('job_counter_id');
         $this->db->from('hrms_counter');
         $counter = $this->db->get()->row()->job_counter_id;
-        
+
         $nextCounter = $counter + 1;
-        
+
         $data2 = array(
-            'job_counter_id'=>$nextCounter
+            'job_counter_id' => $nextCounter
         );
-        $this->db->where('id','1');
-        $this->db->update('hrms_counter',$data2);
-        
+        $this->db->where('id', '1');
+        $this->db->update('hrms_counter', $data2);
+
         if ($q) {
             $this->db->select('job_num');
             $this->db->from('hrms_job');
-            $this->db->where('job_id',$this->input->post('job_id'));
+            $this->db->where('job_id', $this->input->post('job_id'));
             $jobid = $this->db->get()->row()->job_num;
             return $jobid;
         } else {
@@ -95,6 +95,7 @@ class Job extends CI_Model {
 
         return $q;
     }
+
     /*
      * function untuk mengudate job data
      */
@@ -104,9 +105,9 @@ class Job extends CI_Model {
             'job_id' => $this->input->post('job_id'),
             'job_name' => $this->input->post('job_name'),
             'job_description' => $this->input->post('job_description'),
-            'job_code'=>$this->input->post('job_code'),
+            'job_code' => $this->input->post('job_code'),
             'org_num' => $this->input->post('org'),
-            'emp_num'=>$this->input->post('emp_num')
+            'emp_num' => $this->input->post('emp_num')
         );
 
         $this->db->where('job_id', $this->input->post('job_id'));
@@ -118,11 +119,11 @@ class Job extends CI_Model {
             return false;
         }
     }
-    
-    function update_user($empnum){
-        $data = array("status"=>"1");
-        $this->db->where('emp_id',$empnum);
-        $this->db->update('hrms_user',$data);
+
+    function update_user($empnum) {
+        $data = array("status" => "1");
+        $this->db->where('emp_id', $empnum);
+        $this->db->update('hrms_user', $data);
     }
 
     /*
@@ -193,7 +194,7 @@ class Job extends CI_Model {
 
         return json_encode($q->result_array());
     }
-    
+
     function load_job_by_org($org) {
         $this->db->select('A.job_num,A.job_code,A.job_name,A.emp_num,A.job_id,B.org_code');
         $this->db->from('hrms_job as A');
@@ -208,6 +209,7 @@ class Job extends CI_Model {
      * Function untuk memperoleh detail manager
      * berdasarkan job number nya masing-masing
      */
+
     function get_mgr_detail() {
         $jobnum = $this->input->post('job_num');
 
@@ -222,6 +224,7 @@ class Job extends CI_Model {
     /*
      * function untuk memperoleh counter job number terakhir
      */
+
     function load_curr_num() {
         $this->db->select('job_start_num,job_counter_id');
         $this->db->from('hrms_counter');
@@ -231,7 +234,7 @@ class Job extends CI_Model {
         $curr_num = $row->job_start_num + $row->job_counter_id;
         return $curr_num;
     }
+
     
-   
 
 }

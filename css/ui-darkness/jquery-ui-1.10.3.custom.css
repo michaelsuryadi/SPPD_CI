@@ -148,6 +148,7 @@ div.ui-datepicker{
 	margin: .5em .4em .5em 0;
 	cursor: pointer;
 }
+
 .ui-dialog .ui-resizable-se {
 	width: 12px;
 	height: 12px;
@@ -326,7 +327,7 @@ div.ui-datepicker{
 ----------------------------------*/
 .ui-widget {
 	font-family: Verdana,Arial,sans-serif;
-	font-size: 1.1em;
+	font-size:14px;
 }
 .ui-widget .ui-widget {
 	font-size: 1em;
@@ -342,6 +343,7 @@ div.ui-datepicker{
 	border: 1px solid #aaaaaa;
 	background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
 	color: #222222;
+        min-width: 200px;
 }
 .ui-widget-content a {
 	color: #222222;

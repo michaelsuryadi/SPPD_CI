@@ -13,7 +13,7 @@ $sppd = $data_sppd->row();
 ?>
 <script type="text/javascript">
     $('document').ready(function() {
-        $('#send-btn').click(function() {
+        $('#setuju-btn').click(function() {
             var isi = $('#komentar').val();
             var sppdnum = $('#sppd_number').val();
             var empnum = $('#emp_number').val();
@@ -21,50 +21,54 @@ $sppd = $data_sppd->row();
                 alert("Komentar Tidak Boleh Kosong");
             }
             else {
-                $.ajax({
-                    type: "POST",
-                    url: "http://127.0.0.1/sppd_ci/index.php/sppd/send_comment",
-                    data: "sppdnum=" + sppdnum + " &isi=" + isi + " &empnum=" + empnum,
-                    success: function(data) {
-                        if (data != "") {
-                            alert("Komentar telah terkirim");
-                            $("#content4").append(data + "<br/>");
-                            $("#komentar").val("");
-                        }
-                    }
-                });
+                $('#form-sppd').submit();
+                alert('SPPD berhasil di approve');
             }
-
             return false;
         });
 
-        $('#komentar').keyup(function() {
+//        $('#komentar').keyup(function() {
             
-            if ($('#komentar').val() != "") {
-                $('#simpan-btn').attr('disabled', false);
-                $('#setuju-btn').attr('disabled', false);
-                $('#return-btn').attr('disabled', false);
-                $('#reject-btn').attr('disabled', false);
-            }
-            else {
-                $('#simpan-btn').attr('disabled', true);
-                $('#setuju-btn').attr('disabled', true);
-                $('#return-btn').attr('disabled', true);
-                $('#reject-btn').attr('disabled', true);
-            }
-        });
+//            if ($('#komentar').val() != "") {
+//                $('#simpan-btn').attr('disabled', false);
+//                $('#setuju-btn').attr('disabled', false);
+//                $('#return-btn').attr('disabled', false);
+//                $('#reject-btn').attr('disabled', false);
+//            }
+//            else {
+//                $('#simpan-btn').attr('disabled', true);
+//                $('#setuju-btn').attr('disabled', true);
+//                $('#return-btn').attr('disabled', true);
+//                $('#reject-btn').attr('disabled', true);
+//            }
+//        });
 
-        $("#cancel-btn").click(function() {
-
+        $('#return-btn').click(function(){
             $('#frm-reject').submit();
             return false;
         });
-
-        $('#edit-btn').click(function() {
-            window.location = "<?php echo base_url(); ?>index.php/sppd/edit_sppd_by_pemeriksa/id/<?php echo $row->sppd_num; ?>";
-
-            return false;
+        
+        $('#reject-btn').click(function(){
+           $('#frm-tolak').submit();
+           return false;
         });
+
+//        $("#cancel-btn").click(function() {
+//
+//            $('#frm-reject').submit();
+//            return false;
+//        });
+//
+//        $('#edit-btn').click(function() {
+//            
+//
+//            return false;
+//        });
+        
+//        $('#simpan-btn').click(function(){
+//            return false;
+//        });
+        
     });
 
 </script>
@@ -74,8 +78,8 @@ $sppd = $data_sppd->row();
     <div style="text-align: right; margin-left: 570px;">
         <?php
         $this->load->helper('form');
-        echo form_open("sppd/approve_sppd");
         ?>
+        <form id="form-sppd" method="post" action="<?php echo base_url(); ?>index.php/sppd/approve_sppd"/>
         <table>
             <tr><td><b>Status Dokumen</b></td><td>: Sedang Diproses</td></tr>
             <tr><td><b>Pembuat Dokumen</b></td>
@@ -268,17 +272,21 @@ $sppd = $data_sppd->row();
         </table>
     </fieldset>
     <br/>
+    <?php echo form_close(); ?>
     <table id="table-karyawan-3" style="width: 800px">
         <tr>
             <td></td>
             <td></td>
-            <td style="width: 500px;"><button class="btn2" id="simpan-btn" onclick="return false;">Simpan</button><button class="btn2" id="setuju-btn">Setuju</button><button class="btn2" id="return-btn">Kembalikan</button><button disabled="disabled" class="btn2" id="reject-btn">Tolak</button><button  id="tutup-btn">Tutup</button></td>
+            <td style="width: 500px;"><button id="simpan-btn">Simpan</button><button id="setuju-btn">Setuju</button><button id="return-btn">Kembalikan</button><button id="reject-btn">Tolak</button><button  id="tutup-btn">Tutup</button></td>
             <td></td>
             <td></td>
         </tr>
     </table>
-    <?php echo form_close(); ?>
     <form id="frm-reject" method="post" action="<?php echo base_url(); ?>index.php/sppd/reject_sppd">
         <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>"/>
+    </form>
+    <form id="frm-tolak" method="post" action="<?php echo base_url(); ?>index.php/sppd/tolak_sppd">
+        <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>"/>
+        <input type="hidden" name="emp_num" value="<?php echo $sppd->emp_num; ?>"/>
     </form>
 </div>

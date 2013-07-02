@@ -187,6 +187,7 @@ class Sppd extends CI_Controller {
         $get = $this->uri->uri_to_assoc();
         $sppdId = $get['id'];
         $this->load->model('sppds');
+        $this->load->model('reservation_model');
 
         $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
         $data['data_komentar'] = $this->sppds->load_comment($sppdId);
@@ -195,6 +196,8 @@ class Sppd extends CI_Controller {
         $this->load->model('employee');
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
+        $data['rservation_detail'] = $this->reservation_model->load_request_data($sppdId);
+        
         $employee = $data['result'];
 
 
@@ -220,8 +223,6 @@ class Sppd extends CI_Controller {
         $data['title'] = 'Pilih Pemeriksa';
         $this->load->model('employee');
         $username = $this->session->userdata('username');
-
-
 
         if ($this->input->post('keyword') == null || $this->input->post('keyword') == "") {
             $query = $this->employee->get_detail_emp($username);
@@ -284,6 +285,15 @@ class Sppd extends CI_Controller {
         
         if($q){
             redirect('/sppd/draft_sppd');
+        }
+    }
+    
+    function tolak_sppd(){
+        $this->load->model('sppds');
+        $q = $this->sppds->tolak_sppd();
+        
+        if($q){
+            redirect('/sppd/perlu_proses_sppd');
         }
     }
 }
