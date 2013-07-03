@@ -199,7 +199,7 @@ class Reservation_model extends CI_Model {
         
         $options = array(
             CURLOPT_POST => "1",
-            CURLOPT_POSTFIELDS => "airline=".$airline."&from_city=" .$from ."&to_city=" . $to."&tgl_flight=".$tgl_flight."&jml_penumpang=".$jml_penumpang."&jml_children=".$jml_children."&jml_infant=".$jml_infant,
+            CURLOPT_POSTFIELDS => "airline=".$airline."&from_city=" .$from_city ."&to_city=" . $to_city."&tgl_flight=".$tgl_flight."&jml_penumpang=".$jml_penumpang."&jml_children=".$jml_children."&jml_infant=".$jml_infant,
             CURLOPT_HTTPAUTH => CURLAUTH_DIGEST,
             CURLOPT_USERPWD => 'demo@pointer.co.id:oBZBG0worRFP',
             CURLOPT_HTTPHEADER => array('MARS-API-KEY: cce893e203a9ec54c989ec5e29559588'),
@@ -212,7 +212,8 @@ class Reservation_model extends CI_Model {
 //            CURLOPT_USERPWD => 'demo@pointer.co.id:oBZBG0worRFP',
 //            CURLOPT_HTTPHEADER => array('MARS-API-KEY: cce893e203a9ec54c989ec5e29559588')
 //        );
-//        $ch = curl_init($url);
+        
+        $ch = curl_init($url);
 
         curl_setopt_array($ch, $options);
         $content = curl_exec($ch);

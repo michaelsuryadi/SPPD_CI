@@ -50,7 +50,7 @@
         $("#dialog-form-flight").dialog({
             autoOpen: false,
             width: 950,
-            height: 360,
+            height: 650,
             hide: 'fadeOut',
             show: 'fadeIn',
             modal: true,
@@ -128,8 +128,6 @@
             });
         });
         
-         
-
         
         $("#depart").datepicker({
             showOn: "button",
@@ -145,7 +143,7 @@
         });
         
         $('#search-btn').click(function(){
-            
+            $('#loading-text').show();
             var from = $('#flight-from').val();
             var to = $('#flight-to').val();
             var airline = $('#list-airline').val();
@@ -153,13 +151,42 @@
             var jmlpenumpang = $('#adl').val();
             var jmlchildren = $('#chl').val();
             var jmlinfant = $('#inf').val();
-              $.ajax({
+            var dt = "airline="+airline+"&from_city="+from +"&to_city="+to+"&tgl_flight="+tglflight+"&jml_penumpang="+jmlpenumpang+"&jml_children="+jmlchildren+"&jml_infant="+jmlinfant;
+            $('body').css('cursor', 'wait');
+            
+        $.ajax({
                 type: "POST",
                 url: "http://127.0.0.1/sppd_ci/index.php/reservation/search_flight",
-                dataType: "JSON",
-                data: "airline="+airline+"&from_city="+from +"&to_city="+to+"&tgl_flight="+tglflight+"&jml_penumpang="+jmlpenumpang+"&jml_children="+jmlchildren+"&jml_infant="+jmlinfant,
+                data: dt,
                 success: function(data) {
-                    alert(data);
+                    $('#search-form').hide();
+                    $('#form-search-result').fadeIn();
+                    $('body').css('cursor', 'auto');
+                    
+                    $('#dialog-form').css('min-height','500px');
+                    
+                    var content = JSON.parse(data);
+                    var fromcity = content.flight.result_summary.dep_route.depart.airport_name;
+                    var fromiata = content.flight.result_summary.dep_route.depart.airport_iata;
+                    var tocity = content.flight.result_summary.dep_route.arrival.airport_name;
+                    var toiata = content.flight.result_summary.dep_route.arrival.airport_iata;        
+                    
+                    var destination_text = fromcity + " (" + fromiata + ") Ke "+tocity+" ("+toiata+")";
+                    
+                    $('#destination-text').html(destination_text);
+                    
+                    var total = content.flight.departures.result.length;
+                    alert(total);
+                    var i = 0;
+                    for(i=0; i<total; i++){
+                        var isi = "<tr>";
+                        isi += "<td>"+content.flight.departures.result[i].airline_name+" - "+content.flight.departures.result[i].flight_number+"</td>";
+                        isi += "<td>"+content.flight.departures.result[i].depart_time+"</td>";
+                        isi += "<td>"+content.flight.departures.result[i].arrival_time+"</td>";
+                        isi += "</tr>";
+                        
+                        $('#flight-data').append(isi);
+                    }
                 }
             });  
             
@@ -192,6 +219,7 @@
         <h4 style="margin-left:20px; margin-bottom: 5px;">Form Reservasi Airline</h4>
 
     </div>
+    <div id="search-form">
     <fieldset>
         <legend style="font-size:smaller">Cari Airline</legend>
     <table style="font-size:smaller; margin-top: 5px; width: 650px;">
@@ -244,10 +272,29 @@
             </td>
         </tr>
         <tr>
-            <td colspan="5"><button id="search-btn">Search Airline</button></td>
+            <td colspan="4"><button id="search-btn">Search Airline</button></td>
+            <td><p id="loading-text" style="font-size: smaller; display: none;"><img src="<?php echo base_url(); ?>css/ajax-loader.gif" style="width: 20px; height:10px;" /> &nbsp; Connecting To Service...</p></td>
         </tr>
     </table>
     </fieldset>
+        
+    </div>
+        <div id="form-search-result" style="display:none;">
+            <p style="font-size: smaller; margin-left:20px;"><b>Search Result : </b></p>
+            <div id="tambah" style="padding-left:20px;">
+                <p style="font-size: smaller;" id="destination-text"></p>
+                
+                <table id="flight-data" style="width:400px; font-size: smaller;">
+                    <thead style="background-color: black; color: white;">
+                        <th>Flight</th>
+                        <th>Depart</th>
+                        <th>Arrive</th>
+                    </thead>
+                </table>
+                
+            </div>
+            
+        </div>    
 
 
 </div>
