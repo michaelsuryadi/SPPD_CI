@@ -6,9 +6,6 @@
             modal: true,
             position: 'top',
             buttons: {
-                "Proses Resrevasi" : function (){
-            
-                },
                 "Close": function() {
                     $(this).dialog("close");
                 }
@@ -162,6 +159,7 @@
                     <td><button class="proses-btn" id="req-<?php echo $row->req_id; ?>">Proses</button></td>
                 </tr>
                 <?php
+                $i++;
             }
             ?>
 

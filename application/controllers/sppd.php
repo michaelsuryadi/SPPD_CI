@@ -143,6 +143,8 @@ class Sppd extends CI_Controller {
         $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
         $data['data_komentar'] = $this->sppds->load_comment($sppdId);
         $data['pemeriksa'] = $this->sppds->load_pemeriksa_sppd($sppdId);
+        
+        $data['order'] = $this->sppds->get_order_pemeriksa($sppdId);
         $data['title'] = 'View SPPD';
         $data['mid_content'] = 'content/sppd/view_sppd';
 
@@ -294,6 +296,17 @@ class Sppd extends CI_Controller {
         
         if($q){
             redirect('/sppd/perlu_proses_sppd');
+        }
+    }
+    
+    function process_update(){
+        $sppdnum = $this->input->post('sppd_num2');
+        echo $sppdnum;
+        $this->load->model('sppds');
+        $q = $this->sppds->update_sppd_by_pemeriksa();
+        
+        if($q){
+            redirect('/sppd/view_sppd/id/'.$sppdnum);
         }
     }
 }

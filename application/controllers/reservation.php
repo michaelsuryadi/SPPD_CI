@@ -70,6 +70,8 @@ class Reservation extends CI_Controller {
 //            $this->load->model('reservation_model');
 //            $data['airport'] = (array) $this->reservation_model->get_list_airport();
             $data['reservation'] = $this->reservation_model->get_detail_reservation($id);
+            $data['booking'] = $this->reservation_model->get_list_booking($id);
+//            $data['country'] = (array)$this->reservation_model->get_list_country();
             $data['mid_content'] = 'content/reservation/reservation_view';
             $this->load->view('includes/home_template', $data);
         } else {
@@ -84,9 +86,36 @@ class Reservation extends CI_Controller {
         echo $q;
     }
     
+    function get_country(){
+        $this->load->model('reservation_model');
+        $data['country'] = $this->reservation_model->get_list_country();
+        
+        print_r($data['country']);
+    }
+    
     function search_flight(){
         $this->load->model('reservation_model');
         $q = $this->reservation_model->search_flight();
+        
+        echo $q;
+    }
+    
+    function get_list_city() {
+        $this->load->model('reservation_model');
+        $q = $this->reservation_model->get_list_city();
+        echo $q->Cities;
+    }
+    
+    function get_build_pnr(){
+        $this->load->model('reservation_model');
+        $q = $this->reservation_model->get_build_pnr();
+        
+        echo $q;
+    }
+    
+    function process_booking(){
+        $this->load->model('reservation_model');
+        $q = $this->reservation_model->process_booking();
         
         echo $q;
     }

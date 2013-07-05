@@ -58,7 +58,7 @@ $("document").ready(function(){
             </tr>
         </table>
     </div>
-    <form id="form-data" method="post" action="<?php echo base_url() ?>index.php/sppd/process">
+    <form id="form-data" method="post" action="<?php echo base_url() ?>index.php/sppd/process_update">
     <?php
     $this->load->helper('form');
     
@@ -89,7 +89,7 @@ $("document").ready(function(){
                 ?>
                 <td><?php
                 echo form_hidden("emp_num", $dataSppd->emp_num);
-    
+                echo form_hidden('sppd_num2',$dataSppd->sppd_num);
     ?>
                     
                     <input type="text" name="first_name" disabled="disabled" value="<?php echo $dataSppd->emp_firstname.' '.$dataSppd->emp_lastname; ?>"/>
@@ -168,15 +168,6 @@ $("document").ready(function(){
 <?php ?>
     </fieldset>
     <fieldset>
-        <legend>Data Lampiran</legend>
-        <table id="table-karyawan-2" style="width: 800px;">
-            <tr>
-                <td style="text-align: left;">File Lampiran :</td>
-                <td colspan="4" style="text-align: left;"><?php echo form_upload(); ?></td>
-            </tr>
-        </table>
-    </fieldset>
-    <fieldset>
         <legend>Pemeriksa</legend>
         <table>
             <?php
@@ -229,6 +220,7 @@ $("document").ready(function(){
             <td></td>
             <td></td>
         </tr>
-        <?php echo form_close(); ?>
+        
     </table>
+    </form>
 </div>

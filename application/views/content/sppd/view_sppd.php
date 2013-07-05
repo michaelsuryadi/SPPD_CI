@@ -28,7 +28,7 @@ $sppd = $data_sppd->row();
         });
 
 //        $('#komentar').keyup(function() {
-            
+
 //            if ($('#komentar').val() != "") {
 //                $('#simpan-btn').attr('disabled', false);
 //                $('#setuju-btn').attr('disabled', false);
@@ -43,14 +43,17 @@ $sppd = $data_sppd->row();
 //            }
 //        });
 
-        $('#return-btn').click(function(){
+        $('#return-btn').click(function() {
+            var isi_komentar = $('#komentar').val();
+            $('#komentar2').val(isi_komentar);
             $('#frm-reject').submit();
+            
             return false;
         });
-        
-        $('#reject-btn').click(function(){
-           $('#frm-tolak').submit();
-           return false;
+
+        $('#reject-btn').click(function() {
+            $('#frm-tolak').submit();
+            return false;
         });
 
 //        $("#cancel-btn").click(function() {
@@ -59,16 +62,17 @@ $sppd = $data_sppd->row();
 //            return false;
 //        });
 //
-//        $('#edit-btn').click(function() {
-//            
-//
-//            return false;
-//        });
-        
+        $('#edit-btn').click(function() {
+
+            var id = $('#sppd_number').val();
+            window.location = "<?php echo base_url(); ?>index.php/sppd/edit_sppd_by_pemeriksa/id/" + id;
+            return false;
+        });
+
 //        $('#simpan-btn').click(function(){
 //            return false;
 //        });
-        
+
     });
 
 </script>
@@ -79,19 +83,19 @@ $sppd = $data_sppd->row();
         <?php
         $this->load->helper('form');
         ?>
-        <form id="form-sppd" method="post" action="<?php echo base_url(); ?>index.php/sppd/approve_sppd"/>
-        <table>
-            <tr><td><b>Status Dokumen</b></td><td>: Sedang Diproses</td></tr>
-            <tr><td><b>Pembuat Dokumen</b></td>
-                <td>: 
-                    <?php
-                    $res = $result->row();
-                    $row = $data_sppd->row();
-                    echo $row->pem_fname . " " . $row->pem_lname . "/" . $row->pem_jobcode . "-" . $row->pem_id . '/' . $row->pem_orgcode;
-                    ?>
-                </td>
-            </tr>
-        </table>
+        <form id="form-sppd" method="post" action="<?php echo base_url(); ?>index.php/sppd/approve_sppd">
+            <table>
+                <tr><td><b>Status Dokumen</b></td><td>: Sedang Diproses</td></tr>
+                <tr><td><b>Pembuat Dokumen</b></td>
+                    <td>: 
+                        <?php
+                        $res = $result->row();
+                        $row = $data_sppd->row();
+                        echo $row->pem_fname . " " . $row->pem_lname . "/" . $row->pem_jobcode . "-" . $row->pem_id . '/' . $row->pem_orgcode;
+                        ?>
+                    </td>
+                </tr>
+            </table>
     </div>
     <?php
     ?>
@@ -114,6 +118,7 @@ $sppd = $data_sppd->row();
             </tr>
             <tr>
             <input type="hidden" id="sppd_number" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>" />
+            <input type="hidden" id="sppd_number" name="sppd_num3" value="<?php echo $sppd->sppd_num; ?>" />
             <input type="hidden" id="emp_number" name="emp_num" value="<?php echo $res->emp_num; ?>" />
 
             <td><?php echo $sppd->emp_firstname . " " . $sppd->emp_lastname . " / " . $sppd->emp_id . "/" . $sppd->job_code ?></td>
@@ -198,11 +203,12 @@ $sppd = $data_sppd->row();
                     <tr>
                         <td></td>
                         <td><p style="margin-left:105px;"><?php
-            echo form_open('sppd/save_profile');
-            echo form_checkbox('save_check');
-                    ?>  Save Profile</p></td>
+//            echo form_open('sppd/save_profile');
+                                echo form_checkbox('save_check');
+                                ?>  Save Profile</p></td>
                     </tr>
                     <?php
+//                    echo form_close();
                 }
             }
             ?>
@@ -220,8 +226,8 @@ $sppd = $data_sppd->row();
                 <tr>
                     <td style="text-align: left;">Komentar :</td>
                     <td colspan="4" id="content4" style="text-align: left;"><?php
-            foreach ($data_komentar->result() as $rowkomentar) {
-                    ?>
+                        foreach ($data_komentar->result() as $rowkomentar) {
+                            ?>
                             <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
                             <?php
                         }
@@ -240,11 +246,11 @@ $sppd = $data_sppd->row();
             <tr>
                 <td style="text-align: left;">Tanggal/Komentator :</td>
                 <td colspan="4" style="text-align: left;"><?php
-            $datestring = "%d-%m-%Y";
-            $time = time();
-            echo mdate($datestring, $time) . " - ";
-            echo $res->emp_firstname . " " . $res->emp_lastname . "/" . $res->job_code . "-" . $res->id_emp . '/' . $res->org_code;
-            ?></td>
+                    $datestring = "%d-%m-%Y";
+                    $time = time();
+                    echo mdate($datestring, $time) . " - ";
+                    echo $res->emp_firstname . " " . $res->emp_lastname . "/" . $res->job_code . "-" . $res->id_emp . '/' . $res->org_code;
+                    ?></td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
@@ -267,26 +273,47 @@ $sppd = $data_sppd->row();
 
             <input type="hidden" name="approved" value="1" id="app"/>
             <input type="hidden" name="pem_id" value="<?php echo $res->emp_num; ?>"/>
-            <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>" />
+
 
         </table>
     </fieldset>
     <br/>
-    <?php echo form_close(); ?>
+
     <table id="table-karyawan-3" style="width: 800px">
         <tr>
             <td></td>
             <td></td>
-            <td style="width: 500px;"><button id="simpan-btn">Simpan</button><button id="setuju-btn">Setuju</button><button id="return-btn">Kembalikan</button><button id="reject-btn">Tolak</button><button  id="tutup-btn">Tutup</button></td>
+            <td style="width: 500px;">
+                <?php if ($order != 0) {
+                    ?>
+                    <button id="simpan-btn">Simpan</button>
+                    <button id="setuju-btn">Setuju</button>
+                    <button id="return-btn">Kembalikan</button>
+                    <button id="reject-btn">Tolak</button>
+                    <button  id="tutup-btn">Tutup</button>
+                    <?php
+                }
+                else {
+                    
+                    ?>
+                    <button id="simpan-btn">Kirim</button>
+                    <button  id="tutup-btn">Tutup</button>
+                    <?php
+                }
+                ?>
+            </td>
             <td></td>
             <td></td>
         </tr>
     </table>
-    <form id="frm-reject" method="post" action="<?php echo base_url(); ?>index.php/sppd/reject_sppd">
-        <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>"/>
-    </form>
-    <form id="frm-tolak" method="post" action="<?php echo base_url(); ?>index.php/sppd/tolak_sppd">
-        <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>"/>
-        <input type="hidden" name="emp_num" value="<?php echo $sppd->emp_num; ?>"/>
-    </form>
+</form>
+<form id="frm-reject" method="post" action="<?php echo base_url(); ?>index.php/sppd/reject_sppd">
+    <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>"/>
+    <input type="hidden" name="komentator" id="komentar2" value=""/> 
+    
+</form>
+<form id="frm-tolak" method="post" action="<?php echo base_url(); ?>index.php/sppd/tolak_sppd">
+    <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>"/>
+    <input type="hidden" name="emp_num" value="<?php echo $sppd->emp_num; ?>"/>
+</form>
 </div>

@@ -50,7 +50,7 @@ class Sppds extends CI_Model {
         $this->db->where('D.status', '0');
         $this->db->where('A.sppd_status', 1);
         $this->db->order_by('A.sppd_num', 'DESC');
-
+        $this->db->limit(4, 0);
         $hasil = array();
         $query = $this->db->get();
         $hasil[] = $query;
@@ -144,6 +144,21 @@ class Sppds extends CI_Model {
         if ($this->input->post('tipe') == '1') {
 
             $pemeriksa = $this->input->post('pemeriksa');
+            $pemdata3 = array(
+                "sppd_num" => $res->sppd_num,
+                "emp_id" => $res->emp_id,
+                "pem_id" => $res->emp_id,
+                "status" => "0",
+                "comment" => "",
+                "exam_date" => "",
+                "exam_time" => "",
+                "order" => "0",
+                "final" => "0",
+                "flag" => "0",
+                "send_status" => "1"
+            );
+            $this->db->insert('sppd_examine', $pemdata3);
+
             $count = 1;
             for ($i = 0; $i < count($pemeriksa); $i++) {
 
@@ -268,6 +283,8 @@ class Sppds extends CI_Model {
         $this->db->where('A.pem_id', $empnum);
         $this->db->where('A.flag', '1');
         $this->db->where('A.send_status', '1');
+        $this->db->order_by('A.sppd_num', 'DESC');
+        $this->db->limit(4, 0);
         $q = $this->db->get();
 
         return $q;
@@ -301,10 +318,22 @@ class Sppds extends CI_Model {
         $this->db->where('B.sppd_num', $sppdnum);
         $this->db->join('hrms_employees as A', 'A.emp_num=B.pem_id');
         $this->db->join('hrms_job as C', 'A.emp_job=C.job_num');
+        $this->db->where('B.order <>', '0');
         $this->db->order_by('B.order', 'ASC');
+
         $q = $this->db->get();
 
         return $q;
+    }
+
+    function get_order_pemeriksa($sppdnum) {
+        $this->db->select('order');
+        $this->db->from('sppd_examine');
+        $this->db->where('flag', '1');
+        $this->db->where('sppd_num', $sppdnum);
+        $order = $this->db->get()->row()->order;
+
+        return $order;
     }
 
     /*
@@ -459,7 +488,9 @@ class Sppds extends CI_Model {
         $this->db->where("A.sppd_num", $sppdnum);
         $this->db->join("hrms_employees as B", "A.pem_id=B.emp_num");
         $this->db->join("hrms_job as C", "B.emp_job=C.job_num");
+        $this->db->where('A.order <>', '0');
         $this->db->order_by("A.order", "ASC");
+
         $q = $this->db->get();
 
         return $q;
@@ -540,28 +571,33 @@ class Sppds extends CI_Model {
         $this->db->where('sppd_num', $this->input->post('sppd_num'));
         $this->db->where('pem_id', $emp_id);
         $q2 = $this->db->get();
+        
+        date_default_timezone_set("Asia/Jakarta");
+        $today = date("Y-m-d H:i:s");
+        
+        $data = array(
+            "sppd_num" => $this->input->post('sppd_num'),
+            "emp_num" => $emp_id,
+            "comment" => 'Return - ' . $this->input->post('komentator'),
+            "date_comment" => $today
+        );
+
+        $q = $this->db->insert('sppd_comment', $data);
 
         $rowpem = $q2->row();
         $order = $rowpem->order;
 
-        if ($order != 1) {
-            $order--;
+        $order--;
 
-            $data = array(
-                "flag" => "1",
-                "status" => "0"
-            );
+        $data = array(
+            "flag" => "1",
+            "status" => "0"
+        );
 
-            $this->db->where('order', $order);
-            $this->db->where('sppd_num', $this->input->post('sppd_num'));
-            $this->db->update('sppd_examine', $data);
-        } else {
+        $this->db->where('order', $order);
+        $this->db->where('sppd_num', $this->input->post('sppd_num'));
+        $this->db->update('sppd_examine', $data);
 
-
-
-            $this->db->where('sppd_num', $this->input->post('sppd_num'));
-            $this->db->update('sppd_examine', $data2);
-        }
         return true;
     }
 
@@ -665,19 +701,42 @@ class Sppds extends CI_Model {
 
         $q = $this->db->insert('sppd_comment', $data);
 
-        
+
         $data2 = array(
-            "flag"=>0
+            "flag" => 0
         );
-        $this->db->where('sppd_num',$sppdnum);
-        $this->db->where('emp_id',$this->input->post('emp_num'));
-        $q2 = $this->db->update('sppd_examine',$data2);
-        
+        $this->db->where('sppd_num', $sppdnum);
+        $this->db->where('emp_id', $this->input->post('emp_num'));
+        $q2 = $this->db->update('sppd_examine', $data2);
+
         if ($q && $q2) {
             return true;
         } else {
             return false;
         }
+    }
+
+    function update_sppd_by_pemeriksa() {
+        $data = array(
+            "emp_id" => $this->input->post('emp_num'),
+            "sppd_dest" => $this->input->post('destination'),
+            "sppd_depart" => $this->input->post('depart'),
+            "sppd_arrive" => $this->input->post('arrive'),
+            "sppd_ket" => $this->input->post('keterangan'),
+            "sppd_dsr" => $this->input->post('dasar'),
+            "sppd_tuj" => $this->input->post('tujuan'),
+            "sppd_catt" => $this->input->post('catt')
+        );
+
+        $this->db->where('sppd_num', $this->input->post('sppd_num2'));
+        $q = $this->db->update('sppd_data', $data);
+        if ($q) {
+            return true;
+        } else {
+            return false;
+        }
+
+        return $data;
     }
 
 }

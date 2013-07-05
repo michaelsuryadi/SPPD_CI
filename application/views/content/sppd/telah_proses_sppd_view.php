@@ -40,6 +40,8 @@
             autoOpen: false,
             width: 550,
             modal: true,
+            hide: 'fadeOut',
+            show: 'fadeIn',
             position: 'top',
             buttons: {
                 "Kirim": function() {
@@ -273,6 +275,11 @@ $sppd = $data_sppd->row();
 
         </table>
     </fieldset>
+    
+    <?php
+        if($rservation_detail->num_rows()>0){
+    ?>
+    
     <fieldset>
         <?php $reserve = $rservation_detail->row(); ?>
         <legend>Reservation</legend>
@@ -315,6 +322,9 @@ $sppd = $data_sppd->row();
         </table>
         
     </fieldset>
+    <?php
+        }
+    ?>
     
     <fieldset style="text-align: center;">
         <legend>Options</legend>
