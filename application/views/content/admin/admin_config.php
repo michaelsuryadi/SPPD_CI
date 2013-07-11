@@ -4,13 +4,17 @@
     <fieldset>
         <legend>Basic Settings</legend>
         <table>
+            
+            <?php
+                $appconf = $app_config->row();
+            ?>
             <tr>
                 <td>Application title : </td>
-                <td> : <input style="width: 300px;" type="text" name="tech_support" /></td>
+                <td> : <input style="width: 300px;" type="text" name="tech_support" value="<?php echo $appconf->app_title; ?>" /></td>
             </tr>
             <tr>
                 <td>Technical Support : </td>
-                <td> : <input style="width: 300px;" type="text" name="tech_support" /></td>
+                <td> : <input style="width: 300px;" type="text" name="tech_support" value="<?php echo $appconf->tech_support; ?>" /></td>
             </tr>
             <tr>
                 <td>Customize Application Banner : </td>

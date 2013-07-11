@@ -12,6 +12,7 @@ class View_sppd extends CI_Controller{
         $data['result'] = $this->employee->get_detail_emp($username);
         $data['title'] = 'View SPPD';
         $data['mid_content']='content/process_sppd/view_sppd';
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template',$data);
     }
 }

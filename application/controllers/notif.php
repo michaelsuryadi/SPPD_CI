@@ -19,6 +19,7 @@ class Notif extends CI_Controller {
             $this->load->model('notifications');
             $data['notif'] = $this->notifications->get_notifications($dt->emp_num);
             $data['mid_content'] = 'content/notifications/notif_view';
+            $data['app_config'] = $this->admin_config->load_app_config();
             $this->load->view('includes/home_template', $data);
         }
         else {

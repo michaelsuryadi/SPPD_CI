@@ -9,6 +9,7 @@ class Jobs extends CI_Controller {
 
         $data['job'] = $this->job->get_all_job();
         $data['result'] = $this->employee->get_detail_emp($username);
+        $data['app_config'] = $this->admin_config->load_app_config();
         $data['title'] = 'Jobs';
         $data['mid_content'] = 'content/job/list_job';
         $this->load->view('includes/home_template', $data);
@@ -28,6 +29,7 @@ class Jobs extends CI_Controller {
         $data['job_curr_num'] = $this->job->load_curr_num();
 
         $data['org'] = $this->organization->get_all_org();
+        $data['app_config'] = $this->admin_config->load_app_config();
         $data['mid_content'] = 'content/job/add_job';
         $this->load->view('includes/home_template', $data);
     }

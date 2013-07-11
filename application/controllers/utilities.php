@@ -16,6 +16,7 @@ class Utilities extends CI_Controller {
         $data['employees'] = $this->employee->get_all_emp();
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
 
@@ -47,6 +48,7 @@ class Utilities extends CI_Controller {
         $data['employees'] = $this->employee->get_all_emp();
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
 
@@ -61,6 +63,7 @@ class Utilities extends CI_Controller {
         $data['employee_data'] = $this->employee->get_employee_data_by_username();
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
     

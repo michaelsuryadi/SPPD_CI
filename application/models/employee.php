@@ -295,4 +295,22 @@ class Employee extends CI_Model {
         
         return $q2;
     }
+    
+    function get_fiatur_by_org($orgnum){
+        $this->db->select('fiatur_job_num');
+        $this->db->from('hrms_organization');
+        $this->db->where('org_num',$orgnum);
+        
+        $fiatur_job_num = $this->db->get()->row()->fiatur_job_num;
+        
+        $this->db->select('A.emp_num,A.emp_id,A.emp_firstname,A.emp_lastname,A.job_code,A.org_code,B.job_name');
+        $this->db->from('hrms_employees as A');
+        $this->db->join('hrms_job as B','A.emp_job=B.job_num');
+        $this->db->where('A.emp_job',$fiatur_job_num);
+        
+        $q = $this->db->get();
+        
+        return $q;
+        
+    }
 }

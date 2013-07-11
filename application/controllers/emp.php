@@ -10,10 +10,12 @@ class Emp extends CI_Controller {
         $data['title'] = 'List Employees Data';
         $data['mid_content'] = 'content/employee/list_employee';
         $this->load->model('employee');
+        
         $data['employees'] = $this->employee->get_all_emp();
 
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
 
@@ -32,6 +34,7 @@ class Emp extends CI_Controller {
         
         $data['title'] = 'Add New Employee';
         $data['mid_content'] = 'content/employee/add_employee';
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
 
@@ -75,6 +78,7 @@ class Emp extends CI_Controller {
         $data['job'] = $this->job->load_job_by_org($orgid);
         
         $data['result'] = $res['result'];
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
 
@@ -96,6 +100,7 @@ class Emp extends CI_Controller {
         $data['employees'] = $this->employee->get_filter_employee();
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
     

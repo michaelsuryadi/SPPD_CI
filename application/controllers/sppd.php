@@ -21,11 +21,8 @@ class Sppd extends CI_Controller {
         $emp_data = $employee->row();
 
         $data['pemeriksa'] = $this->employee->load_pemeriksa_sppd();
-
-//        $data['fiatur'] = $this->employee->load_fiatur($emp_data->org_id);
-//        $data['perinci'] = $this->employee->load_rinci($emp_data->org_id);
-//        $data['posting'] = $this->employee->load_posting($emp_data->org_id);
-
+        $data['fiatur'] = $this->employee->get_fiatur_by_org($emp_data->org_id);
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
 
@@ -39,7 +36,9 @@ class Sppd extends CI_Controller {
         $row = $data['result']->row();
         $empId = $row->emp_num;
         $dt['sppd_list'] = $this->sppds->get_proses_sppd($empId);
-        $data['sppd_list'] = $dt['sppd_list'][0];
+        $data['sppd_list'] = $dt['sppd_list']['proses_sppd'];
+        $data['sppd_tolak'] = $dt['sppd_list']['reject_sppd'];
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
 
@@ -53,8 +52,9 @@ class Sppd extends CI_Controller {
         $row = $data['result']->row();
         $empId = $row->emp_num;
         $data['sppd_list'] = $this->sppds->list_perlu_diproses($empId);
-        $data['draft'] = $this->sppds->get_proses_sppd($empId);
-
+        $data['draft2'] = $this->sppds->get_proses_sppd($empId);
+        $data['draft'] = $data['draft2']['proses_sppd'];
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
 
@@ -64,13 +64,22 @@ class Sppd extends CI_Controller {
         $this->load->model('employee');
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
-
+        $this->load->library('pagination');
         $row = $data['result']->row();
         $empId = $row->emp_num;
-
         $this->load->model('sppds');
-        $data['draft'] = $this->sppds->get_draft_sppd($empId);
 
+        $config['base_url'] = 'http://127.0.0.1/sppd_ci/index.php/sppd/draft_sppd';
+        $config['per_page'] = 4;
+        $config['num_links'] = 10;
+        $config['uri_segment'] = 3;
+        $config['total_rows'] = $this->sppds->get_draft_sppd($empId,$config['num_links'],$this->uri->segment(3));
+        $this->pagination->initialize($config);
+        
+        $data['draft'] = $this->sppds->get_draft_sppd($empId,$config['per_page'],$config['uri_segment']);
+        
+        
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
 
@@ -94,14 +103,14 @@ class Sppd extends CI_Controller {
         $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
         $data['data_komentar'] = $this->sppds->load_comment($sppdId);
         $data['pemeriksa'] = $this->sppds->load_pemeriksa_sppd($sppdId);
-        
+
         $data['title'] = 'View SPPD';
         $data['mid_content'] = 'content/sppd/edit_sppd';
 
         $this->load->model('employee');
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
-
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
 
@@ -143,7 +152,7 @@ class Sppd extends CI_Controller {
         $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
         $data['data_komentar'] = $this->sppds->load_comment($sppdId);
         $data['pemeriksa'] = $this->sppds->load_pemeriksa_sppd($sppdId);
-        
+
         $data['order'] = $this->sppds->get_order_pemeriksa($sppdId);
         $data['title'] = 'View SPPD';
         $data['mid_content'] = 'content/sppd/view_sppd';
@@ -151,7 +160,11 @@ class Sppd extends CI_Controller {
         $this->load->model('employee');
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
-
+        $data['anggaran'] = $this->sppds->get_sisa_anggaran();
+        $data['rincian_angkutan'] = $this->sppds->load_perincian_angkutan($sppdId);
+        $data['rincian_harian'] = $this->sppds->load_perincian_harian($sppdId);
+        
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
 
@@ -181,7 +194,7 @@ class Sppd extends CI_Controller {
         $employee = $data['result'];
 
         $data['approval_prg'] = $this->sppds->get_approval($sppdId);
-
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view("includes/home_template", $data);
     }
 
@@ -199,9 +212,10 @@ class Sppd extends CI_Controller {
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
         $data['rservation_detail'] = $this->reservation_model->load_request_data($sppdId);
-        
+        $data['app_config'] = $this->admin_config->load_app_config();
         $employee = $data['result'];
-
+        $data['rincian_angkutan'] = $this->sppds->load_perincian_angkutan($sppdId);
+        $data['rincian_harian'] = $this->sppds->load_perincian_harian($sppdId);
 
         $data['approval_prg'] = $this->sppds->get_approval($sppdId);
 
@@ -211,7 +225,7 @@ class Sppd extends CI_Controller {
     function send_comment() {
         $this->load->model('sppds');
         $this->load->helper('date');
-        
+
         date_default_timezone_set("Asia/Jakarta");
         $today = date("Y-m-d H:i:s");
         $q = $this->sppds->send_comment_data();
@@ -249,20 +263,20 @@ class Sppd extends CI_Controller {
         $row = $data['result']->row();
         $empId = $row->emp_num;
         $data['sppd_list'] = $this->sppds->list_telah_diproses($empId);
-
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
-    
-    function reject_sppd(){
+
+    function reject_sppd() {
         $this->load->model('sppds');
         $q = $this->sppds->reject_sppd();
-        
-        if($q){
+
+        if ($q) {
             redirect('/sppd/perlu_proses_sppd');
         }
     }
-    
-    function edit_sppd_by_pemeriksa(){
+
+    function edit_sppd_by_pemeriksa() {
         $get = $this->uri->uri_to_assoc();
         $sppdId = $get['id'];
         $this->load->model('sppds');
@@ -270,43 +284,59 @@ class Sppd extends CI_Controller {
         $data['data_sppd'] = $this->sppds->load_data_sppd($sppdId);
         $data['data_komentar'] = $this->sppds->load_comment($sppdId);
         $data['pemeriksa'] = $this->sppds->load_pemeriksa_sppd($sppdId);
-        
+
         $data['title'] = 'View SPPD';
         $data['mid_content'] = 'content/sppd/edit_sppd_by_pemeriksa';
 
         $this->load->model('employee');
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
-
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
-    
-    function process_edit(){
+
+    function process_edit() {
         $this->load->model('sppds');
         $q = $this->sppds->process_edit();
-        
-        if($q){
+
+        if ($q) {
             redirect('/sppd/draft_sppd');
         }
     }
-    
-    function tolak_sppd(){
+
+    function tolak_sppd() {
         $this->load->model('sppds');
         $q = $this->sppds->tolak_sppd();
-        
-        if($q){
+
+        if ($q) {
             redirect('/sppd/perlu_proses_sppd');
         }
     }
-    
-    function process_update(){
+
+    function process_update() {
         $sppdnum = $this->input->post('sppd_num2');
         echo $sppdnum;
         $this->load->model('sppds');
         $q = $this->sppds->update_sppd_by_pemeriksa();
+
+        if ($q) {
+            redirect('/sppd/view_sppd/id/' . $sppdnum);
+        }
+    }
+    
+    function view_form_perincian_biaya(){
+        
+        $this->load->view('content/sppd/form_perincian_biaya');
+    }
+    
+    function simpan_perincian(){
+        $this->load->model('sppds');
+        $sppdnum = $this->input->post('sppdnum');
+        $q = $this->sppds->simpan_perincian();
         
         if($q){
             redirect('/sppd/view_sppd/id/'.$sppdnum);
         }
     }
+
 }

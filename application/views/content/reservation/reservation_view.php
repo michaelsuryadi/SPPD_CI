@@ -165,6 +165,7 @@
                 url: "http://127.0.0.1/sppd_ci/index.php/reservation/search_flight",
                 data: dt,
                 success: function(data) {
+                    alert(data);
                     $('#search-form').hide();
                     $('#form-search-result').fadeIn();
                     $('body').css('cursor', 'auto');
@@ -305,6 +306,22 @@
 
                 }
             });
+        });
+        
+        $('#search-form-hotel').click(function(){
+            
+        });
+        $("#check_out").datepicker({
+            showOn: "button",
+            buttonImage: "<?php echo base_url(); ?>css/calendar.png",
+            buttonImageOnly: true,
+            dateFormat: "yy-mm-dd"
+        });
+        $("#check_in").datepicker({
+            showOn: "button",
+            buttonImage: "<?php echo base_url(); ?>css/calendar.png",
+            buttonImageOnly: true,
+            dateFormat: "yy-mm-dd"
         });
     });
 

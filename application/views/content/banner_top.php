@@ -29,7 +29,11 @@
         }
 
     </script>
-    <h1>HRM Application</h1>
+    
+    <?php
+        $appconfig = $app_config->row();
+    ?>
+    <h1><?php echo $appconfig->app_title; ?></h1>
     <p style="margin-left: 10px;">
         <?php
         $this->load->helper('date');

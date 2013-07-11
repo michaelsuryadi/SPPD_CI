@@ -12,6 +12,7 @@ class Login extends CI_Controller {
         } else {
             $data['title'] = 'Login';
             $data['mid_content'] = 'content/login/login';
+            $data['app_config'] = $this->admin_config->load_app_config();
             $this->load->view('includes/login_template', $data);
         }
     }

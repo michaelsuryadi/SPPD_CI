@@ -66,6 +66,14 @@ class Admin_config extends CI_Model {
         return $q;
     }
     
+    function load_app_config(){
+        $this->db->select('*');
+        $this->db->from('hrms_config');
+        $q = $this->db->get();
+        
+        return $q;
+    }
+    
     /*
      * Function yang digunakan untuk menghapus pemeriksa
      * dari flow sppd

@@ -44,7 +44,7 @@
                 <p style='font-size: smaller; margin-left: 20px; margin-bottom: 3px; margin-top: 3px;'><i>Filter By : All</i></p>
             </div>
             <div id='filter-right' style="background-color: black; color:white;">
-                <p style='margin-top: 3px; margin-left: 40px;'>Page : < <b>1</b> 2 3 4 5 ></p>
+                <p style='margin-top: 3px; margin-left: 40px;'><?php echo $this->pagination->create_links(); ?></p>
             </div>
             
         </div>

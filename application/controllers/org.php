@@ -8,6 +8,7 @@ class Org extends CI_Controller {
     function index(){
         $data['title'] = 'List Organization';
         $data['result'] = $this->get_session();
+        $data['app_config'] = $this->admin_config->load_app_config();
         $data['mid_content'] = 'content/organization/list_org';
         $this->load->view('includes/home_template',$data);
     }
@@ -22,6 +23,7 @@ class Org extends CI_Controller {
     function add_org(){
         $data['title'] = 'Add Organization';
         $data['result'] = $this->get_session();
+        $data['app_config'] = $this->admin_config->load_app_config();
         $data['mid_content'] = 'content/organization/add_org';
         $this->load->view('includes/home_template',$data);
     }

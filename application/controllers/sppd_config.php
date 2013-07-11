@@ -13,10 +13,10 @@ class Sppd_config extends CI_Controller {
         
         $username = $this->session->userdata('username');
         $data['result'] = $this->employee->get_detail_emp($username);
-        
+            
         $this->load->model('admin_config');
         $data['flow'] = $this->admin_config->get_list_flow_sppd();
-        
+        $data['app_config'] = $this->admin_config->load_app_config();
         $this->load->view('includes/home_template', $data);
     }
     

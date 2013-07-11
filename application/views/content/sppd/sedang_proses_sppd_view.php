@@ -24,9 +24,9 @@
                     url: "http://127.0.0.1/sppd_ci/index.php/sppd/send_comment",
                     data: "sppdnum=" + sppdnum + " &isi=" + isi + " &empnum=" + empnum,
                     success: function(data) {
-                        if(data!=""){
+                        if (data != "") {
                             alert("Komentar telah terkirim");
-                            $("#content4").append(data+"<br/>");
+                            $("#content4").append(data + "<br/>");
                             $("#komentator").val("");
                         }
                     }
@@ -73,7 +73,7 @@
                 <td> : <?php echo $sppd->sppd_tgl; ?></td>
             </tr>
         </table>
-        
+
     </fieldset>
     <fieldset>
         <legend>Data Karyawan</legend>
@@ -159,13 +159,18 @@
             foreach ($approval_prg->result() as $rowapp) {
                 ?>
                 <tr>
-                    <td>Pemeriksa ke <?php echo $i." - ".$rowapp->job_name; ?> </td>
+                    <td>Pemeriksa ke <?php echo $i . " - " . $rowapp->job_name; ?> </td>
                     <td> : <?php
                         echo $rowapp->emp_firstname . " " . $rowapp->emp_lastname . "/" . $rowapp->job_code . "-" . $rowapp->emp_id . "/" . $rowapp->org_code;
                         if ($rowapp->status == 1) {
                             echo '<b> - Approved</b>';
                         } else {
-                            echo '<b> -    On Progress</b>';
+                            if ($rowapp->status == 0) {
+                                echo '<b> - On Progress</b>';
+                            }
+                            else {
+                                echo '<b> - Rejected</b>';
+                            }
                         }
                         ?></td>
                 </tr>
@@ -180,32 +185,32 @@
     <fieldset>
         <legend>History Komentar</legend>
         <table id="table-karyawan-3" style="width: 800px;">
-            <?php 
-            if($data_komentar->num_rows()>0){
-                ?>
-            <tr>
-                <td style="text-align: left;">Komentar :</td>
-                <td colspan="4" id="content4" style="text-align: left;"><?php
-                    foreach ($data_komentar->result() as $rowkomentar) {
-                        ?>
-                        <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
-                        <?php
-                    }
-                    ?></td>
-            </tr>
-            <tr>
-                <td>&nbsp;</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
             <?php
+            if ($data_komentar->num_rows() > 0) {
+                ?>
+                <tr>
+                    <td style="text-align: left;">Komentar :</td>
+                    <td colspan="4" id="content4" style="text-align: left;"><?php
+            foreach ($data_komentar->result() as $rowkomentar) {
+                    ?>
+                            <?php echo $rowkomentar->date_comment . " - " . $rowkomentar->emp_firstname . " " . $rowkomentar->emp_lastname . " - <i>" . $rowkomentar->comment . "</i><br/>"; ?>
+                            <?php
+                        }
+                        ?></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <?php
             }
             $res = $result->row();
             ?>
-            
-            
+
+
             <tr>
                 <td>&nbsp;</td>
                 <td></td>
@@ -236,5 +241,5 @@
             <td></td>
         </tr>
     </table>
-    
+
 </div>

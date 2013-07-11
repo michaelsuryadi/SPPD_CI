@@ -32,7 +32,6 @@
                     }
                 });
             }
-
             return false;
         });
 
@@ -59,6 +58,7 @@
                                 if(data=="OK") {
                                     alert('Request Berhasil Dikirim');
                                     $('#reserve-btn').attr('disabled',true);
+                                    location.reload();
                                 }
                                 else {
                                     alert('Request Gagal Dikirim');
@@ -81,6 +81,28 @@
             $('#dialog-form').dialog('open');
             return false;
         });
+        $('#rincian-btn').click(function() {
+            $('#dialog-form-rincian').dialog('open');
+            return false;
+        });
+        
+        $("#dialog-form-rincian").dialog({
+            autoOpen: false,
+            width: 900,
+            height:500,
+            modal: true,
+            hide: 'fadeOut',
+            show: 'fadeIn',
+            position: 'top',
+            buttons: {
+                "Close": function() {
+                    $(this).dialog("close");
+                }
+            },
+            close: function() {
+                $(this).dialog("close");
+            }
+        }).css("font-size", "15px");
     });
 
 </script>
@@ -106,6 +128,108 @@ $sppd = $data_sppd->row();
         </fieldset>
     </form>
 </div>
+<div id="dialog-form-rincian" title="Data Rincian">
+    <p style="font-size: smaller;"><b>Rincian Angkutan</b></p>
+    <table style="width:850px; text-align: center; font-size: smaller;">
+                    <tbody id="main-angkutan-body2">
+                        <tr style="background-color: black; color:white;">
+                            <th rowspan="2">No.</th>
+                            <th colspan="6">Angkutan</th>
+                        </tr>
+                        <tr style="background-color: black; color: white;">
+                            <th>Angkutan</th>
+                            <th>Asal</th>
+                            <th>Tujuan</th>
+                            <th>T.Angkutan</th>
+                            <th>X</th>
+                            <th>J.Trans</th>
+                        </tr>
+                        <?php
+                        $i = 1;
+                        $totalAngkutan = 0;
+                        foreach ($rincian_angkutan->result() as $row) {
+                            ?>
+                            <tr id="row-1" style="border-bottom: 1px dotted black;">
+                                <td><?php echo $i; ?></td>
+                                <td><?php echo $row->transport_name; ?></td>
+                                <td><?php echo $row->from_dest; ?></td>
+                                <td><?php echo $row->to_dest; ?></td>
+                                <td>Rp. <?php echo number_format($row->transport_fee, 0, '.', '.'); ?></td>
+                                <td><?php echo $row->transport_amount; ?></td>
+                                <td>Rp. <?php echo number_format($row->transport_amount * $row->transport_fee, 0, '.', '.'); ?></td>
+            <?php
+            $totalAngkutan += $row->transport_amount * $row->transport_fee;
+            ?>
+                            </tr>
+                                <?php
+                                $i++;
+                            }
+                            ?>
+                    </tbody>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                            <td colspan="2"><b>Total Uang Angkutan : </b></td>
+                            <td><b>Rp. <?php echo number_format($totalAngkutan, 0, '.', '.'); ?></b></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+    
+    <p style="font-size:smaller;"><b>Rincian Harian</b></p>
+    <table style="text-align: center; width: 850px; font-size: smaller;">
+                    <tbody id="data-body2">
+                        <tr style="background-color: black; color:white;">
+                            <th colspan="6">Harian</th>
+                        </tr>
+                        <tr style="background-color: black; color:white;">
+                            <th>Berangkat</th>
+                            <th>Kembali</th>
+                            <th>Lama (Hari)</th>
+                            <th>J.Harian</th>
+                            <th>%</th>
+                            <th>T.Harian</th>
+                        </tr>
+                        
+                        <?php
+                            $totalHarian=0;
+                            foreach($rincian_harian->result() as $rowharian){
+                                
+                                ?>
+                        <tr id="row-harian-1">
+                            <td><?php echo $rowharian->from_date; ?></td>
+                            <td><?php echo $rowharian->to_date; ?></td>
+                            <td><?php echo $rowharian->lama; ?></td>
+                            <td>Rp. <?php echo number_format($rowharian->day_amount,0,'.','.'); ?></td>
+                            <td><?php echo $rowharian->percentage; ?> % </td>
+                            <td>Rp. <?php echo number_format($rowharian->lama * $rowharian->day_amount * ($rowharian->percentage / 100),0,'.','.'); ?></td>
+                        
+                        </tr>
+                        <?php
+                            $totalHarian += $rowharian->lama * $rowharian->day_amount * ($rowharian->percentage / 100);
+                            }
+                        ?>
+                        
+                    </tbody>
+                    <tbody id="opsi-body">
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="2"><b>Total Uang Harian : </b></td>
+                            <td><b>Rp. <?php echo number_format($totalHarian,0,'.','.'); ?></b></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: small;"><b>Total Biaya SPPD : Rp. <?php echo number_format($totalAngkutan+$totalHarian,0,'.','.'); ?></b></p>
+    
+</div>
+
+
 
 <div id="content">
     <h2 style="margin: 0px; padding: 20px; text-align: left;">SPPD Telah Diproses</h2>
@@ -267,8 +391,6 @@ $sppd = $data_sppd->row();
             ?>
 
 
-
-
             <input type="hidden" name="approved" value="1" id="app"/>
             <input type="hidden" name="pem_id" value="<?php echo $res->emp_num; ?>"/>
             <input type="hidden" name="sppd_num" value="<?php echo $sppd->sppd_num; ?>" />
@@ -328,8 +450,10 @@ $sppd = $data_sppd->row();
     
     <fieldset style="text-align: center;">
         <legend>Options</legend>
-        <button id="reserve-btn" <?php if($sppd->reserve_status == 1){ echo " disabled='disabled' "; } ?>>Request Reservation</button>
-        <button id="print-btn">Print SPPD</button>
+        <button id="rincian-btn">Lihat Rincian Biaya</button>
+        <button id="reserve-btn" <?php if($sppd->reserve_status == 1){ echo " disabled='disabled' "; } ?>>Request Reservasi</button>
+        <button id="reserve-view-btn">Lihat Progress Reservasi</button>
+        <button id="print-btn">Lihat dan Cetak Surat Perintah SPPD</button>
     </fieldset>
     <br/>
     <table id="table-karyawan-3" style="width: 800px">

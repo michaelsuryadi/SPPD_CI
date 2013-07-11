@@ -119,7 +119,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array();
+$autoload['model'] = array('admin_config');
 
 
 /* End of file autoload.php */

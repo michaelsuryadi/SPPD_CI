@@ -173,7 +173,6 @@ class Reservation_model extends CI_Model {
             CURLOPT_RETURNTRANSFER => '1'
         );
         $ch = curl_init($url);
-
         curl_setopt_array($ch, $options);
         
         $content = curl_exec($ch);

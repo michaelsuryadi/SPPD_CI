@@ -19,17 +19,15 @@ class Sppds extends CI_Model {
      * 
      */
 
-    function get_draft_sppd($empnum) {
+    function get_draft_sppd($empnum, $perpage, $segment) {
         $this->db->select('A.sppd_id,A.sppd_num,A.sppd_tgl,A.sppd_tuj,B.emp_id,B.emp_firstname,B.emp_lastname, C.emp_id as pem_id, C.emp_firstname as pem_fname, C.emp_lastname as pem_lname');
         $this->db->from('sppd_data as A');
         $this->db->where('A.emp_id', $empnum);
         $this->db->where('A.sppd_status', 2);
         $this->db->join('hrms_employees as B', 'A.emp_id=B.emp_num');
         $this->db->join('hrms_employees as C', 'A.emp_create_id=C.emp_num');
-        $this->db->limit(4, 0);
         $this->db->order_by('A.sppd_id', 'DESC');
-        $query = $this->db->get();
-
+        $query = $this->db->get("", $perpage, $this->uri->segment(3));
         return $query;
     }
 
@@ -39,6 +37,13 @@ class Sppds extends CI_Model {
      */
 
     function get_proses_sppd($empnum) {
+        
+        $fromDate = date("Y-m-d", strtotime("-1 months"));
+        $this->db->where('sppd_tgl <=',$fromDate);
+        $this->db->where('sppd_status',1);
+        $this->db->or_where('sppd_status',4);
+        $this->db->delete('sppd_data');
+        
         $this->db->select('A.sppd_num,A.sppd_id,A.sppd_tgl,A.sppd_tuj,B.emp_id,B.emp_firstname,B.emp_lastname, C.emp_id as pem_id, C.emp_firstname as pem_fname, C.emp_lastname as pem_lname,E.emp_firstname as curr_fname,E.emp_lastname as curr_lname,E.emp_id as curr_empid,D.order');
         $this->db->from('sppd_data as A');
         $this->db->where('A.emp_id', $empnum);
@@ -53,7 +58,7 @@ class Sppds extends CI_Model {
         $this->db->limit(4, 0);
         $hasil = array();
         $query = $this->db->get();
-        $hasil[] = $query;
+        $hasil['proses_sppd'] = $query;
 //        foreach($query->result() as $row){
 //            if($row->order !=1){
 //                $order = $row->order;
@@ -67,7 +72,15 @@ class Sppds extends CI_Model {
 //                $hasil[] = $this->db->get();
 //            }
 //        }
-
+        
+        $this->db->select('A.sppd_num,A.sppd_id,A.sppd_tgl,A.sppd_tuj,B.emp_id,B.emp_firstname,B.emp_lastname,C.emp_id as pem_id, C.emp_firstname as pem_fname, C.emp_lastname as pem_lname');
+        $this->db->from('sppd_data as A');
+        $this->db->where('A.emp_id',$empnum);
+        $this->db->where('A.sppd_status',4);
+        $this->db->join('hrms_employees as B','A.emp_id=B.emp_num');
+        $this->db->join('hrms_employees as C','A.emp_create_id=C.emp_num');
+        $query2 = $this->db->get();
+        $hasil['reject_sppd'] = $query2;
         return $hasil;
     }
 
@@ -274,7 +287,8 @@ class Sppds extends CI_Model {
      */
 
     function list_perlu_diproses($empnum) {
-
+        
+        
         $this->db->select("A.sppd_num,B.sppd_id,A.status,C.emp_id,C.org_code,C.job_code,B.sppd_tuj,B.sppd_tgl,C.emp_firstname,C.emp_lastname, D.emp_id as pem_id,D.emp_num as pem_num, D.emp_firstname as pem_fname, D.emp_lastname as pem_lname, D.org_code as pem_org, D.job_code as pem_job");
         $this->db->from('sppd_examine as A');
         $this->db->join('sppd_data as B', 'A.sppd_num=B.sppd_num');
@@ -282,11 +296,11 @@ class Sppds extends CI_Model {
         $this->db->join('hrms_employees as D', 'D.emp_num=B.emp_create_id');
         $this->db->where('A.pem_id', $empnum);
         $this->db->where('A.flag', '1');
+        $this->db->where('B.sppd_status <>','4');
         $this->db->where('A.send_status', '1');
         $this->db->order_by('A.sppd_num', 'DESC');
         $this->db->limit(4, 0);
         $q = $this->db->get();
-
         return $q;
     }
 
@@ -296,7 +310,7 @@ class Sppds extends CI_Model {
      */
 
     function load_data_sppd($sppdnum) {
-        $this->db->select("A.sppd_num,A.sppd_id,A.sppd_tgl,A.sppd_catt,A.sppd_dest,A.sppd_tuj,A.sppd_dsr,A.sppd_ket,A.sppd_depart,A.reserve_status,A.sppd_arrive,A.sppd_status,A.sppd_desc,B.emp_num,B.emp_id,B.emp_firstname,B.emp_lastname,B.job_code,B.org_code,C.emp_id as pem_id,C.emp_firstname as pem_fname,C.emp_lastname as pem_lname,C.job_code as pem_jobcode,C.org_code as pem_orgcode");
+        $this->db->select("A.sppd_num,A.sppd_id,A.sppd_tgl,A.sppd_catt,A.sppd_dest,A.sppd_tuj,A.sppd_dsr,A.sppd_ket,A.sppd_depart,A.reserve_status,A.sppd_arrive,A.sppd_status,A.sppd_desc,B.emp_num,B.emp_id,B.emp_firstname,B.emp_lastname,B.job_code,B.org_code,C.emp_num as pem_num,C.emp_id as pem_id,C.emp_firstname as pem_fname,C.emp_lastname as pem_lname,C.job_code as pem_jobcode,C.org_code as pem_orgcode");
         $this->db->from('sppd_data as A');
         $this->db->join('hrms_employees as B', 'A.emp_id=B.emp_num');
         $this->db->join('hrms_employees as C', 'A.emp_create_id=C.emp_num');
@@ -320,7 +334,6 @@ class Sppds extends CI_Model {
         $this->db->join('hrms_job as C', 'A.emp_job=C.job_num');
         $this->db->where('B.order <>', '0');
         $this->db->order_by('B.order', 'ASC');
-
         $q = $this->db->get();
 
         return $q;
@@ -332,7 +345,6 @@ class Sppds extends CI_Model {
         $this->db->where('flag', '1');
         $this->db->where('sppd_num', $sppdnum);
         $order = $this->db->get()->row()->order;
-
         return $order;
     }
 
@@ -571,10 +583,10 @@ class Sppds extends CI_Model {
         $this->db->where('sppd_num', $this->input->post('sppd_num'));
         $this->db->where('pem_id', $emp_id);
         $q2 = $this->db->get();
-        
+
         date_default_timezone_set("Asia/Jakarta");
         $today = date("Y-m-d H:i:s");
-        
+
         $data = array(
             "sppd_num" => $this->input->post('sppd_num'),
             "emp_num" => $emp_id,
@@ -694,7 +706,7 @@ class Sppds extends CI_Model {
 
         $data = array(
             "sppd_num" => $sppdnum,
-            "emp_num" => $this->input->post('emp_num'),
+            "emp_num" => $this->input->post('pem_id'),
             "comment" => 'Reject - ' . $this->input->post('komentator'),
             "date_comment" => $today
         );
@@ -703,10 +715,10 @@ class Sppds extends CI_Model {
 
 
         $data2 = array(
-            "flag" => 0
+            "status"=>2
         );
         $this->db->where('sppd_num', $sppdnum);
-        $this->db->where('emp_id', $this->input->post('emp_num'));
+        $this->db->where('pem_id', $this->input->post('pem_id'));
         $q2 = $this->db->update('sppd_examine', $data2);
 
         if ($q && $q2) {
@@ -737,6 +749,95 @@ class Sppds extends CI_Model {
         }
 
         return $data;
+    }
+
+    function get_sisa_anggaran() {
+        $this->load->helper('date');
+        $datestring = "%Y";
+        $time = time();
+        $tgl = mdate($datestring, $time);
+
+        $this->db->select('amount');
+        $this->db->from('sppd_anggaran');
+        $this->db->where('year', $tgl);
+        $q = $this->db->get()->row()->amount;
+
+        return $q;
+    }
+
+    function simpan_perincian() {
+        $sppdnum = $this->input->post('sppdnum');
+        $type = $this->input->post('type');
+        $totalAngkutan = count($this->input->post('angkutan'));
+        $namaAngkutan = $this->input->post('angkutan');
+        $asal = $this->input->post('asal');
+        $tujuan = $this->input->post('tujuan');
+        $trfangkutan = $this->input->post('trfangkutan');
+        $jml = $this->input->post('jml');
+        
+        if($type==1){
+            $this->db->where('sppd_num',$sppdnum);
+            $this->db->delete('sppd_transport_fee');
+            
+            $this->db->where('sppd_num',$sppdnum);
+            $this->db->delete('sppd_day_fee');
+        }
+
+        for ($i = 0; $i < $totalAngkutan; $i++) {
+            $data = array(
+                "sppd_num" => $sppdnum,
+                "transport_name" => $namaAngkutan[$i],
+                "from_dest" => $asal[$i],
+                "to_dest" => $tujuan[$i],
+                "transport_amount" => $jml[$i],
+                "transport_fee" => $trfangkutan[$i]
+            );
+
+            $this->db->insert('sppd_transport_fee', $data);
+        }
+
+        $totalHarian = count($this->input->post('tgl-berangkat'));
+        $tglbrkt = $this->input->post('tgl-berangkat');
+        $tglkembali = $this->input->post('tgl-kembali');
+        $lama = $this->input->post('lama');
+        $jharian = $this->input->post('jharian');
+        $persentase = $this->input->post('persen');
+
+        for ($j = 0; $j < $totalHarian; $j++) {
+            $data2 = array(
+                "sppd_num" => $sppdnum,
+                "from_date" => $tglbrkt[$j],
+                "to_date" => $tglkembali[$j],
+                "lama" => $lama[$j],
+                "percentage" => $persentase[$j],
+                "day_amount" => $jharian[$j]
+            );
+
+            $this->db->insert('sppd_day_fee', $data2);
+        }
+
+
+
+
+        return true;
+    }
+
+    function load_perincian_angkutan($sppdnum) {
+        $this->db->select('*');
+        $this->db->from('sppd_transport_fee');
+        $this->db->where('sppd_num', $sppdnum);
+
+        $q = $this->db->get();
+        return $q;
+    }
+
+    function load_perincian_harian($sppdnum) {
+        $this->db->select('*');
+        $this->db->from('sppd_day_fee');
+        $this->db->where('sppd_num', $sppdnum);
+
+        $q = $this->db->get();
+        return $q;
     }
 
 }
